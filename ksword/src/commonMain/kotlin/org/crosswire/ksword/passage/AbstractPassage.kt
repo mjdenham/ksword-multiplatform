@@ -54,7 +54,7 @@ abstract class AbstractPassage protected constructor(
 
     override fun compareTo(obj: Key): Int {
         val thatref: Passage = obj as Passage
-        if (thatref.countVerses() === 0) {
+        if (thatref.countVerses() == 0) {
             if (countVerses() == 0) {
                 return 0
             }

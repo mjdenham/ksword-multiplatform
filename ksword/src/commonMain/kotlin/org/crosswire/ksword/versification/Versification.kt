@@ -510,7 +510,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * @return true or false ...
      */
     fun isSameChapter(first: Verse, second: Verse): Boolean {
-        return first.book === second.book && first.chapter === second.chapter
+        return first.book == second.book && first.chapter == second.chapter
     }
 
     /**
@@ -541,7 +541,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         val before: Verse = min(first, second)
         val after: Verse = max(first, second)
         if (isSameBook(first, second)) {
-            return after.chapter - before.chapter === 1
+            return after.chapter - before.chapter == 1
         }
         // The earlier verse has to be the  last chapter
         return isAdjacentBook(
@@ -592,7 +592,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         val before: Verse = min(first, second)
         val after: Verse = max(first, second)
         if (isSameChapter(first, second)) {
-            return after.verse - before.verse === 1
+            return after.verse - before.verse == 1
         }
         // The earlier verse has to be the last verse in the chapter
         return isAdjacentChapter(before, after) && getLastVerse(
