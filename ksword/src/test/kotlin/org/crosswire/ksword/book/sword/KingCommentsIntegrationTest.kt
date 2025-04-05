@@ -6,6 +6,7 @@ import okio.Path.Companion.toPath
 import org.crosswire.common.util.IoUtil
 import org.crosswire.common.util.WebResource
 import org.crosswire.common.util.delete
+import org.crosswire.ksword.book.sword.ZVerseBackendTest.Companion
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 import org.crosswire.ksword.passage.KeyText
 import org.crosswire.ksword.passage.Verse
@@ -24,10 +25,7 @@ class KingCommentsIntegrationTest {
     private val webResource = WebResource()
     private val ioUtil = IoUtil()
 
-    private val bookMetaData = SwordBookMetaData().apply {
-        library = folderToUnzipInto.toString()
-        setProperty(SwordBookMetaData.KEY_DATA_PATH, "./modules/comments/zcom/kingcomments/")
-    }
+    private lateinit var bookMetaData: SwordBookMetaData
     private lateinit var backendState: ZVerseBackendState
     private lateinit var backend: ZVerseBackend
 
@@ -125,6 +123,7 @@ class KingCommentsIntegrationTest {
             assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/kingcomments.conf")))
         }
 
+        bookMetaData = SwordBookMetaData.createFromFile(ZVerseBackendTest.folderToUnzipInto.resolve("mods.d/kingcomments.conf"), ZVerseBackendTest.folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 2)
     }

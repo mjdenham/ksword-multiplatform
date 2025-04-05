@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.book.basic
 
+import okio.Path
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.KeyType
 
@@ -43,7 +44,7 @@ abstract class AbstractBookMetaData : BookMetaData {
         putProperty(key, value, false)
     }
 
-    override lateinit var  library: String
+    override lateinit var  library: Path
 
     // library/datapath = location of the datafiles e.g. mnt/sdcard/Android/data/packagename/files/modules/texts/ztext/bsb/
     lateinit var location: String

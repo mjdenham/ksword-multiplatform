@@ -23,10 +23,7 @@ class JFBIntegrationTest {
     private val webResource = WebResource()
     private val ioUtil = IoUtil()
 
-    private val bookMetaData = SwordBookMetaData().apply {
-        library = folderToUnzipInto.toString()
-        setProperty(SwordBookMetaData.KEY_DATA_PATH, "./modules/comments/zcom/jfb/")
-    }
+    private lateinit var bookMetaData: SwordBookMetaData
     private lateinit var backendState: ZVerseBackendState
     private lateinit var backend: ZVerseBackend
 
@@ -116,6 +113,7 @@ class JFBIntegrationTest {
             assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/jfb.conf")))
         }
 
+        bookMetaData = SwordBookMetaData.createFromFile(ZVerseBackendTest.folderToUnzipInto.resolve("mods.d/jfb.conf"), ZVerseBackendTest.folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 4)
     }

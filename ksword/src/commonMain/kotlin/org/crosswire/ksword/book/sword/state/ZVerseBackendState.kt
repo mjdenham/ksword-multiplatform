@@ -126,59 +126,6 @@ class ZVerseBackendState internal constructor(bookMetaData: BookMetaData, blockT
         ntIdxFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_INDEX).toPath())
         ntTextFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_TEXT).toPath())
         ntCompFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_COMP).toPath())
-
-
-//        val path: java.net.URI = SwordUtil.getExpandedDataPath(bookMetaData)
-//        val otAllButLast: String = NetUtil.lengthenURI(
-//            path,
-//            (java.io.File.separator + SwordConstants.FILE_OT + '.' + blockType.indicator).toString() + SUFFIX_PART1
-//        ).getPath()
-//        val otIdxFile: java.io.File = java.io.File(otAllButLast + SUFFIX_INDEX)
-//        val otTextFile: java.io.File = java.io.File(otAllButLast + SUFFIX_TEXT)
-//        val otCompFile: java.io.File = java.io.File(otAllButLast + SUFFIX_COMP)
-//
-//        val ntAllButLast: String = NetUtil.lengthenURI(
-//            path,
-//            (java.io.File.separator + SwordConstants.FILE_NT + '.' + blockType.indicator).toString() + SUFFIX_PART1
-//        ).getPath()
-//        val ntIdxFile: java.io.File = java.io.File(ntAllButLast + SUFFIX_INDEX)
-//        val ntTextFile: java.io.File = java.io.File(ntAllButLast + SUFFIX_TEXT)
-//        val ntCompFile: java.io.File = java.io.File(ntAllButLast + SUFFIX_COMP)
-//
-//        // check whether exists to swallow any exception as before
-//        if (otIdxFile.canRead()) {
-//            try {
-//                otCompRaf = java.io.RandomAccessFile(otIdxFile, FileUtil.MODE_READ)
-//                otTextRaf = java.io.RandomAccessFile(otTextFile, FileUtil.MODE_READ)
-//                otIdxRaf = java.io.RandomAccessFile(otCompFile, FileUtil.MODE_READ)
-//            } catch (ex: java.io.FileNotFoundException) {
-//                //failed to open the files, so close them now
-//                IOUtil.close(otCompRaf)
-//                IOUtil.close(otTextRaf)
-//                IOUtil.close(otIdxRaf)
-//
-//                assert(false) { ex }
-//                LOGGER.error("Could not open OT", ex)
-//            }
-//        }
-//
-//        // why do swallow the exception and log. Can Books have one testament
-//        // without the other.
-//        if (ntIdxFile.canRead()) {
-//            try {
-//                ntCompRaf = java.io.RandomAccessFile(ntIdxFile, FileUtil.MODE_READ)
-//                ntTextRaf = java.io.RandomAccessFile(ntTextFile, FileUtil.MODE_READ)
-//                ntIdxRaf = java.io.RandomAccessFile(ntCompFile, FileUtil.MODE_READ)
-//            } catch (ex: java.io.FileNotFoundException) {
-//                //failed to open the files, so close them now
-//                IOUtil.close(ntCompRaf)
-//                IOUtil.close(ntTextRaf)
-//                IOUtil.close(ntIdxRaf)
-//
-//                assert(false) { ex }
-//                LOGGER.error("Could not open OT", ex)
-//            }
-//        }
     }
 
     companion object {
@@ -187,10 +134,5 @@ class ZVerseBackendState internal constructor(bookMetaData: BookMetaData, blockT
         private const val SUFFIX_INDEX = "v"
         private const val SUFFIX_COMP = "s"
         private const val SUFFIX_TEXT = "z"
-
-        /**
-         * The log stream
-         */
-//        private val LOGGER: Logger = LoggerFactory.getLogger(ZVerseBackendState::class.java)
     }
 }

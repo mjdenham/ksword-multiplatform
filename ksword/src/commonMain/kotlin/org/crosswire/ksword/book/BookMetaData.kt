@@ -19,6 +19,8 @@
  */
 package org.crosswire.ksword.book
 
+import okio.Path
+
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
  * the same BookMetaData should return identical text for any call to
@@ -205,7 +207,7 @@ interface BookMetaData : Comparable<BookMetaData?> {
      *
      * @return the base URI or null if there is none
      */
-    var library: String
+    var library: Path
 
     /**
      * Get the base URI for relative URIs in the document.

@@ -1,5 +1,7 @@
 package org.crosswire.ksword.book.sword
 
+import okio.Path
+import org.crosswire.common.util.IniSection
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_CATEGORY
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_LANG
@@ -9,6 +11,13 @@ import org.crosswire.ksword.book.basic.AbstractBookMetaData
 
 class SwordBookMetaData: AbstractBookMetaData() {
     companion object {
+        fun createFromFile(configFile: Path, libraryPath: Path): SwordBookMetaData {
+            val bookMetaData = SwordBookMetaData()
+            bookMetaData.loadFile(configFile)
+            bookMetaData.library = libraryPath
+            return bookMetaData
+        }
+
         const val KEY_ABBREVIATION: String = "Abbreviation"
         const val KEY_ABOUT: String = "About"
         const val KEY_BLOCK_COUNT: String = "BlockCount"
@@ -83,6 +92,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
             KEY_STRONGS_PADDING to "true"
         )
     }
+
     override fun getKeyType(): KeyType {
         //TODO
 //        val bt: BookType = getBookType() ?: return null
@@ -99,13 +109,13 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
 
     override val name: String
-        get() = TODO("Not yet implemented")
+        get() = getProperty(KEY_DESCRIPTION) ?: ""
     override val bookCharset: String?
         get() = TODO("Not yet implemented")
     override val abbreviation: String?
-        get() = TODO("Not yet implemented")
+        get() = configAll[KEY_ABBREVIATION]
     override val initials: String
-        get() = TODO("Not yet implemented")
+        get() = configAll.name
     override val osisID: String?
         get() = TODO("Not yet implemented")
     override val isSupported: Boolean
@@ -135,22 +145,20 @@ class SwordBookMetaData: AbstractBookMetaData() {
     override val propertyKeys: Set<String?>?
         get() = TODO("Not yet implemented")
 
-    private val configAll: MutableMap<String, String> = HashMap()
+    private var configAll: IniSection = IniSection()
 
     override fun getProperty(key: String): String? {
 //        if (BookMetaData.KEY_LANGUAGE == key) {
 //            return getLanguage().getName()
 //        }
-//        return configAll.get(key, SwordBookMetaData.DEFAULTS.get(key))
-        return configAll[key]
+        return configAll.get(key, DEFAULTS[key])
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.ksword.book.basic.AbstractBookMetaData#setProperty(java.lang.String, java.lang.String)
      */
     override fun setProperty(key: String, value: String) {
-//        configAll.replace(key, value)
-        configAll[key] = value
+        configAll.replace(key, value)
     }
 
     override fun putProperty(key: String?, value: String?) {
@@ -164,4 +172,22 @@ class SwordBookMetaData: AbstractBookMetaData() {
     override fun compareTo(other: BookMetaData?): Int {
         TODO("Not yet implemented")
     }
+
+    /**
+     * Load the conf from a file.
+     *
+     * @param keepers
+     * the keys to keep. When null keep all
+     * @throws IOException
+     */
+    private fun loadFile(configFile: Path) {
+        configAll.clear()
+        configAll.load(configFile) //, SwordBookMetaData.ENCODING_UTF8)
+//        val encoding = configAll[KEY_ENCODING]
+//        if (!SwordBookMetaData.ENCODING_UTF8.equals(encoding, ignoreCase = true)) {
+//            configAll.clear()
+//            configAll.load(configFile, SwordBookMetaData.ENCODING_LATIN1)
+//        }
+    }
+
 }

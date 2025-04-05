@@ -332,7 +332,7 @@ object SwordUtil {
 //            ?: // FIXME(DMS): missing parameter
 //            throw BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."))
         bookMetaData.getProperty(SwordBookMetaData.KEY_DATA_PATH)?.let { modulePath ->
-            return bookMetaData.library.toPath().resolve(modulePath)
+            return bookMetaData.library.resolve(modulePath)
         } ?: throw Exception("Missing data files for old and new testaments in {0}.")
     }
     /**

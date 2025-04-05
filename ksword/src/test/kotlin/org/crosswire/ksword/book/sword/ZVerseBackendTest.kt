@@ -23,10 +23,7 @@ class ZVerseBackendTest {
     private val webResource = WebResource()
     private val ioUtil = IoUtil()
 
-    private val bookMetaData = SwordBookMetaData().apply {
-        library = folderToUnzipInto.toString()
-        setProperty(SwordBookMetaData.KEY_DATA_PATH, "./modules/texts/ztext/bsb/")
-    }
+    private lateinit var bookMetaData: SwordBookMetaData
     private lateinit var backendState: ZVerseBackendState
     private lateinit var backend: ZVerseBackend
 
@@ -119,6 +116,7 @@ class ZVerseBackendTest {
             assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/bsb.conf")))
         }
 
+        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/bsb.conf"), folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 2)
     }
