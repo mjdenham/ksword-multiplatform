@@ -44,9 +44,12 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.encoding)
             implementation(libs.okio)
+            implementation("org.martin:ktar")
         }
         commonTest.dependencies {
+            implementation(libs.junit)
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }

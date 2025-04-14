@@ -26,20 +26,16 @@ import org.crosswire.ksword.passage.KeyText
  * Book is the most basic store of textual data - It can retrieve data either as
  * an XML document or as plain text - It uses Keys to refer to parts of itself,
  * and can search for words (returning Keys).
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
- * @author Joe Walker
  */
 interface Book /* : Activatable, Comparable<Book?> */ {
     fun readToOsis(key: Key): List<KeyText>
 
-//    /**
-//     * Set the meta-information for this book.
-//     *
-//     * @param bmd the BookMetaData that describes this book.
-//     */
-//    var bookMetaData: BookMetaData?
+    /**
+     * Set the meta-information for this book.
+     *
+     * @param bmd the BookMetaData that describes this book.
+     */
+    var bookMetaData: BookMetaData
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.

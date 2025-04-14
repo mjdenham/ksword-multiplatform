@@ -14,5 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KSword_Multiplatform"
+rootProject.name = "ksword-multiplatform"
 include(":ksword")
+includeBuild("../ktar-multiplatform")

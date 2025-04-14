@@ -20,6 +20,7 @@
 package org.crosswire.ksword.book.sword
 
 import okio.FileHandle
+import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.state.LastLoadedBlock
 import org.crosswire.ksword.book.sword.state.OpenFileStateManager
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
@@ -125,7 +126,7 @@ import org.crosswire.ksword.versification.system.Versifications
  * @author Joe Walker
  * @author DM Smith
  */
-class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookMetaData, val blockType: org.crosswire.ksword.book.sword.BlockType, val dataSize: Int) : org.crosswire.ksword.book.sword.AbstractBackend<ZVerseBackendState>(bookMetaData) {
+class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockType, val dataSize: Int) : AbstractBackend<ZVerseBackendState>(bookMetaData) {
 
     override fun initState(): ZVerseBackendState {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType)
@@ -133,9 +134,9 @@ class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookM
 
     override fun readRawContent(state: ZVerseBackendState, key: Key): String {
         val charset = "UTF-8" //bookMetaData.getBookCharset();
-        val compressType = "ZIP" //bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE);
+        val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
 
-        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION)
         val v11n: Versification = Versifications.instance().getVersification(v11nName)
         val verse: Verse = KeyUtil.getVerse(key)
 
@@ -153,7 +154,7 @@ class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookM
         }
 
         // indexEntrySize, because the index is indexEntrySize bytes long for each verse
-        var temp: ByteArray = org.crosswire.ksword.book.sword.SwordUtil.readFile(
+        var temp: ByteArray = SwordUtil.readFile(
             idxFile,
             index * indexEntrySize,
             indexEntrySize,
@@ -166,12 +167,12 @@ class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookM
         }
 
         // The data is little endian - extract the blockNum, verseStart and verseSize
-        val blockNum: Int = org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 0)
-        val verseStart: Int = org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 4)
+        val blockNum: Int = SwordUtil.decodeLittleEndian32(temp, 0)
+        val verseStart: Int = SwordUtil.decodeLittleEndian32(temp, 4)
         val verseSize: Int = if (dataSize == 2) {
-            org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian16(temp, 8)
+            SwordUtil.decodeLittleEndian16(temp, 8)
         } else { // dataSize == 4:
-            org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 8)
+            SwordUtil.decodeLittleEndian32(temp, 8)
         }
 
         // Can we get the data from the cache
@@ -181,18 +182,18 @@ class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookM
             uncompressed = lastLoadedBlock.uncompressed
         } else {
             // Then seek using this index into the idx file
-            temp = org.crosswire.ksword.book.sword.SwordUtil.readFile(compFile, blockNum * org.crosswire.ksword.book.sword.ZVerseBackend.Companion.COMP_ENTRY_SIZE, org.crosswire.ksword.book.sword.ZVerseBackend.Companion.COMP_ENTRY_SIZE)
+            temp = SwordUtil.readFile(compFile, blockNum * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE)
             if (temp.isEmpty()) {
                 return ""
             }
 
-            val blockStart: Int = org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 0)
-            val blockSize: Int = org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 4)
-            val uncompressedSize: Int = org.crosswire.ksword.book.sword.SwordUtil.decodeLittleEndian32(temp, 8)
+            val blockStart: Int = SwordUtil.decodeLittleEndian32(temp, 0)
+            val blockSize: Int = SwordUtil.decodeLittleEndian32(temp, 4)
+            val uncompressedSize: Int = SwordUtil.decodeLittleEndian32(temp, 8)
             println("blockStart: $blockStart blockSize: $blockSize uncompressedSize: $uncompressedSize")
 
             // Read from the data file.
-            uncompressed = org.crosswire.ksword.book.sword.SwordUtil.readAndInflateFile(textFile, blockStart, blockSize, uncompressedSize)
+            uncompressed = SwordUtil.readAndInflateFile(textFile, blockStart, blockSize, uncompressedSize)
 
 //            decipher(data);
 //        uncompressed =
@@ -207,21 +208,15 @@ class ZVerseBackend(val bookMetaData: org.crosswire.ksword.book.sword.SwordBookM
         val chopped = ByteArray(verseSize)
         uncompressed.copyInto(chopped, 0, verseStart, verseStart + verseSize)
 
-        return org.crosswire.ksword.book.sword.SwordUtil.decode(key.getName(), chopped, charset)
+        return SwordUtil.decode(key.getName(), chopped, charset)
     }
 
     /**
      * The number of bytes for each entry in the index file: either 10 or 12
      */
-    private val indexEntrySize: Int = org.crosswire.ksword.book.sword.ZVerseBackend.Companion.OFFSET_SIZE + dataSize
+    private val indexEntrySize: Int = OFFSET_SIZE + dataSize
 
     companion object {
-        private const val SUFFIX_PART1: String = "z"
-
-        private const val SUFFIX_COMP: String = "s"
-        private const val SUFFIX_INDEX: String = "v"
-        private const val SUFFIX_TEXT: String = "z"
-
         /**
          * How many bytes in the idx index?
          */

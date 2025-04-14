@@ -1,5 +1,6 @@
 package org.crosswire.ksword.book.sword
 
+import okio.BufferedSource
 import okio.Path
 import org.crosswire.common.util.IniSection
 import org.crosswire.ksword.book.BookMetaData
@@ -15,6 +16,12 @@ class SwordBookMetaData: AbstractBookMetaData() {
             val bookMetaData = SwordBookMetaData()
             bookMetaData.loadFile(configFile)
             bookMetaData.library = libraryPath
+            return bookMetaData
+        }
+
+        fun createFromSource(config: BufferedSource): SwordBookMetaData {
+            val bookMetaData = SwordBookMetaData()
+            bookMetaData.loadSource(config)
             return bookMetaData
         }
 
@@ -190,4 +197,19 @@ class SwordBookMetaData: AbstractBookMetaData() {
 //        }
     }
 
+    /**
+     * Load the conf from a file.
+     *
+     * @param keepers //TODO keepers
+     * the keys to keep. When null keep all
+     */
+    private fun loadSource(configFile: BufferedSource) {
+        configAll.clear()
+        configAll.load(configFile) //, SwordBookMetaData.ENCODING_UTF8)
+//        val encoding = configAll[KEY_ENCODING]
+//        if (!SwordBookMetaData.ENCODING_UTF8.equals(encoding, ignoreCase = true)) {
+//            configAll.clear()
+//            configAll.load(configFile, SwordBookMetaData.ENCODING_LATIN1)
+//        }
+    }
 }

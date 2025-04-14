@@ -21,12 +21,6 @@ package org.crosswire.ksword.book.sword
 
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
- * @author Mark Goodwin
- * @author Joe Walker
- * @author The SWORD Project (don't know who - no credits in original files (canon.h))
  */
 object SwordConstants {
     /**
@@ -73,4 +67,6 @@ object SwordConstants {
      * The configuration directory with a trailing /
      */
     const val PATH_CONF: String = "mods.d/"
+
+    const val DIR_CATALOG: String = "catalog"
 }

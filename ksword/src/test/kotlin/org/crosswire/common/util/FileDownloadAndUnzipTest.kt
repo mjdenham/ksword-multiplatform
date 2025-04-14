@@ -20,13 +20,18 @@ class FileDownloadAndUnzipTest {
     fun tidyUp() {
         zipFilePath.delete()
         folderToUnzipInto.delete()
+        tarFilePath.delete()
+    }
+
+    @Test
+    fun canDownloadTarGzipFile() = runTest {
+        val success = webResource.download(tarGzdownloadUrl, tarFilePath)
+        assertTrue(success)
+        assertTrue(FileSystem.SYSTEM.exists(tarFilePath))
     }
 
     @Test
     fun canDownloadAndUnzipFile() = runTest {
-        println("Temp dir: " + FileSystem.SYSTEM_TEMPORARY_DIRECTORY)
-        zipFilePath.delete()
-
         val success = webResource.download(downloadUrl, zipFilePath)
         assertTrue(success)
         assertTrue(FileSystem.SYSTEM.exists(zipFilePath))
@@ -39,5 +44,8 @@ class FileDownloadAndUnzipTest {
         const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/BSB.zip"
         val zipFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.zip".toPath())
         val folderToUnzipInto = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("unzipto".toPath())
+
+        const val tarGzdownloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/raw/mods.d.tar.gz"
+        val tarFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.tar".toPath())
     }
 }
