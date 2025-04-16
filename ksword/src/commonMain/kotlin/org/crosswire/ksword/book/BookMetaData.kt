@@ -49,7 +49,7 @@ interface BookMetaData : Comparable<BookMetaData?> {
      *
      * @return The name of this book
      */
-    val name: String?
+    val name: String
 
     /**
      * With which Charset is this Book encoded?
@@ -60,48 +60,32 @@ interface BookMetaData : Comparable<BookMetaData?> {
 
     /**
      * How this Book organizes it's keys.
-     *
-     * @return the organization of keys of this Book
      */
-    fun getKeyType(): KeyType
+    val keyType: KeyType
 
     /**
      * What category of content is this, a Bible or a reference work like a
      * Dictionary or Commentary.
-     *
-     * @return The category of book
      */
-//    val bookCategory: BookCategory?
+    val bookCategory: BookCategory
 
     /**
      * Accessor for the driver that runs this Book. Note this method should only
      * be used to delete() Books. Everything else you should want to do to a
      * Book should be available in other ways.
-     *
-     * @return the driver for the book.
      */
 //    val driver: BookDriver?
 
     /**
      * The language of the book.
-     *
-     * @return the book's language
-     */
-    /**
-     * Set the language for this book.
-     *
-     * @param language
-     * the book's language
      */
 //    var language: Language?
 
     /**
      * The initials of this book - how people familiar with this book will know
      * it, for example "NIV", "KJV".
-     *
-     * @return The book's initials
      */
-    val abbreviation: String?
+    val abbreviation: String
 
     /**
      * The internal name of this book.
@@ -117,7 +101,7 @@ interface BookMetaData : Comparable<BookMetaData?> {
      *
      * @return The osis id of this book
      */
-    val osisID: String?
+    val osisID: String
 
     /**
      * Indicate whether this book is supported by KSword. Since the expectation

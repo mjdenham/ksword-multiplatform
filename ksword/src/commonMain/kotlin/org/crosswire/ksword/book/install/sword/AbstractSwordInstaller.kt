@@ -11,6 +11,7 @@ import okio.SYSTEM
 import org.crosswire.common.util.Log
 import org.crosswire.common.util.WebResource
 import org.crosswire.ksword.book.Book
+import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.install.Installer
 import org.crosswire.ksword.book.sword.NullBackend
 import org.crosswire.ksword.book.sword.SwordBook
@@ -68,8 +69,12 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
             TarGzExpander().handleTarGzContent(catalogFile) { name, content ->
                 val sbmd = SwordBookMetaData.createFromSource(content)
 
-                val book: Book = SwordBook(sbmd, nullBackend)
-                entries[sbmd.initials + sbmd.name] = book
+                if (sbmd.isSupported) {
+                    val book: Book = SwordBook(sbmd, nullBackend)
+                    entries[sbmd.initials + sbmd.name] = book
+                } else {
+                    Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)}")
+                }
             }
 
             loaded = true

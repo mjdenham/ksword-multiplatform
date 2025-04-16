@@ -26,7 +26,7 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
     override fun readToOsis(key: Key): List<KeyText> {
 
         initState().use { openFileState ->
-            val content = when (this.bmd.getKeyType()) {
+            val content = when (this.bmd.keyType) {
                 KeyType.LIST -> readNormalOsis(key, openFileState)
 //                TREE -> readNormalOsisSingleKey(key, processor, content, openFileState)
                 KeyType.VERSE -> readPassageOsis(key, openFileState)

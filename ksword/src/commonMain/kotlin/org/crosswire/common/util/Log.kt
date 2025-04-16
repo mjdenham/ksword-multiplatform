@@ -13,4 +13,8 @@ object Log {
     fun d(msg: String) {
         println("Debug: $msg")
     }
+
+    fun w(msg: String) {
+        println("Warning: $msg")
+    }
 }

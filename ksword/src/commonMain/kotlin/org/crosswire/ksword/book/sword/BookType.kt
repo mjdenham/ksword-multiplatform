@@ -26,14 +26,9 @@ import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 
 /**
  * Data about book types.
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
- * @author Joe Walker
- * @author DM Smith
  */
 enum class BookType(
-    val nameInConfig: String, category: BookCategory, type: KeyType
+    val nameInConfig: String, val category: BookCategory, type: KeyType
 ) {
     /**
      * Uncompressed Bibles
@@ -234,14 +229,6 @@ enum class BookType(
 //        }
 //    };
 
-    val bookCategory: BookCategory?
-        /**
-         * The category of this book
-         *
-         * @return the category of this book
-         */
-        get() = category
-
     /**
      * Given a SwordBookMetaData determine whether this BookType will work for
      * it.
@@ -276,23 +263,12 @@ enum class BookType(
     protected abstract fun getBackend(sbmd: SwordBookMetaData): Backend<*>?
 
     /**
-     * What category is this book
-     */
-    private val category: BookCategory = category
-
-    /**
      * Get the way this type of Book organizes it's keys.
      *
      * @return the organization of keys for this book
      */
-    /**
-     * What category is this book
-     */
     val keyType: KeyType = type
 
-    /* (non-Javadoc)
-     * @see java.lang.Enum#toString()
-     */
     override fun toString(): String {
         return nameInConfig
     }

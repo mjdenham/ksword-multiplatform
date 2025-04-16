@@ -21,7 +21,6 @@ package org.crosswire.ksword.book.basic
 
 import okio.Path
 import org.crosswire.ksword.book.BookMetaData
-import org.crosswire.ksword.book.KeyType
 
 /**
  * An implementation of the Property Change methods from BookMetaData.
@@ -36,13 +35,13 @@ import org.crosswire.ksword.book.KeyType
  * The copyright to this program is held by its authors.
  */
 abstract class AbstractBookMetaData : BookMetaData {
-    override fun getKeyType(): KeyType {
-        return KeyType.VERSE
-    }
 
     override fun putProperty(key: String?, value: String?) {
         putProperty(key, value, false)
     }
+
+    override val osisID: String
+        get() = bookCategory.name + '.' + initials
 
     override lateinit var  library: Path
 

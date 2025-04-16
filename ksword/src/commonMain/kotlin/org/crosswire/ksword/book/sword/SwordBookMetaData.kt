@@ -3,6 +3,7 @@ package org.crosswire.ksword.book.sword
 import okio.BufferedSource
 import okio.Path
 import org.crosswire.common.util.IniSection
+import org.crosswire.ksword.book.BookCategory
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_CATEGORY
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_LANG
@@ -100,33 +101,25 @@ class SwordBookMetaData: AbstractBookMetaData() {
         )
     }
 
-    override fun getKeyType(): KeyType {
-        //TODO
-//        val bt: BookType = getBookType() ?: return null
-//        return bt.getKeyType()
-        return KeyType.VERSE
-    }
+    override val keyType: KeyType
+        get() = bookType.keyType
 
-    /**
-     * @return the book type
-     */
-//    fun getBookType(): BookType {
-//        return bookType
-//    }
-
+    val bookType: BookType
+        get() = BookType.fromString(getProperty(KEY_MOD_DRV))
 
     override val name: String
         get() = getProperty(KEY_DESCRIPTION) ?: ""
     override val bookCharset: String?
         get() = TODO("Not yet implemented")
-    override val abbreviation: String?
-        get() = configAll[KEY_ABBREVIATION]
+    override val abbreviation: String
+        get() = configAll[KEY_ABBREVIATION].orEmpty()
     override val initials: String
         get() = configAll.name
-    override val osisID: String?
-        get() = TODO("Not yet implemented")
+
     override val isSupported: Boolean
-        get() = TODO("Not yet implemented")
+        get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
+                getProperty(KEY_VERSIFICATION) == "KJV"
+
     override val isEnciphered: Boolean
         get() = TODO("Not yet implemented")
     override val isLocked: Boolean
@@ -179,6 +172,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
     override fun compareTo(other: BookMetaData?): Int {
         TODO("Not yet implemented")
     }
+
+    override val bookCategory: BookCategory
+        get() = bookType.category
 
     /**
      * Load the conf from a file.
