@@ -3,6 +3,7 @@ package org.crosswire.ksword.book.sword
 import okio.BufferedSource
 import okio.Path
 import org.crosswire.common.util.IniSection
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.book.BookCategory
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_CATEGORY
@@ -107,6 +108,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
     val bookType: BookType
         get() = BookType.fromString(getProperty(KEY_MOD_DRV))
 
+    override val language: Locale
+        get() = getProperty(KEY_LANG)?.let { Locale(it) } ?: Locale.current
+
     override val name: String
         get() = getProperty(KEY_DESCRIPTION) ?: ""
     override val bookCharset: String?
@@ -148,15 +152,12 @@ class SwordBookMetaData: AbstractBookMetaData() {
     private var configAll: IniSection = IniSection()
 
     override fun getProperty(key: String): String? {
-//        if (BookMetaData.KEY_LANGUAGE == key) {
-//            return getLanguage().getName()
-//        }
+        if (BookMetaData.KEY_LANGUAGE == key) {
+            return language.languageCode
+        }
         return configAll.get(key, DEFAULTS[key])
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.ksword.book.basic.AbstractBookMetaData#setProperty(java.lang.String, java.lang.String)
-     */
     override fun setProperty(key: String, value: String) {
         configAll.replace(key, value)
     }

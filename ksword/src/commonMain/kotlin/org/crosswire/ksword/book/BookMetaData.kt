@@ -20,6 +20,7 @@
 package org.crosswire.ksword.book
 
 import okio.Path
+import org.crosswire.common.util.Locale
 
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
@@ -79,7 +80,7 @@ interface BookMetaData : Comparable<BookMetaData?> {
     /**
      * The language of the book.
      */
-//    var language: Language?
+    val language: Locale
 
     /**
      * The initials of this book - how people familiar with this book will know
