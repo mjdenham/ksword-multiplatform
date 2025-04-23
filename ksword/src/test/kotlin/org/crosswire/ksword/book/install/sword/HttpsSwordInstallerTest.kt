@@ -34,10 +34,7 @@ class HttpsSwordInstallerTest {
         httpsSwordInstaller.loadBookList()
         val books = httpsSwordInstaller.getBooks()
         assertTrue(books.isNotEmpty())
-        val bsb = books.find { it.bookMetaData.initials == "BSB" }
+        val bsb = books.find { it.initials == "BSB" }
         assertTrue(bsb != null)
-        books.forEach {
-            println(it.bookMetaData.initials + " " + it.bookMetaData.name)
-        }
     }
 }

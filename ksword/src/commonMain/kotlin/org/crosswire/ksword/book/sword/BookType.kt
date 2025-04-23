@@ -53,7 +53,7 @@ enum class BookType(
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
             val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
-            return org.crosswire.ksword.book.sword.ZVerseBackend(sbmd, blockType, 2)
+            return ZVerseBackend(sbmd, blockType, 2)
         }
     },
 
@@ -107,7 +107,7 @@ enum class BookType(
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
             val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
-            return org.crosswire.ksword.book.sword.ZVerseBackend(sbmd, blockType, 2)
+            return ZVerseBackend(sbmd, blockType, 2)
         }
     },
     Z_COM4("zCom4", BookCategory.COMMENTARY, KeyType.VERSE) {
@@ -117,7 +117,7 @@ enum class BookType(
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
             val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
-            return org.crosswire.ksword.book.sword.ZVerseBackend(sbmd, blockType, 4)
+            return ZVerseBackend(sbmd, blockType, 4)
         }
     };
 
@@ -243,14 +243,10 @@ enum class BookType(
 
     /**
      * Create a Book appropriate for the BookMetaData
-     *
-     * @param sbmd the book metadata
-     * @return a book for that metadata
-     * @throws BookException
      */
-//    fun createBook(sbmd: SwordBookMetaData?): Book {
-//        return getBook(sbmd, getBackend(sbmd))
-//    }
+    fun createBook(sbmd: SwordBookMetaData): Book {
+        return getBook(sbmd) //, getBackend(sbmd))
+    }
 
     /**
      * Create a Book with the given backend

@@ -137,6 +137,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
         get() = TODO("Not yet implemented")
     override val isQuestionable: Boolean
         get() = TODO("Not yet implemented")
+
+    lateinit var driver: SwordBookDriver
+
     override val driverName: String?
         get() = TODO("Not yet implemented")
     override val isLeftToRight: Boolean

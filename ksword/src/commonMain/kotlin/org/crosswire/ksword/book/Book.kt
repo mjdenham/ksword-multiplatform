@@ -30,12 +30,11 @@ import org.crosswire.ksword.passage.KeyText
 interface Book /* : Activatable, Comparable<Book?> */ {
     fun readToOsis(key: Key): List<KeyText>
 
-    /**
-     * Set the meta-information for this book.
-     *
-     * @param bmd the BookMetaData that describes this book.
-     */
     var bookMetaData: BookMetaData
+
+    val name: String
+
+    val initials: String
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.
