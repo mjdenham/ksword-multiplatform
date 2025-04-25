@@ -92,6 +92,13 @@ object Books : BookList {
 //        }
 //    }
 
+    fun refresh() {
+        val bookArray: List<Book> = driver.books
+        bookArray.forEach { book ->
+            addBook(book)
+        }
+    }
+
     /**
      * Register the driver, adding its books to the list. Any books that this
      * driver used, but not any more are removed. This can be called repeatedly
@@ -103,15 +110,14 @@ object Books : BookList {
      */
     private fun registerDriver(driver: SwordBookDriver) {
         Log.d("begin registering driver: $driver")
+        this.driver = driver
 
-        val bookArray: List<Book> = driver.books
-        bookArray.forEach { book ->
-            addBook(book)
-        }
+        refresh()
 
         Log.d("end registering driver: $driver")
     }
 
+    private lateinit var driver: SwordBookDriver
 
     private val books: MutableSet<Book> = mutableSetOf()
 

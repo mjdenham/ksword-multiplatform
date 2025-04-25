@@ -103,29 +103,25 @@ class ZVerseBackendState internal constructor(bookMetaData: BookMetaData, blockT
 
     var lastLoadedBlock: LastLoadedBlock? = null
 
-    /**
-     * This is default package access for forcing the use of the
-     * OpenFileStateManager to manage the creation. Not doing so may result in
-     * new instances of OpenFileState being created for no reason, and as a
-     * result, if they are released to the OpenFileStateManager by mistake this
-     * would result in leakage
-     *
-     * @param bookMetaData the appropriate metadata for the book
-     */
     init {
         println("Opening ZVerseBackendState files")
         val path = SwordUtil.getExpandedDataPath(bookMetaData)
+
         val otAllButLast = path.resolve(SwordConstants.FILE_OT + '.' + blockType.indicator + SUFFIX_PART1).toString()
-//            "/Users/martin/StudioProjects/kmp-sword/testFiles/BSB/modules/texts/ztext/bsb/ot.bz"
-        otIdxFile = FileSystem.SYSTEM.openReadOnly((otAllButLast + SUFFIX_INDEX).toPath())
-        otTextFile = FileSystem.SYSTEM.openReadOnly((otAllButLast + SUFFIX_TEXT).toPath())
-        otCompFile = FileSystem.SYSTEM.openReadOnly((otAllButLast + SUFFIX_COMP).toPath())
+        val otIndexFile = (otAllButLast + SUFFIX_INDEX).toPath()
+        if (FileSystem.SYSTEM.exists(otIndexFile)) {
+            otIdxFile = FileSystem.SYSTEM.openReadOnly(otIndexFile)
+            otTextFile = FileSystem.SYSTEM.openReadOnly((otAllButLast + SUFFIX_TEXT).toPath())
+            otCompFile = FileSystem.SYSTEM.openReadOnly((otAllButLast + SUFFIX_COMP).toPath())
+        }
 
         val ntAllButLast = path.resolve(SwordConstants.FILE_NT + '.' + blockType.indicator + SUFFIX_PART1).toString()
-//            "/Users/martin/StudioProjects/kmp-sword/testFiles/BSB/modules/texts/ztext/bsb/nt.bz"
-        ntIdxFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_INDEX).toPath())
-        ntTextFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_TEXT).toPath())
-        ntCompFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_COMP).toPath())
+        val ntIndexFile = (ntAllButLast + SUFFIX_INDEX).toPath()
+        if (FileSystem.SYSTEM.exists(ntIndexFile)) {
+            ntIdxFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_INDEX).toPath())
+            ntTextFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_TEXT).toPath())
+            ntCompFile = FileSystem.SYSTEM.openReadOnly((ntAllButLast + SUFFIX_COMP).toPath())
+        }
     }
 
     companion object {

@@ -47,4 +47,19 @@ abstract class AbstractBookMetaData : BookMetaData {
 
     // library/datapath = location of the datafiles e.g. mnt/sdcard/Android/data/packagename/files/modules/texts/ztext/bsb/
     lateinit var location: String
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AbstractBookMetaData) return false
+
+        // Compares properties for structural equality
+        return this.bookCategory == other.bookCategory && this.name == other.name && this.initials == other.initials
+    }
+
+    override fun hashCode(): Int {
+        var result = bookCategory.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + initials.hashCode()
+        return result
+    }
 }

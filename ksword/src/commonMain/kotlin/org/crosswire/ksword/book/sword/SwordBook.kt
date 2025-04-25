@@ -14,4 +14,15 @@ class SwordBook(override var bookMetaData: BookMetaData, val backend: Backend<*>
     override fun readToOsis(key: Key): List<KeyText> = backend.readToOsis(key)
 
     override fun getRawText(key: Key): String = backend.getRawText(key)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SwordBook) return false
+
+        return this.bookMetaData == other.bookMetaData
+    }
+
+    override fun hashCode(): Int {
+        return bookMetaData.hashCode()
+    }
 }

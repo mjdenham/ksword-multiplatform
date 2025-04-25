@@ -8,15 +8,18 @@ import kotlinx.coroutines.withContext
 import okio.FileSystem
 import okio.Path
 import okio.SYSTEM
+import org.crosswire.common.util.IoUtil
 import org.crosswire.common.util.Log
 import org.crosswire.common.util.WebResource
 import org.crosswire.ksword.book.Book
 import org.crosswire.ksword.book.BookMetaData
+import org.crosswire.ksword.book.Books
 import org.crosswire.ksword.book.install.Installer
 import org.crosswire.ksword.book.sword.NullBackend
 import org.crosswire.ksword.book.sword.SwordBook
 import org.crosswire.ksword.book.sword.SwordBookMetaData
 import org.crosswire.ksword.book.sword.SwordBookPath
+import org.crosswire.ksword.book.sword.SwordConstants
 import org.martin.ktar.TarGzExpander
 
 abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Installer {
@@ -31,6 +34,10 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
          * The sword conf directory
          */
         val CONF_DIR: String = "mods.d"
+
+        private const val moduleNameKey = "{NAME}"
+        private const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/$moduleNameKey.zip"
+        private val tempDownloadPath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY
     }
 
     /**
@@ -42,7 +49,6 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
      * Do we need to reload the index file
      */
     private var loaded: Boolean = false
-
 
     override suspend fun getBooks(): List<Book> {
         try {
@@ -56,6 +62,29 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
             return listOf()
         }
     }
+
+    suspend fun install(book: Book) {
+        install(book.initials)
+    }
+
+    suspend fun install(bookInitials: String) = withContext(Dispatchers.IO) {
+        val url = getDownloadUrl(bookInitials)
+        val zipFile = getZipFile(bookInitials)
+        if (WebResource().download(url, zipFile)) {
+            IoUtil().unpackZip(
+                zipFile,
+                SwordBookPath.swordBookPath,
+                true,
+                SwordConstants.DIR_CONF,
+                SwordConstants.DIR_DATA
+            )
+
+            Books.refresh()
+        }
+    }
+
+    private fun getDownloadUrl(bookInitials: String) = downloadUrl.replace(moduleNameKey, bookInitials)
+    private fun getZipFile(bookInitials: String) = tempDownloadPath.resolve("$bookInitials.zip")
 
     override suspend fun loadBookList(): Unit = withContext(Dispatchers.IO){
         if (!loaded) {

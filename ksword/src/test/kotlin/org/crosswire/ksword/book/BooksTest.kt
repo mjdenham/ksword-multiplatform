@@ -35,4 +35,12 @@ class BooksTest {
         assertNotNull(book)
         assertEquals("BSB", book!!.initials)
     }
+
+    @Test
+    fun refresh() = runTest {
+        val books = Books.getBooks()
+        assertEquals(1, books.size)
+        Books.refresh()
+        assertEquals(1, books.size)
+    }
 }
