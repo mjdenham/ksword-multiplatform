@@ -12,6 +12,7 @@ package org.crosswire.ksword.book.sword
 import okio.Path
 import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.Book
+import org.martin.ktar.exists
 import org.martin.ktar.isDirectory
 
 /**
@@ -26,7 +27,7 @@ class SwordBookDriver { //} : AbstractBookDriver() {
         }
 
     private fun getBooks(confDir: Path): List<Book> {
-        if (!confDir.isDirectory()) {
+        if (!confDir.exists() || !confDir.isDirectory()) {
             Log.w("mods.d directory at $confDir does not exist")
             return emptyList()
         }
