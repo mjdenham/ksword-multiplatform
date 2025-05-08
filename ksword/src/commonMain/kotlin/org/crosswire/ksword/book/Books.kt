@@ -73,24 +73,20 @@ object Books : BookList {
 
     /**
      * Remove a Book from the current list of Books. This method should only be
-     * called by BibleDrivers, it is not a method for general consumption.
+     * called by BibleDrivers, it is not a method for general consumption,
+     * because this method does not delete the installed book module files.
      *
      * @param book the book to be removed from this book list
      */
-//    fun removeBook(book: Book) {
-//        // log.debug("unregistering book: {}", bmd.getName());
-//
-//        Activator.deactivate(book)
-//
-//        val removed = books.remove(book)
-//        if (removed) {
-//            initials.remove(book.getInitials())
-//            names.remove(book.getName())
-//            fireBooksChanged(instance, book, false)
-//        } else {
-//            throw BookException(JSOtherMsg.lookupText("Could not remove unregistered Book: {0}", book.getName()))
-//        }
-//    }
+    internal fun removeBook(book: Book) {
+        val removed = books.remove(book)
+        if (removed) {
+            bookByInitials.remove(book.initials)
+            bookByName.remove(book.name)
+        } else {
+            throw Exception("Could not remove unregistered Book: ${book.name}")
+        }
+    }
 
     fun refresh() {
         val bookArray: List<Book> = driver.books

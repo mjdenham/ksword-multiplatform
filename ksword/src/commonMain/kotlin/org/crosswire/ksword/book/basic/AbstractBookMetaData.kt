@@ -21,6 +21,7 @@ package org.crosswire.ksword.book.basic
 
 import okio.Path
 import org.crosswire.ksword.book.BookMetaData
+import org.crosswire.ksword.book.sword.SwordBookMetaData.Companion.KEY_DATA_PATH
 
 /**
  * An implementation of the Property Change methods from BookMetaData.
@@ -46,7 +47,11 @@ abstract class AbstractBookMetaData : BookMetaData {
     override lateinit var  library: Path
 
     // library/datapath = location of the datafiles e.g. mnt/sdcard/Android/data/packagename/files/modules/texts/ztext/bsb/
-    lateinit var location: String
+    val location: Path
+        get() {
+            val dataPath = getProperty(KEY_DATA_PATH) ?: throw IllegalStateException("Data path not set")
+            return library.resolve(dataPath)
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

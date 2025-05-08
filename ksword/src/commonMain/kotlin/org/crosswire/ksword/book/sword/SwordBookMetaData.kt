@@ -146,6 +146,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
     override val isLeftToRight: Boolean
         get() = TODO("Not yet implemented")
 
+    var configFile: Path? = null
+
     override fun reload() {
         TODO("Not yet implemented")
     }
@@ -191,6 +193,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
     private fun loadFile(configFile: Path) {
         configAll.clear()
         configAll.load(configFile) //, SwordBookMetaData.ENCODING_UTF8)
+        this.configFile = configFile
 //        val encoding = configAll[KEY_ENCODING]
 //        if (!SwordBookMetaData.ENCODING_UTF8.equals(encoding, ignoreCase = true)) {
 //            configAll.clear()
@@ -204,9 +207,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
      * @param keepers //TODO keepers
      * the keys to keep. When null keep all
      */
-    private fun loadSource(configFile: BufferedSource) {
+    private fun loadSource(configSource: BufferedSource) {
         configAll.clear()
-        configAll.load(configFile) //, SwordBookMetaData.ENCODING_UTF8)
+        configAll.load(configSource) //, SwordBookMetaData.ENCODING_UTF8)
 //        val encoding = configAll[KEY_ENCODING]
 //        if (!SwordBookMetaData.ENCODING_UTF8.equals(encoding, ignoreCase = true)) {
 //            configAll.clear()

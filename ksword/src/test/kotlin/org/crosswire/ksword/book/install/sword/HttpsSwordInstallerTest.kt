@@ -3,6 +3,7 @@ package org.crosswire.ksword.book.install.sword
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
+import org.crosswire.ksword.book.Books
 import org.crosswire.ksword.book.sword.SwordBookPath
 import org.junit.After
 import org.junit.Assert.*
@@ -28,13 +29,19 @@ class HttpsSwordInstallerTest {
         FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
     }
 
-
     @Test
     fun loadBookList() = runTest {
         httpsSwordInstaller.loadBookList()
-        val books = httpsSwordInstaller.getBooks()
-        assertTrue(books.isNotEmpty())
-        val bsb = books.find { it.initials == "BSB" }
-        assertTrue(bsb != null)
+        val catalog = httpsSwordInstaller.getBooks()
+        assertTrue(catalog.isNotEmpty())
+        val abbott = catalog.find { it.initials == "Abbott" }
+        assertTrue(abbott != null)
+    }
+
+    @Test
+    fun installBook() = runTest {
+        val bookInitials = "Abbott"
+        httpsSwordInstaller.install(bookInitials)
+        assertTrue(Books.getBook(bookInitials)?.initials == bookInitials)
     }
 }

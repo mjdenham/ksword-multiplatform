@@ -11,7 +11,9 @@ package org.crosswire.ksword.book.sword
 
 import okio.Path
 import org.crosswire.common.util.Log
+import org.crosswire.common.util.delete
 import org.crosswire.ksword.book.Book
+import org.crosswire.ksword.book.Books
 import org.martin.ktar.exists
 import org.martin.ktar.isDirectory
 
@@ -25,6 +27,23 @@ class SwordBookDriver { //} : AbstractBookDriver() {
         get() {
             return getBooks(SwordBookPath.confDir).toList()
         }
+
+    fun delete(dead: Book) {
+        val sbmd = dead.bookMetaData as SwordBookMetaData
+        val confFile= sbmd.configFile
+
+        // We can only uninstall what we download into our download dir.
+        if (confFile == null || !confFile.exists()) {
+            // TRANSLATOR: Common error condition: The file could not be deleted. There can be many reasons.
+            // {0} is a placeholder for the file.
+            throw Exception("Unable to delete: ${confFile?.name}")
+        }
+
+        // Delete the conf
+        confFile.delete()
+        sbmd.location.delete()
+        Books.removeBook(dead)
+    }
 
     private fun getBooks(confDir: Path): List<Book> {
         if (!confDir.exists() || !confDir.isDirectory()) {

@@ -195,19 +195,6 @@ interface BookMetaData : Comparable<BookMetaData?> {
     var library: Path
 
     /**
-     * Get the base URI for relative URIs in the document.
-     *
-     * @return the base URI or null if there is none
-     */
-    /**
-     * Set the base URI for relative URIs in the document.
-     *
-     * @param library
-     * the base URI or null if there is none
-     */
-//    var location: java.net.URI?
-
-    /**
      * If this BookMetaData is partially loaded, reload it fully.
      * If it is fully loaded, don't do it again.
      *
