@@ -332,8 +332,8 @@ class VerseRange : VerseKey<VerseRange?> {
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    override fun compareTo(obj: Key): Int {
-        val that = obj as VerseRange
+    override fun compareTo(other: Key): Int {
+        val that = other as VerseRange
 
         val result = start.compareTo(that.start)
         return if (result == 0) this.verseCount - that.verseCount else result

@@ -273,8 +273,8 @@ class Verse : VerseKey<Verse> {
     /* (non-Javadoc)
      * @see Comparable#compareTo(Object)
      */
-    override fun compareTo(obj: Key): Int {
-        return this.ordinal - (obj as Verse).ordinal
+    override fun compareTo(other: Key): Int {
+        return this.ordinal - (other as Verse).ordinal
     }
 
     override fun getVersification(): Versification {

@@ -204,10 +204,10 @@ interface Key : Comparable<Key>, Iterable<Key> /*, kotlin.Cloneable, java.io.Ser
      * This needs to be declared here so that it is visible as a method on a
      * derived Key.
      *
-     * @param obj
+     * @param other
      * @return true if equal
      */
-    override fun equals(obj: Any?): Boolean
+    override fun equals(other: Any?): Boolean
 
     /**
      * This needs to be declared here so that it is visible as a method on a

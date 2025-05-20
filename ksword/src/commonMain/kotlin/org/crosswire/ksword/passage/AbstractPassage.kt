@@ -52,8 +52,8 @@ abstract class AbstractPassage protected constructor(
         throw UnsupportedOperationException()
     }
 
-    override fun compareTo(obj: Key): Int {
-        val thatref: Passage = obj as Passage
+    override fun compareTo(other: Key): Int {
+        val thatref: Passage = other as Passage
         if (thatref.countVerses() == 0) {
             if (countVerses() == 0) {
                 return 0
@@ -102,7 +102,7 @@ abstract class AbstractPassage protected constructor(
         if (obj !is Passage) {
             return false
         }
-        val that: Passage = obj as Passage
+        val that: Passage = obj
         // The real test
         // FIXME: this is not really true since the versification any longer.
         return that.getOsisRef().equals(getOsisRef())
@@ -448,7 +448,7 @@ abstract class AbstractPassage protected constructor(
         lowerNormalizeProtection()
         if (lowerEventSuppressionAndTest()) {
             if (key is Passage) {
-                val that: Passage = key as Passage
+                val that: Passage = key
                 fireIntervalAdded(this, that.getVerseAt(0), that.getVerseAt(that.countVerses() - 1))
             } else if (key is VerseRange) {
                 val that = key
@@ -486,7 +486,7 @@ abstract class AbstractPassage protected constructor(
         lowerNormalizeProtection()
         if (lowerEventSuppressionAndTest()) {
             if (key is Passage) {
-                val that: Passage = key as Passage
+                val that: Passage = key
                 fireIntervalRemoved(
                     this,
                     that.getVerseAt(0),

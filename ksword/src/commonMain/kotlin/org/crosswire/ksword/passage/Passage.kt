@@ -178,11 +178,11 @@ interface Passage : VerseKey<Passage?> {
     /**
      * Returns true if this collection contains all the specified Verse
      *
-     * @param that
+     * @param key
      * Verse or VerseRange that may exist in this Passage
      * @return true if this collection contains that
      */
-    override fun contains(that: Key): Boolean
+    override fun contains(key: Key): Boolean
 
     /**
      * Add this Verse/VerseRange to this Passage
