@@ -30,7 +30,7 @@ class SystemKJVA : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, L
         // SystemDefault.booksOT followed by
         // deuterocanonical books
         /* protected */
-        val BOOKS_OT: List<BibleBook> = listOf(
+        private val BOOKS_OT: List<BibleBook> = listOf(
             BibleBook.GEN,
             BibleBook.EXOD,
             BibleBook.LEV,
@@ -86,10 +86,10 @@ class SystemKJVA : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, L
             BibleBook.MACC2,
         )
 
-        val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
+        private val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
 
         /** Constant for the max verse number in each chapter  */
-        val LAST_VERSE_OT: Array<IntArray> = arrayOf(
+        private val LAST_VERSE_OT: Array<IntArray> = arrayOf(
             // Genesis
             intArrayOf(
                 31, 25, 24, 26, 32, 22, 24, 22, 29, 32,
@@ -338,8 +338,6 @@ class SystemKJVA : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, L
             ),
         )
 
-        /* protected */
-        val LAST_VERSE_NT: Array<IntArray> = SystemKJV.LAST_VERSE_NT
-
+        private val LAST_VERSE_NT: Array<IntArray> = SystemKJV.LAST_VERSE_NT
     }
 }

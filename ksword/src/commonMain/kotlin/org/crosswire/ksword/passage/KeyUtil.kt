@@ -101,6 +101,6 @@ object KeyUtil {
         if (key is VerseKey<*>) {
             return key.getVersification()
         }
-        return Versifications.instance().getVersification(Versifications.DEFAULT_V11N)
+        return Versifications.getVersification(Versifications.DEFAULT_V11N)
     }
 }

@@ -45,7 +45,7 @@ class JFBIntegrationTest {
     fun readRawContent_readFirstVerse() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 1))
         assertContains(
             result,
@@ -58,7 +58,7 @@ class JFBIntegrationTest {
     fun readRawContent_readLastVerseInChapter() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 28))
         assertContains(
             result,
@@ -70,7 +70,7 @@ class JFBIntegrationTest {
     fun readRawContent_readNtVerse() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.JOHN, 1, 1))
         println(result)
         assertContains(
@@ -83,7 +83,7 @@ class JFBIntegrationTest {
     fun readToOsis_readChapter() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val start = Verse(v11n, BibleBook.GEN, 1, 1)
         val end = Verse(v11n, BibleBook.GEN, 1, 31)
         val result: List<KeyText> = backend.readToOsis(VerseRange(v11n, start, end))

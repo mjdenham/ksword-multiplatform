@@ -593,7 +593,7 @@ abstract class AbstractPassage protected constructor(
 //        val bin: java.io.BufferedReader = java.io.BufferedReader(`in`, 8192)
 //
 //        val v11nName: String = bin.readLine()
-//        v11n = Versifications.instance().getVersification(v11nName)
+//        v11n = Versifications.getVersification(v11nName)
 //
 //        while (true) {
 //            val line: String = bin.readLine() ?: break
@@ -1120,7 +1120,7 @@ abstract class AbstractPassage protected constructor(
 //
 //        // Read the versification by name
 //        val v11nName: String = `is`.readUTF()
-//        v11n = Versifications.instance().getVersification(v11nName)
+//        v11n = Versifications.getVersification(v11nName)
 //
 //        val type: Int = `is`.readInt()
 //        when (type) {

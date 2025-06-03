@@ -35,12 +35,12 @@ class SystemKJV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LA
     companion object {
         const val V11N_NAME: String = "KJV"
 
-        val BOOKS_OT: List<BibleBook> = SystemDefault.BOOKS_OT
+        private val BOOKS_OT: List<BibleBook> = SystemDefault.BOOKS_OT
 
-        val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
+        private val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
 
         /** Constant for the max verse number in each chapter  */ /* protected */
-        val LAST_VERSE_OT: Array<IntArray> = arrayOf(
+        private val LAST_VERSE_OT: Array<IntArray> = arrayOf(
             // Genesis
             intArrayOf(
                 31, 25, 24, 26, 32, 22, 24, 22, 29, 32,
@@ -337,9 +337,4 @@ class SystemKJV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LA
             ),
         )
     }
-
-    /**
-     * Serialization ID
-     */
-    private val serialVersionUID = 3365882007485277007L
 }

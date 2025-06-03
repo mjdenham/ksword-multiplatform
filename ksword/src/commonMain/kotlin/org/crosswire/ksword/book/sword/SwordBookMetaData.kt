@@ -123,7 +123,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override val isSupported: Boolean
         get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
-                Versifications.instance().isDefined(getProperty(KEY_VERSIFICATION)) &&
+                Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) == "OSIS"
 
     override val isEnciphered: Boolean

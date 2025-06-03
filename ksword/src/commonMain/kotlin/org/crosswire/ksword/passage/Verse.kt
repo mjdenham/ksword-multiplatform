@@ -387,7 +387,7 @@ class Verse : VerseKey<Verse> {
 //    private fun readObject(`in`: java.io.ObjectInputStream) {
 //        `in`.defaultReadObject()
 //        val v11nName: String = `in`.readUTF()
-//        v11n = Versifications.instance().getVersification(v11nName)
+//        v11n = Versifications.getVersification(v11nName)
 //        val decoded: Verse = v11n.decodeOrdinal(ordinal)
 //
 //        this.book = decoded.book
@@ -615,7 +615,7 @@ class Verse : VerseKey<Verse> {
          * The default verse
          */
         val DEFAULT: Verse =
-            Verse(Versifications.instance().getVersification("KJV"), BibleBook.GEN, 1, 1)
+            Verse(Versifications.defaultVersification, BibleBook.GEN, 1, 1)
 
         //    private static final Logger log = LoggerFactory.getLogger(Verse.class);
         /**

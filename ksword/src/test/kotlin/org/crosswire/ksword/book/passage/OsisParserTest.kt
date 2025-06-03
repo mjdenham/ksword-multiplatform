@@ -6,7 +6,7 @@ import org.junit.Assert
 import org.junit.Test
 
 class OsisParserTest {
-    private val testV11n = Versifications.instance().getVersification(Versifications.DEFAULT_V11N)
+    private val testV11n = Versifications.defaultVersification
 
     private val osisParser = OsisParser()
 

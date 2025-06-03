@@ -45,7 +45,7 @@ class ZVerseBackendTest {
     fun readRawContent_readFirstVerse() {
         testDownloaded()
         val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N;
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 1))
         println(result)
         kotlin.test.assertEquals(
@@ -58,7 +58,7 @@ class ZVerseBackendTest {
     fun readRawContent_readLastVerseInChapter() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 31))
         listOf("And God looked upon all that he had made and indeed it was very good".split(" ").forEach { word: String ->
             assertContains(result, word)
@@ -69,7 +69,7 @@ class ZVerseBackendTest {
     fun readRawContent_readNtVerse() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.JOHN, 1, 1))
         println(result)
         listOf("In the beginning ws the Word and the Word was with God and the Word was God".split(" ").forEach { word: String ->
@@ -81,7 +81,7 @@ class ZVerseBackendTest {
     fun readToOsis_readChapter() {
         testDownloaded()
         val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
-        val v11n = Versifications.instance().getVersification(v11nName)
+        val v11n = Versifications.getVersification(v11nName)
         val start = Verse(v11n, BibleBook.GEN, 1, 1)
         val end = Verse(v11n, BibleBook.GEN, 1, 31)
         val result: List<KeyText>

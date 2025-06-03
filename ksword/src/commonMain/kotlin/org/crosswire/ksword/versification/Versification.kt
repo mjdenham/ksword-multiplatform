@@ -53,7 +53,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * chapter. Do not include chapter 0.
      */
     constructor(
-        name: String?,
+        name: String,
         booksOT: List<BibleBook>,
         booksNT: List<BibleBook>,
         lastVerseOT: Array<IntArray>,
@@ -1149,7 +1149,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * @return the OSIS name of the Versification
      */
     /** The OSIS name of the reference system.  */
-    var name: String? = null
+    var name: String
         private set
 
     /** The ordered list of books in this versification.  */

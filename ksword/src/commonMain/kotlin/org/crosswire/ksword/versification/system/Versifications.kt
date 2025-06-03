@@ -27,13 +27,10 @@ import org.crosswire.ksword.versification.Versification
  *
  * @author DM Smith
  */
-class Versifications private constructor() {
-    @get:Deprecated("Use {@link #getVersification(String)} instead.")
-    val defaultVersification: Versification?
+object Versifications {
+    val defaultVersification: Versification
         /**
          * Get the default Versification.
-         *
-         * @return the default Versification.
          */
         get() = getVersification(DEFAULT_V11N)
 
@@ -41,7 +38,7 @@ class Versifications private constructor() {
      * Get the Versification by its name. If name is null then return the default Versification.
      *
      * @param name the name of the Versification
-     * @return the Versification or null if it is not known.
+     * @return the Versification or throw exception if it is not known.
      */
     fun getVersification(name: String = DEFAULT_V11N): Versification {
         var actual = name
@@ -129,7 +126,7 @@ class Versifications private constructor() {
 //        }
 //
 //        return null;
-        return SystemKJV()
+        throw RuntimeException("Unknown Versification: $name")
     }
 
     /**
@@ -193,22 +190,9 @@ class Versifications private constructor() {
         fluffed = mutableMapOf()
     }
 
-    companion object {
-        /**
-         * The default Versification for KSword is the KJV.
-         * This is subject to change at any time.
-         */
-        val DEFAULT_V11N: String = SystemKJV.V11N_NAME
-
-        /**
-         * Get the singleton instance of Versifications.
-         *
-         * @return the singleton
-         */
-        fun instance(): Versifications {
-            return instance
-        }
-
-        private val instance = Versifications()
-    }
+    /**
+     * The default Versification for KSword is the KJV.
+     * This is subject to change at any time.
+     */
+    const val DEFAULT_V11N: String = SystemKJV.V11N_NAME
 }

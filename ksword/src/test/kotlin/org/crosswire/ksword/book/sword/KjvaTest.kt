@@ -91,7 +91,7 @@ class KjvaTest {
 
     private fun getVersification(): Versification {
         val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N;
-        return Versifications.instance().getVersification(v11nName)
+        return Versifications.getVersification(v11nName)
     }
 
     @Test
