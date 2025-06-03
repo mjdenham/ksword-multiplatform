@@ -1,6 +1,6 @@
 /**
  * Distribution License:
- * KSword is free software; you can redistribute it and/or modify it under
+ * JSword is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License, version 2.1 or later
  * as published by the Free Software Foundation. This program is distributed
  * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
@@ -22,24 +22,73 @@ package org.crosswire.ksword.versification.system
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.Versification
 
-/**
- * The KJV versification is the first implemented versification
- * and is the default versification for JSword/SWORD.
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
- * @author DM Smith
- */
-class SystemKJV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT) {
+class SystemKJVA : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT) {
 
     companion object {
-        const val V11N_NAME: String = "KJV"
+        const val V11N_NAME: String = "KJVA"
 
-        val BOOKS_OT: List<BibleBook> = SystemDefault.BOOKS_OT
+        // SystemDefault.booksOT followed by
+        // deuterocanonical books
+        /* protected */
+        val BOOKS_OT: List<BibleBook> = listOf(
+            BibleBook.GEN,
+            BibleBook.EXOD,
+            BibleBook.LEV,
+            BibleBook.NUM,
+            BibleBook.DEUT,
+            BibleBook.JOSH,
+            BibleBook.JUDG,
+            BibleBook.RUTH,
+            BibleBook.SAM1,
+            BibleBook.SAM2,
+            BibleBook.KGS1,
+            BibleBook.KGS2,
+            BibleBook.CHR1,
+            BibleBook.CHR2,
+            BibleBook.EZRA,
+            BibleBook.NEH,
+            BibleBook.ESTH,
+            BibleBook.JOB,
+            BibleBook.PS,
+            BibleBook.PROV,
+            BibleBook.ECCL,
+            BibleBook.SONG,
+            BibleBook.ISA,
+            BibleBook.JER,
+            BibleBook.LAM,
+            BibleBook.EZEK,
+            BibleBook.DAN,
+            BibleBook.HOS,
+            BibleBook.JOEL,
+            BibleBook.AMOS,
+            BibleBook.OBAD,
+            BibleBook.JONAH,
+            BibleBook.MIC,
+            BibleBook.NAH,
+            BibleBook.HAB,
+            BibleBook.ZEPH,
+            BibleBook.HAG,
+            BibleBook.ZECH,
+            BibleBook.MAL,
+            BibleBook.ESD1,
+            BibleBook.ESD2,
+            BibleBook.TOB,
+            BibleBook.JDT,
+            BibleBook.ADD_ESTH,
+            BibleBook.WIS,
+            BibleBook.SIR,
+            BibleBook.BAR,
+            BibleBook.PR_AZAR,
+            BibleBook.SUS,
+            BibleBook.BEL,
+            BibleBook.PR_MAN,
+            BibleBook.MACC1,
+            BibleBook.MACC2,
+        )
 
         val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
 
-        /** Constant for the max verse number in each chapter  */ /* protected */
+        /** Constant for the max verse number in each chapter  */
         val LAST_VERSE_OT: Array<IntArray> = arrayOf(
             // Genesis
             intArrayOf(
@@ -232,114 +281,65 @@ class SystemKJV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LA
             ),  // Malachi
             intArrayOf(
                 14, 17, 18, 6,
+            ),  // I Esdras
+            intArrayOf(
+                58, 30, 24, 63, 73, 34, 15, 96, 55,
+            ),  // II Esdras
+            intArrayOf(
+                40, 48, 36, 52, 56, 59, 70, 63, 47, 59,
+                46, 51, 58, 48, 63, 78,
+            ),  // Tobit
+            intArrayOf(
+                22, 14, 17, 21, 22, 17, 18, 21, 6, 12,
+                19, 22, 18, 15,
+            ),  // Judith
+            intArrayOf(
+                16, 28, 10, 15, 24, 21, 32, 36, 14, 23,
+                23, 20, 20, 19, 13, 25,
+            ),  // Additions to Esther
+            intArrayOf(
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 13,
+                12, 6, 18, 19, 16, 24,
+            ),  // Wisdom
+            intArrayOf(
+                16, 24, 19, 20, 23, 25, 30, 21, 18, 21,
+                26, 27, 19, 31, 19, 29, 21, 25, 22,
+            ),  // Sirach
+            intArrayOf(
+                30, 18, 31, 31, 15, 37, 36, 19, 18, 31,
+                34, 18, 26, 27, 20, 30, 32, 33, 30, 32,
+                28, 27, 28, 34, 26, 29, 30, 26, 28, 25,
+                31, 24, 31, 26, 20, 26, 31, 34, 35, 30,
+                24, 25, 33, 22, 26, 20, 25, 25, 16, 29,
+                30,
+            ),  // Baruch
+            intArrayOf(
+                22, 35, 37, 37, 9, 73,
+            ),  // Prayer of Azariah
+            intArrayOf(
+                68,
+            ),  // Susanna
+            intArrayOf(
+                64,
+            ),  // Bel and the Dragon
+            intArrayOf(
+                42,
+            ),  // Prayer of Manasses
+            intArrayOf(
+                1,
+            ),  // I Maccabees
+            intArrayOf(
+                64, 70, 60, 61, 68, 63, 50, 32, 73, 89,
+                74, 53, 53, 49, 41, 24,
+            ),  // II Maccabees
+            intArrayOf(
+                36, 32, 40, 50, 27, 31, 42, 36, 29, 38,
+                38, 45, 26, 46, 39,
             ),
         )
-
 
         /* protected */
-        val LAST_VERSE_NT: Array<IntArray> = arrayOf(
-            // Matthew
-            intArrayOf(
-                25, 23, 17, 25, 48, 34, 29, 34, 38, 42,
-                30, 50, 58, 36, 39, 28, 27, 35, 30, 34,
-                46, 46, 39, 51, 46, 75, 66, 20,
-            ),  // Mark
-            intArrayOf(
-                45, 28, 35, 41, 43, 56, 37, 38, 50, 52,
-                33, 44, 37, 72, 47, 20,
-            ),  // Luke
-            intArrayOf(
-                80, 52, 38, 44, 39, 49, 50, 56, 62, 42,
-                54, 59, 35, 35, 32, 31, 37, 43, 48, 47,
-                38, 71, 56, 53,
-            ),  // John
-            intArrayOf(
-                51, 25, 36, 54, 47, 71, 53, 59, 41, 42,
-                57, 50, 38, 31, 27, 33, 26, 40, 42, 31,
-                25,
-            ),  // Acts
-            intArrayOf(
-                26, 47, 26, 37, 42, 15, 60, 40, 43, 48,
-                30, 25, 52, 28, 41, 40, 34, 28, 41, 38,
-                40, 30, 35, 27, 27, 32, 44, 31,
-            ),  // Romans
-            intArrayOf(
-                32, 29, 31, 25, 21, 23, 25, 39, 33, 21,
-                36, 21, 14, 23, 33, 27,
-            ),  // I Corinthians
-            intArrayOf(
-                31, 16, 23, 21, 13, 20, 40, 13, 27, 33,
-                34, 31, 13, 40, 58, 24,
-            ),  // II Corinthians
-            intArrayOf(
-                24, 17, 18, 18, 21, 18, 16, 24, 15, 18,
-                33, 21, 14,
-            ),  // Galatians
-            intArrayOf(
-                24, 21, 29, 31, 26, 18,
-            ),  // Ephesians
-            intArrayOf(
-                23, 22, 21, 32, 33, 24,
-            ),  // Philippians
-            intArrayOf(
-                30, 30, 21, 23,
-            ),  // Colossians
-            intArrayOf(
-                29, 23, 25, 18,
-            ),  // I Thessalonians
-            intArrayOf(
-                10, 20, 13, 18, 28,
-            ),  // II Thessalonians
-            intArrayOf(
-                12, 17, 18,
-            ),  // I Timothy
-            intArrayOf(
-                20, 15, 16, 16, 25, 21,
-            ),  // II Timothy
-            intArrayOf(
-                18, 26, 17, 22,
-            ),  // Titus
-            intArrayOf(
-                16, 15, 15,
-            ),  // Philemon
-            intArrayOf(
-                25,
-            ),  // Hebrews
-            intArrayOf(
-                14, 18, 19, 16, 14, 20, 28, 13, 28, 39,
-                40, 29, 25,
-            ),  // James
-            intArrayOf(
-                27, 26, 18, 17, 20,
-            ),  // I Peter
-            intArrayOf(
-                25, 25, 22, 19, 14,
-            ),  // II Peter
-            intArrayOf(
-                21, 22, 18,
-            ),  // I John
-            intArrayOf(
-                10, 29, 24, 21, 21,
-            ),  // II John
-            intArrayOf(
-                13,
-            ),  // III John
-            intArrayOf(
-                14,
-            ),  // Jude
-            intArrayOf(
-                25,
-            ),  // Revelation of John
-            intArrayOf(
-                20, 29, 22, 11, 14, 17, 17, 13, 21, 11,
-                19, 17, 18, 20, 8, 21, 18, 24, 21, 15,
-                27, 21,
-            ),
-        )
-    }
+        val LAST_VERSE_NT: Array<IntArray> = SystemKJV.LAST_VERSE_NT
 
-    /**
-     * Serialization ID
-     */
-    private val serialVersionUID = 3365882007485277007L
+    }
 }

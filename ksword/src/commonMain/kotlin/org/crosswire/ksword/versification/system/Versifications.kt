@@ -43,11 +43,8 @@ class Versifications private constructor() {
      * @param name the name of the Versification
      * @return the Versification or null if it is not known.
      */
-    fun getVersification(name: String?): Versification {
+    fun getVersification(name: String = DEFAULT_V11N): Versification {
         var actual = name
-        if (actual == null) {
-            actual = DEFAULT_V11N
-        }
 
         // This class delays the building of a Versification to when it is
         // actually needed.
@@ -72,12 +69,11 @@ class Versifications private constructor() {
         return name == null || known.contains(name)
     }
 
-    private fun fluff(name: String?): Versification {
+    private fun fluff(name: String): Versification {
         // Keep KJV at the top as it is the most common
-//        if (name == null || SystemKJV.V11N_NAME.equals(name)) {
-        return SystemKJV()
-
-        //        }
+        if (SystemKJV.V11N_NAME == name) {
+            return SystemKJV()
+        }
 
         //then in alphabetical order, to ease the developer checking we have them all
 //        if (SystemCalvin.V11N_NAME.equals(name)) {
@@ -95,9 +91,9 @@ class Versifications private constructor() {
 //        if (SystemGerman.V11N_NAME.equals(name)) {
 //            return new SystemGerman();
 //        }
-//        if (SystemKJVA.V11N_NAME.equals(name)) {
-//            return new SystemKJVA();
-//        }
+        if (SystemKJVA.V11N_NAME == name) {
+            return SystemKJVA();
+        }
 //        if (SystemLeningrad.V11N_NAME.equals(name)) {
 //            return new SystemLeningrad();
 //        }
@@ -133,6 +129,7 @@ class Versifications private constructor() {
 //        }
 //
 //        return null;
+        return SystemKJV()
     }
 
     /**
@@ -181,7 +178,7 @@ class Versifications private constructor() {
 //        known.add(SystemDarbyFR.V11N_NAME);
 //        known.add(SystemGerman.V11N_NAME);
         known.add(SystemKJV.V11N_NAME)
-        //        known.add(SystemKJVA.V11N_NAME);
+        known.add(SystemKJVA.V11N_NAME)
 //        known.add(SystemLeningrad.V11N_NAME);
 //        known.add(SystemLuther.V11N_NAME);
 //        known.add(SystemLXX.V11N_NAME);

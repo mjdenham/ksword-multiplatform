@@ -11,6 +11,7 @@ import org.crosswire.ksword.book.BookMetaData.Companion.KEY_LANG
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_VERSIFICATION
 import org.crosswire.ksword.book.KeyType
 import org.crosswire.ksword.book.basic.AbstractBookMetaData
+import org.crosswire.ksword.versification.system.Versifications
 
 class SwordBookMetaData: AbstractBookMetaData() {
     companion object {
@@ -122,7 +123,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override val isSupported: Boolean
         get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
-                getProperty(KEY_VERSIFICATION) == "KJV" &&
+                Versifications.instance().isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) == "OSIS"
 
     override val isEnciphered: Boolean

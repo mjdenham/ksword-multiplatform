@@ -6,6 +6,7 @@ import okio.Path.Companion.toPath
 import org.crosswire.common.util.IoUtil
 import org.crosswire.common.util.WebResource
 import org.crosswire.common.util.delete
+import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 import org.crosswire.ksword.passage.KeyText
 import org.crosswire.ksword.passage.Verse
@@ -43,7 +44,7 @@ class ZVerseBackendTest {
     @Test
     fun readRawContent_readFirstVerse() {
         testDownloaded()
-        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N;
         val v11n = Versifications.instance().getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 1))
         println(result)
