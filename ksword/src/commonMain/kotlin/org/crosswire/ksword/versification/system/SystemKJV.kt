@@ -39,8 +39,8 @@ class SystemKJV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LA
 
         private val BOOKS_NT: List<BibleBook> = SystemDefault.BOOKS_NT
 
-        /** Constant for the max verse number in each chapter  */ /* protected */
-        private val LAST_VERSE_OT: Array<IntArray> = arrayOf(
+        /** Constant for the max verse number in each chapter  */
+        val LAST_VERSE_OT: Array<IntArray> = arrayOf(
             // Genesis
             intArrayOf(
                 31, 25, 24, 26, 32, 22, 24, 22, 29, 32,

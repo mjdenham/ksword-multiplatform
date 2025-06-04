@@ -68,10 +68,8 @@ object Versifications {
 
     private fun fluff(name: String): Versification {
         // Keep KJV at the top as it is the most common
-        if (SystemKJV.V11N_NAME == name) {
-            return SystemKJV()
-        }
-
+        return when (name) {
+            SystemKJV.V11N_NAME -> SystemKJV()
         //then in alphabetical order, to ease the developer checking we have them all
 //        if (SystemCalvin.V11N_NAME.equals(name)) {
 //            return new SystemCalvin();
@@ -88,9 +86,7 @@ object Versifications {
 //        if (SystemGerman.V11N_NAME.equals(name)) {
 //            return new SystemGerman();
 //        }
-        if (SystemKJVA.V11N_NAME == name) {
-            return SystemKJVA();
-        }
+            SystemKJVA.V11N_NAME -> SystemKJVA()
 //        if (SystemLeningrad.V11N_NAME.equals(name)) {
 //            return new SystemLeningrad();
 //        }
@@ -103,9 +99,7 @@ object Versifications {
 //        if (SystemMT.V11N_NAME.equals(name)) {
 //            return new SystemMT();
 //        }
-//        if (SystemNRSV.V11N_NAME.equals(name)) {
-//            return new SystemNRSV();
-//        }
+            SystemNRSV.V11N_NAME -> SystemNRSV()
 //        if (SystemNRSVA.V11N_NAME.equals(name)) {
 //            return new SystemNRSVA();
 //        }
@@ -124,9 +118,8 @@ object Versifications {
 //        if (SystemVulg.V11N_NAME.equals(name)) {
 //            return new SystemVulg();
 //        }
-//
-//        return null;
-        throw RuntimeException("Unknown Versification: $name")
+            else -> throw RuntimeException("Unknown Versification: $name")
+        }
     }
 
     /**
@@ -180,7 +173,7 @@ object Versifications {
 //        known.add(SystemLuther.V11N_NAME);
 //        known.add(SystemLXX.V11N_NAME);
 //        known.add(SystemMT.V11N_NAME);
-//        known.add(SystemNRSV.V11N_NAME);
+        known.add(SystemNRSV.V11N_NAME)
 //        known.add(SystemNRSVA.V11N_NAME);
 //        known.add(SystemOrthodox.V11N_NAME);
 //        known.add(SystemSegond.V11N_NAME);
