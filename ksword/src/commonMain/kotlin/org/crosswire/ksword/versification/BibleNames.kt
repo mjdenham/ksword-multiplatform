@@ -25,11 +25,6 @@ import org.crosswire.common.util.MissingResourceException
 import org.crosswire.ksword.javautil.ResourceBundle
 import kotlin.jvm.Transient
 
-//import org.crosswire.common.util.CWClassLoader;
-//import org.crosswire.common.util.ClassUtil;
-//import org.crosswire.common.util.StringUtil;
-//import org.crosswire.ksword.internationalisation.LocaleProviderManager;
-
 /**
  * BibleNames deals with locale sensitive BibleBook name lookup conversions.
  *

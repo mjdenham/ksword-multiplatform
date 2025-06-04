@@ -68,7 +68,6 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
             bookCount += booksOT.size + 1 // All of the OT books and INTRO_OT
         }
 
-        val ntStart = bookCount
         if (booksNT.isNotEmpty()) {
             bookCount += booksNT.size + 1 // All of the NT books and INTRO_NT
         }
@@ -98,7 +97,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         lastVerse[bookIndex++] = chapters
 
         // Now append the OT info
-        if (lastVerseOT.size > 0) {
+        if (lastVerseOT.isNotEmpty()) {
             // Add in the testament intro
             chapters = IntArray(1)
             chapters[0] = 0
@@ -118,7 +117,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         }
 
         // Now append the NT info
-        if (lastVerseNT.size > 0) {
+        if (lastVerseNT.isNotEmpty()) {
             // Add in the testament intro
             chapters = IntArray(1)
             chapters[0] = 0
@@ -1192,127 +1191,4 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      */
     var nTChapterCount: Int = 0
         private set
-
-    companion object {
-//        fun dump(
-//            out: java.io.PrintStream,
-//            name: String,
-//            bookList: BibleBookList,
-//            array: Array<IntArray>
-//        ) {
-//            var vstr1 = ""
-//            var vstr2 = ""
-//            var count = 0
-//            out.println("    private final int[][] $name =")
-//            out.println("    {")
-//            // Output an array just like lastVerse, indexed by book and chapter,
-//            // that accumulates verse counts for offsets,
-//            // having a sentinel at the end.
-//            val bookCount = array.size
-//            for (bookIndex in 0 until bookCount) {
-//                count = 0
-//                out.print("        // ")
-//                if (bookIndex < bookList.getBookCount()) {
-//                    val book: BibleBook = bookList.getBook(bookIndex)
-//                    out.println(book.getOSIS())
-//                } else {
-//                    out.println("Sentinel")
-//                }
-//                out.print("        { ")
-//
-//                val numChapters = array[bookIndex].size
-//                for (chapterIndex in 0 until numChapters) {
-//                    // Pretty print with 10 items per line
-//
-//                    if (count++ % 10 == 0) {
-//                        out.println()
-//                        out.print("            ")
-//                    }
-//
-//                    // Output the offset for the chapter introduction
-//                    // This is referenced with a verse number of 0
-//                    vstr1 = "     " + array[bookIndex][chapterIndex]
-//                    vstr2 = vstr1.substring(vstr1.length - 5)
-//                    out.print("$vstr2, ")
-//                }
-//                out.println()
-//                out.println("        },")
-//            }
-//            out.println("    };")
-//        }
-
-//        fun optimize(
-//            out: java.io.PrintStream,
-//            bookList: BibleBookList,
-//            lastVerse: Array<IntArray>
-//        ) {
-//            var vstr1 = ""
-//            var vstr2 = ""
-//            var count = 0
-//            var ordinal = 0
-//            out.println("    private final int[][] chapterStarts =")
-//            out.println("    {")
-//            // Output an array just like lastVerse, indexed by book and chapter,
-//            // that accumulates verse counts for offsets,
-//            // having a sentinel at the end.
-//            var bookIndex = 0
-//            var ntStartOrdinal = 0
-//            var book: BibleBook = bookList.getBook(0)
-//            while (book != null) {
-//                count = 0
-//                out.print("        // ")
-//                out.println(book.getOSIS())
-//                out.print("        { ")
-//
-//                // Remember where the NT Starts
-//                if (book === BibleBook.INTRO_NT) {
-//                    ntStartOrdinal = ordinal
-//                }
-//
-//                val numChapters = lastVerse[bookIndex].size
-//                for (chapterIndex in 0 until numChapters) {
-//                    // Pretty print with 10 items per line
-//
-//                    if (count++ % 10 == 0) {
-//                        out.println()
-//                        out.print("            ")
-//                    }
-//
-//                    // Output the offset for the chapter introduction
-//                    // This is referenced with a verse number of 0
-//                    vstr1 = "     $ordinal"
-//                    vstr2 = vstr1.substring(vstr1.length - 5)
-//                    out.print("$vstr2, ")
-//                    // Set ordinal to the start of the next chapter or book introduction
-//                    val versesInChapter = lastVerse[bookIndex][chapterIndex] + 1
-//                    ordinal += versesInChapter
-//                }
-//                out.println()
-//                out.println("        },")
-//                bookIndex++
-//                book = bookList.getNextBook(book)
-//            }
-//
-//            // Output a sentinel value:
-//            // It is a book of one chapter starting with what would be the ordinal of the next chapter's introduction.
-//            vstr1 = "     $ordinal"
-//            vstr2 = vstr1.substring(vstr1.length - 5)
-//            out.println("        // Sentinel")
-//            out.println("        { ")
-//            out.println("            $vstr2, ")
-//            out.println("        },")
-//            out.println("    };")
-//            out.println()
-//            out.println("    /** The last ordinal number of the Old Testament */")
-//            out.println("    private int otMaxOrdinal = " + (ntStartOrdinal - 1) + ";")
-//            out.println("    /** The last ordinal number of the New Testament and the maximum ordinal number of this Reference System */")
-//            out.println("    private int ntMaxOrdinal = " + (ordinal - 1) + ";")
-//        }
-//
-
-        /**
-         * Serialization ID
-         */
-        private const val serialVersionUID = -6226916242596368765L
-    }
 }
