@@ -102,7 +102,7 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
                     val book: Book = SwordBook(sbmd, nullBackend)
                     entries[sbmd.initials + sbmd.name] = book
                 } else {
-                    Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)}")
+                    Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)} ${sbmd.getProperty(SwordBookMetaData.KEY_SOURCE_TYPE)}")
                 }
             }
 

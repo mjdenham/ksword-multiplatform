@@ -15,7 +15,7 @@ class VersificationsTest {
 
     @Test
     fun getVersificationByName() {
-        for (versification in listOf("KJV", "KJVA", "NRSV")) {
+        for (versification in listOf("KJV", "KJVA", "NRSV", "German")) {
             assertEquals(versification, Versifications.getVersification(versification).name)
         }
     }

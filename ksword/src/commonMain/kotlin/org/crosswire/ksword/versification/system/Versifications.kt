@@ -83,9 +83,7 @@ object Versifications {
 //        if (SystemDarbyFR.V11N_NAME.equals(name)) {
 //            return new SystemDarbyFR();
 //        }
-//        if (SystemGerman.V11N_NAME.equals(name)) {
-//            return new SystemGerman();
-//        }
+            SystemGerman.V11N_NAME -> SystemGerman()
             SystemKJVA.V11N_NAME -> SystemKJVA()
 //        if (SystemLeningrad.V11N_NAME.equals(name)) {
 //            return new SystemLeningrad();
@@ -166,7 +164,7 @@ object Versifications {
 //        known.add(SystemCatholic.V11N_NAME);
 //        known.add(SystemCatholic2.V11N_NAME);
 //        known.add(SystemDarbyFR.V11N_NAME);
-//        known.add(SystemGerman.V11N_NAME);
+        known.add(SystemGerman.V11N_NAME)
         known.add(SystemKJV.V11N_NAME)
         known.add(SystemKJVA.V11N_NAME)
 //        known.add(SystemLeningrad.V11N_NAME);
