@@ -21,6 +21,7 @@ package org.crosswire.ksword.book
 
 import okio.Path
 import org.crosswire.common.util.Locale
+import org.crosswire.ksword.versification.Versification
 
 /**
  * A BookMetaData represents a method of translating the Bible. All Books with
@@ -69,6 +70,8 @@ interface BookMetaData : Comparable<BookMetaData?> {
      * Dictionary or Commentary.
      */
     val bookCategory: BookCategory
+
+    val versification: Versification
 
     /**
      * Accessor for the driver that runs this Book. Note this method should only

@@ -281,24 +281,16 @@ class Verse : VerseKey<Verse> {
         return v11n
     }
 
-    /* (non-Javadoc)
-     * @see org.crosswire.ksword.passage.Passage#reversify(org.crosswire.ksword.versification.Versification)
-     */
     fun reversify(newVersification: Versification): Verse? {
         if (v11n == newVersification) {
             return this
         }
 
-        try {
-            //check the v11n supports this key, otherwise this leads to all sorts of issues
-//            if (newVersification.validate(book, chapter, verse, true)) {
-//                return new Verse(newVersification, book, chapter, verse);
-//            }
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-            // will never happen
-//            log.error("Contract for validate was changed to thrown an exception when silent mode is true", ex);
+        //check the v11n supports this key, otherwise this leads to all sorts of issues
+        if (newVersification.validate(book, chapter, verse, silent = true)) {
+            return Verse(newVersification, book, chapter, verse);
         }
+
         return null
     }
 

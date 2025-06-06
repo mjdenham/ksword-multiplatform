@@ -11,6 +11,7 @@ import org.crosswire.ksword.book.BookMetaData.Companion.KEY_LANG
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_VERSIFICATION
 import org.crosswire.ksword.book.KeyType
 import org.crosswire.ksword.book.basic.AbstractBookMetaData
+import org.crosswire.ksword.versification.Versification
 import org.crosswire.ksword.versification.system.Versifications
 
 class SwordBookMetaData: AbstractBookMetaData() {
@@ -120,6 +121,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
         get() = configAll[KEY_ABBREVIATION].orEmpty()
     override val initials: String
         get() = configAll.name
+
+    override val versification: Versification
+        get() = Versifications.getVersification(getProperty(KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N)
 
     override val isSupported: Boolean
         get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
