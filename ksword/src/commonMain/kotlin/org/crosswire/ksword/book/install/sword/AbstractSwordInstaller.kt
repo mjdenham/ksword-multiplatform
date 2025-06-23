@@ -30,11 +30,6 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
          */
         val FILE_LIST_GZ: String = "mods.d.tar.gz"
 
-        /**
-         * The sword conf directory
-         */
-        val CONF_DIR: String = "mods.d"
-
         private const val moduleNameKey = "{NAME}"
         private const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/$moduleNameKey.zip"
         private val tempDownloadPath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY
