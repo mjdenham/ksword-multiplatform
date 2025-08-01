@@ -31,7 +31,6 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         val FILE_LIST_GZ: String = "mods.d.tar.gz"
 
         private const val moduleNameKey = "{NAME}"
-        private const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/$moduleNameKey.zip"
         private val tempDownloadPath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY
     }
 
@@ -78,7 +77,7 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         }
     }
 
-    private fun getDownloadUrl(bookInitials: String) = downloadUrl.replace(moduleNameKey, bookInitials)
+    private fun getDownloadUrl(bookInitials: String) = "https://${installerUrls.host}${installerUrls.packageDir}/$bookInitials.zip"
     private fun getZipFile(bookInitials: String) = tempDownloadPath.resolve("$bookInitials.zip")
 
     override suspend fun loadBookList(): Unit = withContext(Dispatchers.IO){

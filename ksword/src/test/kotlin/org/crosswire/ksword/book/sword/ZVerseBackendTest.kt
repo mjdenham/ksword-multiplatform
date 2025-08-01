@@ -18,6 +18,7 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
+import kotlin.test.assertEquals
 import kotlin.time.measureTime
 
 class ZVerseBackendTest {
@@ -37,9 +38,10 @@ class ZVerseBackendTest {
             folderToUnzipInto.delete()
         }
 
-        const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/BSB.zip"
-        val zipFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.zip".toPath())
-        val folderToUnzipInto = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("unzipto".toPath())
+        private const val MODULE_NAME = "BSB"
+        private const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/$MODULE_NAME.zip"
+        private val zipFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.zip".toPath())
+        private val folderToUnzipInto = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("unzipto".toPath())
     }
     @Test
     fun readRawContent_readFirstVerse() {
@@ -99,7 +101,7 @@ class ZVerseBackendTest {
 
     @Test
     fun testDownloaded() = runTest {
-        if (!FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/bsb.conf"))) {
+        if (!FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/$MODULE_NAME.conf"))) {
             println("Temp dir: " + FileSystem.SYSTEM_TEMPORARY_DIRECTORY)
             zipFilePath.delete()
 
@@ -114,10 +116,10 @@ class ZVerseBackendTest {
                 SwordConstants.DIR_CONF,
                 SwordConstants.DIR_DATA
             )
-            assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/bsb.conf")))
+            assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/$MODULE_NAME.conf")))
         }
 
-        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/bsb.conf"), folderToUnzipInto)
+        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/$MODULE_NAME.conf"), folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 2)
     }

@@ -113,7 +113,7 @@ class JFBIntegrationTest {
             assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/jfb.conf")))
         }
 
-        bookMetaData = SwordBookMetaData.createFromFile(ZVerseBackendTest.folderToUnzipInto.resolve("mods.d/jfb.conf"), ZVerseBackendTest.folderToUnzipInto)
+        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/jfb.conf"), folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 4)
     }

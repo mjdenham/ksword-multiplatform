@@ -35,7 +35,7 @@ import org.crosswire.ksword.versification.Testament
  * The caller is required to close to correctly free resources and avoid File
  * pointer leaks.
  */
-class ZVerseBackendState internal constructor(bookMetaData: BookMetaData, blockType: BlockType) :
+class ZVerseBackendState(bookMetaData: BookMetaData, blockType: BlockType) :
     AbstractOpenFileState(bookMetaData) {
     override fun releaseResources() {
         println("Releasing ZVerseBackendState files")

@@ -123,7 +123,7 @@ class KingCommentsIntegrationTest {
             assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/kingcomments.conf")))
         }
 
-        bookMetaData = SwordBookMetaData.createFromFile(ZVerseBackendTest.folderToUnzipInto.resolve("mods.d/kingcomments.conf"), ZVerseBackendTest.folderToUnzipInto)
+        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/kingcomments.conf"), folderToUnzipInto)
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 2)
     }
