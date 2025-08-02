@@ -15,6 +15,43 @@ import org.crosswire.ksword.passage.VerseRange
 
 abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : StatefulFileBackedBackend<T>, Backend<T> {
 
+    override fun findNextKey(key: Key): Key? {
+        val verse = (key as? Verse) ?: return null
+        val v11n = verse.getVersification()
+        return findKeyWithDifferentContent(verse) { v -> v11n.add(v, 1) }
+    }
+
+    override fun findPreviousKey(key: Key): Key? {
+        val verse = (key as? Verse) ?: return null
+        val v11n = verse.getVersification()
+        return findKeyWithDifferentContent(verse) { v -> v11n.subtract(v, 1) }
+    }
+
+    private fun findKeyWithDifferentContent(
+        verse: Verse,
+        adjacentVerse: (Verse) -> Verse?
+    ): Key? {
+        val startContent = getRawText(verse)
+        val v11n = verse.getVersification()
+        var currentVerse = adjacentVerse(verse) ?: return null
+        var versesChecked = 0
+
+        while (versesChecked < 10 && currentVerse.book == verse.book) {
+            if (currentVerse.ordinal == 0 || currentVerse.ordinal == v11n.maximumOrdinal()) return null
+
+            getRawText(currentVerse).let { currentContent ->
+                if (currentContent.isNotBlank() && currentContent != startContent && currentVerse.verse > 0) {
+                    return currentVerse
+                }
+            }
+
+            currentVerse = adjacentVerse(currentVerse) ?: break
+            versesChecked++
+        }
+
+        return null
+    }
+
     override fun getRawText(key: Key): String {
         initState().use { openFileState ->
             return readRawContent(openFileState, key)
@@ -66,15 +103,10 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
      * Reads a passage as OSIS
      *
      * @param key           the given key
-     * @param processor     a processor for which to do things with
-     * @param content       a list of content to be appended to (i.e. the OSIS data)
      * @param openFileState the open file state, from which we read things
-     * @throws BookException a book exception if we failed to read the book
      */
     private fun readPassageOsis(
         key: Key,
-//        processor: RawTextToXmlProcessor,
-//        content: List<org.jdom2.Content>,
         openFileState: T
     ): List<KeyText> {
         val contentList = mutableListOf<KeyText>()

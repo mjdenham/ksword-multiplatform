@@ -31,6 +31,9 @@ import org.crosswire.ksword.passage.KeyText
  */
 interface Backend<T : OpenFileState> {
 
+    fun findNextKey(key: Key): Key?
+    fun findPreviousKey(key: Key): Key?
+
     fun readToOsis(key: Key): List<KeyText>
 
     /**
@@ -43,7 +46,6 @@ interface Backend<T : OpenFileState> {
      *
      * @param key the key for which the raw text is desired.
      * @return the text from the module
-     * @throws BookException
      */
     fun getRawText(key: Key): String
 }

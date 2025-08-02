@@ -17,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
+import kotlin.test.assertEquals
 
 class JFBIntegrationTest {
 
@@ -39,6 +40,54 @@ class JFBIntegrationTest {
         const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/JFB.zip"
         val zipFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.zip".toPath())
         val folderToUnzipInto = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("unzipto".toPath())
+    }
+
+    @Test
+    fun findNextKey() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.findNextKey(Verse(v11n, BibleBook.EZEK, 20, 1))
+        assertEquals(Verse(v11n, BibleBook.EZEK, 20, 3), result)
+    }
+
+    @Test
+    fun findNextKeyAEndOfChapter() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.findNextKey(Verse(v11n, BibleBook.JOHN, 3, 35))
+        println(result)
+//        assertEquals(Verse(v11n, BibleBook.EZEK, 20, 3), result)
+    }
+
+    @Test
+    fun findNextKeyWhenAtEnd() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.findNextKey(Verse(v11n, BibleBook.REV, 22, 21))
+        println(result)
+        assertEquals(null, result)
+    }
+
+    @Test
+    fun findPrevKey() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.findPreviousKey(Verse(v11n, BibleBook.EZEK, 20, 3))
+        assertEquals(Verse(v11n, BibleBook.EZEK, 20, 1), result)
+    }
+
+    @Test
+    fun findPrevKeyWhenAtStart() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.findPreviousKey(Verse(v11n, BibleBook.GEN, 0, 0))
+        println(result)
+        assertEquals(null, result)
     }
 
     @Test

@@ -28,13 +28,18 @@ import org.crosswire.ksword.passage.KeyText
  * and can search for words (returning Keys).
  */
 interface Book /* : Activatable, Comparable<Book?> */ {
-    fun readToOsis(key: Key): List<KeyText>
 
     var bookMetaData: BookMetaData
 
     val name: String
 
     val initials: String
+
+    fun getNextKey(key: Key): Key?
+
+    fun getPreviousKey(key: Key): Key?
+
+    fun readToOsis(key: Key): List<KeyText>
 
     /**
      * Returns the raw text that getData(Key key) builds into OSIS.

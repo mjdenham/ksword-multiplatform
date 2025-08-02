@@ -10,6 +10,14 @@ import org.crosswire.ksword.passage.KeyText
  * A NullBackend is not attached to resources.
  */
 class NullBackend : Backend<OpenFileState> {
+    override fun findNextKey(key: Key): Key? {
+        throw BookException("NullBackend does not support findNextKey")
+    }
+
+    override fun findPreviousKey(key: Key): Key? {
+        throw BookException("NullBackend does not support findPreviousKey")
+    }
+
     override fun readToOsis(key: Key): List<KeyText> {
         throw BookException("NullBackend does not support readToOsis")
     }
