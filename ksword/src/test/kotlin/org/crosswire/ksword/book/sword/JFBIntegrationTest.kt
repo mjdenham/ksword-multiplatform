@@ -58,7 +58,7 @@ class JFBIntegrationTest {
         val v11n = Versifications.getVersification(v11nName)
         val result = backend.findNextKey(Verse(v11n, BibleBook.JOHN, 3, 35))
         println(result)
-//        assertEquals(Verse(v11n, BibleBook.EZEK, 20, 3), result)
+        assertEquals(Verse(v11n, BibleBook.JOHN, 4, 1), result)
     }
 
     @Test
@@ -88,6 +88,16 @@ class JFBIntegrationTest {
         val result = backend.findPreviousKey(Verse(v11n, BibleBook.GEN, 0, 0))
         println(result)
         assertEquals(null, result)
+    }
+
+    @Test
+    fun readRawContent_missing_verse_is_empty() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.LUKE, 11, 19))
+
+        assertEquals("", result)
     }
 
     @Test
