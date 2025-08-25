@@ -5,10 +5,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.BlockType
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.time.ExperimentalTime
 
 object OpenFileStateManager {
 
@@ -48,5 +49,6 @@ object OpenFileStateManager {
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun timeMillis() = Clock.System.now().toEpochMilliseconds()
 }

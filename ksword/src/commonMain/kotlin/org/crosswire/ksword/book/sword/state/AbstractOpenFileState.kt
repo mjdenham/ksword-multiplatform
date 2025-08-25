@@ -19,8 +19,9 @@
  */
 package org.crosswire.ksword.book.sword.state
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import org.crosswire.ksword.book.BookMetaData
+import kotlin.time.ExperimentalTime
 
 abstract class AbstractOpenFileState(override val bookMetaData: BookMetaData) : OpenFileState {
     /**
@@ -33,5 +34,6 @@ abstract class AbstractOpenFileState(override val bookMetaData: BookMetaData) : 
     /**
      * The time of last access, used for LRU expiration of state.
      */
+    @OptIn(ExperimentalTime::class)
     override var lastAccess: Long = Clock.System.now().toEpochMilliseconds()
 }
