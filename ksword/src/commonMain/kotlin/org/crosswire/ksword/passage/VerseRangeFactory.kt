@@ -31,28 +31,10 @@ import org.crosswire.ksword.versification.Versification
  */
 object VerseRangeFactory {
     /**
-     * Construct a VerseRange from a human readable string. For example
-     * "Gen 1:1-3" in case the user does not want to have their typing 'fixed'
-     * by a meddling patronizing computer.
-     *
-     * @param v11n
-     * The versification for this VerseRange
-     * @param orginal
-     * The textual representation
-     * @return the verse range for the string
-     * @exception NoSuchVerseException
-     * If the text can not be understood
-     */
-    fun fromString(v11n: Versification, orginal: String): VerseRange {
-        return fromString(v11n, orginal, null)
-    }
-
-    /**
      * Construct a VerseRange from a String and a VerseRange. For example given
      * "2:2" and a basis of Gen 1:1-2 the result would be range of 1 verse
      * starting at Gen 2:2. Also given "2:2-5" and a basis of Gen 1:1-2 the
      * result would be a range of 5 verses starting at Gen 1:1.
-     *
      *
      * This constructor is different from the (String, Verse) constructor in
      * that if the basis is a range that exactly covers a chapter and the string
@@ -64,22 +46,20 @@ object VerseRangeFactory {
      * @param v11n
      * The versification for this VerseRange
      * @param original
-     * The string describing the verse e.g "2:2"
+     * The string describing the verse e.g "2:2" or "Gen 1:1-3"
      * @param basis
      * The verse that forms the basis by which to understand the
-     * original.
+     * original. Can be null.
      * @return the verse range
      * @exception NoSuchVerseException
-     * If the reference is illegal
+     * If the reference is illegal or the text can not be understood
      */
-    fun fromString(v11n: Versification, original: String, basis: VerseRange?): VerseRange {
+    fun fromString(v11n: Versification, original: String, basis: VerseRange? = null): VerseRange {
         val parts: List<String> = original.split(VerseRange.RANGE_OSIS_DELIM)
 
-        when (parts.size) {
-            1 -> return fromText(v11n, original, parts[0], parts[0], basis)
-
-            2 -> return fromText(v11n, original, parts[0], parts[1], basis)
-
+        return when (parts.size) {
+            1 -> fromText(v11n, original, parts[0], parts[0], basis)
+            2 -> fromText(v11n, original, parts[0], parts[1], basis)
             else ->             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
                 throw NoSuchVerseException(
                     JSMsg.gettext(
@@ -116,15 +96,14 @@ object VerseRangeFactory {
         basis: VerseRange?
     ): VerseRange {
         val startParts = AccuracyType.tokenize(startVerseDesc)
-        val accuracyStart: AccuracyType = AccuracyType.fromText(v11n, original, startParts, basis)
+        val accuracyStart: AccuracyType = AccuracyType.fromText(v11n, original, startParts, null, basis)
         val start = accuracyStart.createStartVerse(v11n, basis, startParts)
         v11n.validate(start!!.book, start.chapter, start.verse)
 
-        val endParts: Array<String>
-        if (startVerseDesc.equals(endVerseDesc)) {
-            endParts = startParts
+        val endParts: Array<String> = if (startVerseDesc == endVerseDesc) {
+            startParts
         } else {
-            endParts = AccuracyType.tokenize(endVerseDesc!!)
+            AccuracyType.tokenize(endVerseDesc!!)
         }
 
         val accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis)
