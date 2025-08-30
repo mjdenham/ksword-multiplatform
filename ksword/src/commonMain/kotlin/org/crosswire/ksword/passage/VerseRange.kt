@@ -31,10 +31,9 @@ import kotlin.jvm.Transient
  * versions may not return any text for verses that they consider to be
  * miss-translated in some way.
  *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
  * @author Joe Walker
  * @author DM Smith
+ * @author Martin Denham
  */
 class VerseRange : VerseKey<VerseRange?> {
     /**
@@ -166,7 +165,7 @@ class VerseRange : VerseKey<VerseRange?> {
 
         // If this is in 2 separate books
         if (startBook != endBook) {
-            val buf: StringBuilder = StringBuilder()
+            val buf = StringBuilder()
             if (v11n.isStartOfBook(start)) {
                 buf.append(startBook.osis)
             } else if (v11n.isStartOfChapter(start)) {
@@ -274,8 +273,7 @@ class VerseRange : VerseKey<VerseRange?> {
         // to see if it is wholly contained in the range and output it if it is.
 
         // Estimate the size of the buffer: book.dd.dd (where book is 3-5, 3 typical)
-        val buf: StringBuilder =
-            StringBuilder((endOrdinal - startOrdinal + 1) * 10)
+        val buf = StringBuilder((endOrdinal - startOrdinal + 1) * 10)
         buf.append(start.getOsisID())
         for (i in startOrdinal + 1 until endOrdinal) {
             buf.append(AbstractPassage.REF_OSIS_DELIM)
@@ -292,7 +290,7 @@ class VerseRange : VerseKey<VerseRange?> {
     }
 
     override fun toString(): String {
-        return getName()!!
+        return getName()
     }
 
     override fun clone(): VerseRange {
@@ -315,18 +313,18 @@ class VerseRange : VerseKey<VerseRange?> {
         return this
     }
 
-    override fun equals(obj: Any?): Boolean {
-        if (obj !is VerseRange) {
+    override fun equals(other: Any?): Boolean {
+        if (other !is VerseRange) {
             return false
         }
-        val vr = obj
+        val vr = other
         return verseCount == vr.verseCount && start.equals(vr.start) && v11n == vr.v11n
     }
 
     override fun hashCode(): Int {
         var result = start.hashCode()
         result = 31 * result + verseCount
-        return 31 * result + (if ((v11n == null)) 0 else v11n.hashCode())
+        return 31 * result + v11n.hashCode()
     }
 
     /* (non-Javadoc)
@@ -440,44 +438,44 @@ class VerseRange : VerseKey<VerseRange?> {
         return false
     }
 
+    /**
+     * Does this range represent exactly one chapter, no more or less.
+     *
+     * @return true if we are exactly one chapter.
+     */
     val isWholeChapter: Boolean
-        /**
-         * Does this range represent exactly one chapter, no more or less.
-         *
-         * @return true if we are exactly one chapter.
-         */
         get() = v11n.isSameChapter(start, end) && isWholeChapters
 
+    /**
+     * Does this range represent a number of whole chapters
+     *
+     * @return true if we are a whole number of chapters.
+     */
     val isWholeChapters: Boolean
-        /**
-         * Does this range represent a number of whole chapters
-         *
-         * @return true if we are a whole number of chapters.
-         */
         get() = v11n.isStartOfChapter(start) && v11n.isEndOfChapter(end)
 
+    /**
+     * Does this range represent exactly one book, no more or less.
+     *
+     * @return true if we are exactly one book.
+     */
     val isWholeBook: Boolean
-        /**
-         * Does this range represent exactly one book, no more or less.
-         *
-         * @return true if we are exactly one book.
-         */
         get() = v11n.isSameBook(start, end) && isWholeBooks
 
+    /**
+     * Does this range represent a whole number of books.
+     *
+     * @return true if we are a whole number of books.
+     */
     val isWholeBooks: Boolean
-        /**
-         * Does this range represent a whole number of books.
-         *
-         * @return true if we are a whole number of books.
-         */
         get() = v11n.isStartOfBook(start) && v11n.isEndOfBook(end)
 
+    /**
+     * Does this range occupy more than one book;
+     *
+     * @return true if we occupy 2 or more books
+     */
     val isMultipleBooks: Boolean
-        /**
-         * Does this range occupy more than one book;
-         *
-         * @return true if we occupy 2 or more books
-         */
         get() = start.book != end.book
 
     /**
@@ -914,10 +912,5 @@ class VerseRange : VerseKey<VerseRange?> {
          * What characters should we use to separate VerseRange parts on output
          */
         const val RANGE_PREF_DELIM: Char = RANGE_OSIS_DELIM
-
-        /**
-         * Serialization ID
-         */
-        const val serialVersionUID: Long = 8307795549869653580L
     }
 }
