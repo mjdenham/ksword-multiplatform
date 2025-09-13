@@ -230,6 +230,7 @@ object OsisXmlConstants {
     const val OSIS_ELEMENT_OSISTEXT: String = "osisText"
     const val OSIS_ELEMENT_SEG: String = "seg"
     const val OSIS_ELEMENT_LG: String = "lg"
+    const val OSIS_ELEMENT_MILESTONE: String = "milestone"
     const val OSIS_ELEMENT_L: String = "l"
     const val OSIS_ELEMENT_LB: String = "lb"
     const val OSIS_ELEMENT_HI: String = "hi"
