@@ -19,7 +19,8 @@
  */
 package org.crosswire.ksword
 
-//import org.crosswire.common.util.MsgBase
+import org.crosswire.common.util.Locale
+import org.crosswire.ksword.versification.localization.LocalizedStrings
 
 /**
  * Compile safe Msg resource settings.
@@ -28,7 +29,7 @@ package org.crosswire.ksword
  *
  * @author DM Smith
  */
-object JSMsg /*: MsgBase() */ {
+object JSMsg {
     /**
      * Get the internationalized text, but return key if key is unknown.
      * The text requires one or more parameters to be passed.
@@ -38,8 +39,14 @@ object JSMsg /*: MsgBase() */ {
      * @return the formatted, internationalized text
      */
     fun gettext(key: String, vararg params: Any): String {
-        return key //msg.lookup(key, params)
-    }
+        val localization = LocalizedStrings.forLanguage(Locale.current.languageCode)
+        val localizedString = localization.getString(key)
 
-//    private val msg: MsgBase = JSMsg()
+        // If we have a localized string, format it with params if any
+        return if (localizedString != null && params.isNotEmpty()) {
+            String.format(localizedString, *params)
+        } else {
+            localizedString ?: key // Return key if no translation found
+        }
+    }
 }
