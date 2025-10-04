@@ -22,19 +22,19 @@ package org.crosswire.ksword.versification.localization
 object ThaiStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "พระคัมภีร์ทั้งหมด",
+        "The Whole Bible" to "พระคัมภีร์ทั้งเล่ม",
         "Old Testament" to "พันธสัญญาเดิม",
-        "Pentateuch" to "หนังสือห้าเล่มของโมเสส",
+        "Pentateuch" to "เบญจบรรณ",
         "History" to "ประวัติศาสตร์",
-        "Poetry" to "บทกวี",
-        "All Prophecy" to "คำพยากรณ์ทั้งหมด",
+        "Poetry" to "วรรณกรรม",
+        "All Prophecy" to "หมวดผู้เผยพระวจนะทั้งหมด",
         "Major Prophets" to "ผู้เผยพระวจนะใหญ่",
-        "Minor Prophets" to "ผู้เผยพระวจนะเล็ก",
+        "Minor Prophets" to "ผู้เผยพระวจนะน้อย",
         "New Testament" to "พันธสัญญาใหม่",
-        "Gospels and Acts" to "พระวรสารและกิจการอัครสาวก",
+        "Gospels and Acts" to "พระกิตติคุณและกิจการ",
         "Letters" to "จดหมาย",
-        "Letters to People" to "จดหมายถึงผู้คน",
-        "Letters from People" to "จดหมายจากผู้คน",
+        "Letters to People" to "จดหมายไปถึงบุคคล",
+        "Letters from People" to "จดหมายจากบุคคล",
         "Revelation" to "วิวรณ์"
     )
 

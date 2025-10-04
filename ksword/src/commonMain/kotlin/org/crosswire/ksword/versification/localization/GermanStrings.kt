@@ -24,17 +24,17 @@ object GermanStrings : StringLocalization {
         // Division names
         "The Whole Bible" to "Die ganze Bibel",
         "Old Testament" to "Altes Testament",
-        "Pentateuch" to "Pentateuch",
-        "History" to "Geschichte",
+        "Pentateuch" to "5 Bücher Mose",
+        "History" to "Geschichtschreibung",
         "Poetry" to "Poesie",
-        "All Prophecy" to "Alle Prophetie",
+        "All Prophecy" to "Alle Propheten",
         "Major Prophets" to "Große Propheten",
         "Minor Prophets" to "Kleine Propheten",
         "New Testament" to "Neues Testament",
         "Gospels and Acts" to "Evangelien und Apostelgeschichte",
         "Letters" to "Briefe",
-        "Letters to People" to "Briefe an Personen",
-        "Letters from People" to "Briefe von Personen",
+        "Letters to People" to "Pauslusbriefe",
+        "Letters from People" to "Briefe von anderen Aposteln",
         "Revelation" to "Offenbarung"
     )
 

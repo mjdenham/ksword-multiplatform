@@ -24,18 +24,18 @@ object RussianStrings : StringLocalization {
         // Division names
         "The Whole Bible" to "Вся Библия",
         "Old Testament" to "Ветхий Завет",
-        "Pentateuch" to "Пятикнижие",
-        "History" to "История",
-        "Poetry" to "Поэзия",
+        "Pentateuch" to "Пятикнижие Моисея",
+        "History" to "Исторические Книги",
+        "Poetry" to "Писания",
         "All Prophecy" to "Все Пророчества",
-        "Major Prophets" to "Великие Пророки",
+        "Major Prophets" to "Большие Пророки",
         "Minor Prophets" to "Малые Пророки",
         "New Testament" to "Новый Завет",
-        "Gospels and Acts" to "Евангелия и Деяния",
+        "Gospels and Acts" to "Евангелия и Деяния Апостолов",
         "Letters" to "Послания",
         "Letters to People" to "Послания к Людям",
         "Letters from People" to "Послания от Людей",
-        "Revelation" to "Откровение"
+        "Revelation" to "Откровение Иоанна Богослова"
     )
 
     override fun getString(key: String): String? = strings[key]

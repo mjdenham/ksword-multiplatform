@@ -22,19 +22,19 @@ package org.crosswire.ksword.versification.localization
 object VietnameseStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "Toàn Bộ Kinh Thánh",
+        "The Whole Bible" to "Cả Kinh Thánh",
         "Old Testament" to "Cựu Ước",
         "Pentateuch" to "Ngũ Kinh",
         "History" to "Lịch Sử",
         "Poetry" to "Thơ Ca",
-        "All Prophecy" to "Tất Cả Tiên Tri",
-        "Major Prophets" to "Các Tiên Tri Lớn",
-        "Minor Prophets" to "Các Tiên Tri Nhỏ",
+        "All Prophecy" to "Tất Cả Sách Tiên Tri",
+        "Major Prophets" to "Đại Tiên Tri",
+        "Minor Prophets" to "Tiểu Tiên Tri",
         "New Testament" to "Tân Ước",
-        "Gospels and Acts" to "Phúc Âm và Công Vụ",
+        "Gospels and Acts" to "Sách Phúc Âm và Công Vụ",
         "Letters" to "Thư Tín",
-        "Letters to People" to "Thư Gửi Con Người",
-        "Letters from People" to "Thư Từ Con Người",
+        "Letters to People" to "Thư Tín cho Người",
+        "Letters from People" to "Thư Tín từ Người",
         "Revelation" to "Khải Huyền"
     )
 

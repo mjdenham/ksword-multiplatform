@@ -22,19 +22,19 @@ package org.crosswire.ksword.versification.localization
 object FrenchStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "Toute la Bible",
+        "The Whole Bible" to "La Bible entier",
         "Old Testament" to "Ancien Testament",
         "Pentateuch" to "Pentateuque",
-        "History" to "Histoire",
+        "History" to "Livres historiques",
         "Poetry" to "Poésie",
-        "All Prophecy" to "Toute Prophétie",
-        "Major Prophets" to "Grands Prophètes",
-        "Minor Prophets" to "Petits Prophètes",
+        "All Prophecy" to "Toutes les prophéties",
+        "Major Prophets" to "Prophètes majeurs",
+        "Minor Prophets" to "Prophètes mineurs",
         "New Testament" to "Nouveau Testament",
-        "Gospels and Acts" to "Évangiles et Actes",
+        "Gospels and Acts" to "Évangiles et les Actes",
         "Letters" to "Lettres",
-        "Letters to People" to "Lettres aux Personnes",
-        "Letters from People" to "Lettres des Personnes",
+        "Letters to People" to "Lettres à des personnes",
+        "Letters from People" to "Lettres de personnes",
         "Revelation" to "Apocalypse"
     )
 

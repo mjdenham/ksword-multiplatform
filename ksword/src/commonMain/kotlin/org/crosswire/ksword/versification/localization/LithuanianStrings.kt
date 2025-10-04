@@ -24,9 +24,9 @@ object LithuanianStrings : StringLocalization {
         // Division names
         "The Whole Bible" to "Visa Biblija",
         "Old Testament" to "Senasis Testamentas",
-        "Pentateuch" to "Pentateuchas",
-        "History" to "Istorija",
-        "Poetry" to "Poezija",
+        "Pentateuch" to "Penkiaknyge",
+        "History" to "Istorinės knygos",
+        "Poetry" to "Poetinės knygos",
         "All Prophecy" to "Visos pranašystės",
         "Major Prophets" to "Didieji pranašai",
         "Minor Prophets" to "Mažieji pranašai",

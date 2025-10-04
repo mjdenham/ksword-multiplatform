@@ -22,17 +22,17 @@ package org.crosswire.ksword.versification.localization
 object ChineseSimplifiedStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "全本圣经",
+        "The Whole Bible" to "新旧约圣经",
         "Old Testament" to "旧约",
         "Pentateuch" to "摩西五经",
         "History" to "历史书",
-        "Poetry" to "诗歌智慧书",
+        "Poetry" to "诗歌书",
         "All Prophecy" to "所有先知书",
         "Major Prophets" to "大先知书",
         "Minor Prophets" to "小先知书",
         "New Testament" to "新约",
-        "Gospels and Acts" to "福音书和使徒行传",
-        "Letters" to "书信",
+        "Gospels and Acts" to "福音书",
+        "Letters" to "使徒书信",
         "Letters to People" to "给人的书信",
         "Letters from People" to "来自人的书信",
         "Revelation" to "启示录"

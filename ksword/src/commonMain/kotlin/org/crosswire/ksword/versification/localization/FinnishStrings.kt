@@ -26,16 +26,16 @@ object FinnishStrings : StringLocalization {
         "Old Testament" to "Vanha testamentti",
         "Pentateuch" to "Pentateukki",
         "History" to "Historia",
-        "Poetry" to "Runous",
+        "Poetry" to "Lyriikka",
         "All Prophecy" to "Kaikki profetia",
         "Major Prophets" to "Suuret profeetat",
         "Minor Prophets" to "Pienet profeetat",
         "New Testament" to "Uusi testamentti",
-        "Gospels and Acts" to "Evankeliumit ja Teot",
+        "Gospels and Acts" to "Evankeliumit ja Apostolien teot",
         "Letters" to "Kirjeet",
-        "Letters to People" to "Kirjeet ihmisille",
-        "Letters from People" to "Kirjeet ihmisiltä",
-        "Revelation" to "Ilmestyskirja"
+        "Letters to People" to "Kirjeitä ihmisille",
+        "Letters from People" to "Kirjeitä ihmisiltä",
+        "Revelation" to "Ilmestys"
     )
 
     override fun getString(key: String): String? = strings[key]

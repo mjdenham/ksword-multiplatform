@@ -22,19 +22,19 @@ package org.crosswire.ksword.versification.localization
 object FarsiStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "کل کتاب مقدس",
+        "The Whole Bible" to "کتاب مقدس کامل",
         "Old Testament" to "عهد عتیق",
-        "Pentateuch" to "پنج کتاب موسی",
-        "History" to "تاریخ",
-        "Poetry" to "شعر",
+        "Pentateuch" to "تورات",
+        "History" to "تریخ",
+        "Poetry" to "شاعر",
         "All Prophecy" to "همه نبوت‌ها",
-        "Major Prophets" to "انبیای بزرگ",
-        "Minor Prophets" to "انبیای کوچک",
+        "Major Prophets" to "نبیهای بزرگ",
+        "Minor Prophets" to "نبیهای کوچک",
         "New Testament" to "عهد جدید",
-        "Gospels and Acts" to "اناجیل و اعمال رسولان",
+        "Gospels and Acts" to "ایجیل و اعمال رسولان",
         "Letters" to "نامه‌ها",
-        "Letters to People" to "نامه‌ها به مردم",
-        "Letters from People" to "نامه‌ها از مردم",
+        "Letters to People" to "نمه‌ها پ پولاس",
+        "Letters from People" to "نامه‌ها رسولان دیگار",
         "Revelation" to "مکاشفه"
     )
 

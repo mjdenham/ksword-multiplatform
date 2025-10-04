@@ -22,19 +22,19 @@ package org.crosswire.ksword.versification.localization
 object IndonesianStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "Seluruh Alkitab",
+        "The Whole Bible" to "Semua Kitab",
         "Old Testament" to "Perjanjian Lama",
-        "Pentateuch" to "Taurat",
+        "Pentateuch" to "5 Kitab Musa",
         "History" to "Sejarah",
         "Poetry" to "Puisi",
-        "All Prophecy" to "Semua Nubuat",
-        "Major Prophets" to "Nabi-nabi Besar",
-        "Minor Prophets" to "Nabi-nabi Kecil",
+        "All Prophecy" to "Nubuatan",
+        "Major Prophets" to "Nabi Besar",
+        "Minor Prophets" to "Nabi Kecil",
         "New Testament" to "Perjanjian Baru",
-        "Gospels and Acts" to "Injil dan Kisah Para Rasul",
+        "Gospels and Acts" to "Injil dan Kis",
         "Letters" to "Surat-surat",
-        "Letters to People" to "Surat kepada Orang-orang",
-        "Letters from People" to "Surat dari Orang-orang",
+        "Letters to People" to "Surat kepada Jemaat",
+        "Letters from People" to "Surat dari Jemaat",
         "Revelation" to "Wahyu"
     )
 

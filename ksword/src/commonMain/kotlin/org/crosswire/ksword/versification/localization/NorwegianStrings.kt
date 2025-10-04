@@ -22,20 +22,20 @@ package org.crosswire.ksword.versification.localization
 object NorwegianStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
-        "The Whole Bible" to "Hele Bibelen",
+        "The Whole Bible" to "Hele bibelen",
         "Old Testament" to "Det gamle testamente",
-        "Pentateuch" to "Pentateuken",
-        "History" to "Historie",
-        "Poetry" to "Poesi",
-        "All Prophecy" to "All profeti",
+        "Pentateuch" to "Mosebøkene",
+        "History" to "Historiske bøker",
+        "Poetry" to "Poesi bøker",
+        "All Prophecy" to "Alle profeter",
         "Major Prophets" to "Store profeter",
         "Minor Prophets" to "Små profeter",
         "New Testament" to "Det nye testamente",
-        "Gospels and Acts" to "Evangeliene og Apostlenes gjerninger",
-        "Letters" to "Brev",
-        "Letters to People" to "Brev til mennesker",
-        "Letters from People" to "Brev fra mennesker",
-        "Revelation" to "Johannes åpenbaring"
+        "Gospels and Acts" to "Evangeliene og Apostelenes gjerninger",
+        "Letters" to "Brever",
+        "Letters to People" to "Brev til folk",
+        "Letters from People" to "Brev fra folk",
+        "Revelation" to "Åpenbaring"
     )
 
     override fun getString(key: String): String? = strings[key]
