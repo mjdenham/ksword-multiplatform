@@ -2,7 +2,6 @@ package org.crosswire.ksword.versification
 
 import org.crosswire.common.util.Locale
 import org.crosswire.common.util.LocaleHelper.ENGLISH_LOCALE
-import org.crosswire.common.util.MissingResourceException
 import org.crosswire.ksword.versification.localization.BookNameProvider
 import kotlin.jvm.Transient
 
@@ -391,43 +390,25 @@ class BibleNames private constructor() {
             shortMap: MutableMap<String, BookName>,
             altMap: Map<*, *>?
         ) {
-            val osisName = book.osis
+            val fullBook = resources.getName(book, BookNameProvider.NameType.FULL)
+            var shortBook = resources.getName(book, BookNameProvider.NameType.SHORT)
 
-            val fullBook = getString(resources, osisName + Companion.FULL_KEY)
-
-            var shortBook = getString(resources, osisName + Companion.SHORT_KEY)
-            if (shortBook.isNullOrEmpty()) {
+            if (shortBook.isEmpty()) {
                 shortBook = fullBook
             }
 
-            val altBook = getString(resources, osisName + Companion.ALT_KEY)
+            val altBook = resources.getName(book, BookNameProvider.NameType.ALTERNATE)
 
-            val bookName =
-                BookName(locale, BibleBook.fromOSIS(osisName)!!, fullBook!!, shortBook!!, altBook)
-            books.put(book, bookName)
+            val bookName = BookName(locale, book, fullBook, shortBook, altBook)
+            books[book] = bookName
 
             fullMap[bookName.normalizedLongName] = bookName
-
             shortMap[bookName.normalizedShortName] = bookName
 
             //            String[] alternates = null; //StringUtil.split(BookName.normalize(altBook, locale), ',');
-
 //            for (int j = 0; j < alternates.length; j++) {
 //                altMap.put(alternates[j], bookName);
 //            }
-        }
-
-        /*
-         * Helper to make the code more readable.
-         */
-        private fun getString(resources: BookNameProvider, key: String): String? {
-            try {
-                return resources.getString(key);
-            } catch (e: MissingResourceException) {
-
-                //assert(false)
-            }
-            return null
         }
     }
 
@@ -474,9 +455,5 @@ class BibleNames private constructor() {
         private var englishBibleNames: NameList? = null
 
         private val instance = BibleNames()
-
-        private const val FULL_KEY = ".Full"
-        private const val SHORT_KEY = ".Short"
-        private const val ALT_KEY = ".Alt"
     }
 }

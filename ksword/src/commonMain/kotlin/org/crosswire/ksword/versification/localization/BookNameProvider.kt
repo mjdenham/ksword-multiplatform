@@ -13,29 +13,26 @@ class BookNameProvider(private val locale: Locale) {
     }
 
     /**
-     * Get a localized string for the given key.
-     * Keys should be in format: "{OSIS}.Full", "{OSIS}.Short", or "{OSIS}.Alt"
-     *
-     * @param key the resource key (e.g., "Gen.Full", "Matt.Short")
-     * @return the localized string, or the key itself if not found
+     * Type of book name to retrieve.
      */
-    fun getString(key: String): String {
-        // Parse the key to extract book OSIS and type
-        val parts = key.split(".")
-        if (parts.size < 2) {
-            return key
-        }
+    enum class NameType {
+        FULL,
+        SHORT,
+        ALTERNATE
+    }
 
-        val osisName = parts[0]
-        val type = parts[1]
-
-        val book = BibleBook.fromExactOSISOrNull(osisName) ?: return key
-
+    /**
+     * Get a localized name for a Bible book.
+     *
+     * @param book the Bible book
+     * @param type the type of name to retrieve (full, short, or alternate)
+     * @return the localized name, or the book's OSIS name if not found
+     */
+    fun getName(book: BibleBook, type: NameType): String {
         return when (type) {
-            "Full" -> localization.getFullName(book) ?: key
-            "Short" -> localization.getShortName(book) ?: key
-            "Alt" -> localization.getAlternateName(book) ?: ""
-            else -> key
+            NameType.FULL -> localization.getFullName(book) ?: book.osis
+            NameType.SHORT -> localization.getShortName(book) ?: book.osis
+            NameType.ALTERNATE -> localization.getAlternateName(book) ?: ""
         }
     }
 }
