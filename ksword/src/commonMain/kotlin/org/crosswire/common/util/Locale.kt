@@ -1,7 +1,18 @@
 package org.crosswire.common.util
 
-class Locale(val languageCode: String) {
+enum class Locale(val languageCode: String) {
+    ENGLISH("en"),
+    FRENCH("fr"),
+    GERMAN("de"),
+    ITALIAN("it"),
+    PORTUGUESE("pt"),
+    SPANISH("es");
+
     companion object {
-        val current: Locale = Locale("en")
+        var current: Locale = ENGLISH
+
+        fun findLocale(languageCode: String): Locale {
+            return entries.find { it.languageCode == languageCode } ?: ENGLISH
+        }
     }
 }

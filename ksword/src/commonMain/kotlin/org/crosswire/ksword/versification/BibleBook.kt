@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification
 
-import org.crosswire.common.util.LocaleHelper
+import org.crosswire.common.util.Locale
 
 
 /**
@@ -223,7 +223,7 @@ enum class BibleBook(
          * @return the matching BibleBook or null
          */
         fun fromOSIS(osis: String): BibleBook? {
-            val match: String = BookName.normalize(osis, LocaleHelper.ENGLISH_LOCALE)
+            val match: String = BookName.normalize(osis, Locale.ENGLISH)
             return osisMap[match]
         }
 
@@ -247,7 +247,7 @@ enum class BibleBook(
 
         init {
             for (book in entries) {
-                osisMap[BookName.normalize(book.osis, LocaleHelper.ENGLISH_LOCALE)] = book
+                osisMap[BookName.normalize(book.osis, Locale.ENGLISH)] = book
                 exactMatches[book.osis] = book
             }
         }

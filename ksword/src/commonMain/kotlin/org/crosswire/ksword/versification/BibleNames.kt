@@ -1,7 +1,6 @@
 package org.crosswire.ksword.versification
 
 import org.crosswire.common.util.Locale
-import org.crosswire.common.util.LocaleHelper.ENGLISH_LOCALE
 import org.crosswire.ksword.versification.localization.BookNameProvider
 import kotlin.jvm.Transient
 
@@ -133,7 +132,7 @@ class BibleNames private constructor() {
      */
     private fun getLocalizedBibleNames(): NameList? {
         // Get the current Locale
-        return getBibleNamesForLocale(Locale.current) //TODO should be Locale.US
+        return getBibleNamesForLocale(Locale.current)
     }
 
     /**
@@ -420,8 +419,8 @@ class BibleNames private constructor() {
      * This class is a singleton, enforced by a private constructor.
      */
     init {
-        englishBibleNames = getBibleNamesForLocale(ENGLISH_LOCALE)
-        localizedBibleNames[ENGLISH_LOCALE] = englishBibleNames
+        englishBibleNames = getBibleNamesForLocale(Locale.ENGLISH)
+        localizedBibleNames[Locale.ENGLISH] = englishBibleNames
     }
 
     companion object {

@@ -111,7 +111,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
         get() = BookType.fromString(getProperty(KEY_MOD_DRV))
 
     override val language: Locale
-        get() = getProperty(KEY_LANG)?.let { Locale(it) } ?: Locale.current
+        get() = getProperty(KEY_LANG)?.let { Locale.findLocale(it) } ?: Locale.ENGLISH
 
     override val name: String
         get() = getProperty(KEY_DESCRIPTION) ?: ""
