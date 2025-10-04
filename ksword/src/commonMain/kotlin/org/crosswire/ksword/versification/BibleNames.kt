@@ -3,7 +3,7 @@ package org.crosswire.ksword.versification
 import org.crosswire.common.util.Locale
 import org.crosswire.common.util.LocaleHelper.ENGLISH_LOCALE
 import org.crosswire.common.util.MissingResourceException
-import org.crosswire.ksword.javautil.ResourceBundle
+import org.crosswire.ksword.versification.localization.BookNameProvider
 import kotlin.jvm.Transient
 
 /**
@@ -243,8 +243,8 @@ class BibleNames private constructor() {
             // Create the book name maps
             books = LinkedHashMap<BibleBook, BookName>(ntCount + otCount + ncCount)
 
-            // Create ResourceBundle with locale support
-            val resources: ResourceBundle = ResourceBundle(locale)
+            // Create BookNameProvider with locale support
+            val resources: BookNameProvider = BookNameProvider(locale)
 
             fullNT = HashMap<String, BookName>(ntCount)
             shortNT = HashMap<String, BookName>(ntCount)
@@ -385,7 +385,7 @@ class BibleNames private constructor() {
         }
 
         private fun store(
-            resources: ResourceBundle,
+            resources: BookNameProvider,
             book: BibleBook,
             fullMap: MutableMap<String, BookName>,
             shortMap: MutableMap<String, BookName>,
@@ -420,7 +420,7 @@ class BibleNames private constructor() {
         /*
          * Helper to make the code more readable.
          */
-        private fun getString(resources: ResourceBundle, key: String): String? {
+        private fun getString(resources: BookNameProvider, key: String): String? {
             try {
                 return resources.getString(key);
             } catch (e: MissingResourceException) {

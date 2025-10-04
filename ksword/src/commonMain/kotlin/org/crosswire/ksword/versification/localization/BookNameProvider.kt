@@ -1,14 +1,12 @@
-package org.crosswire.ksword.javautil
+package org.crosswire.ksword.versification.localization
 
 import org.crosswire.common.util.Locale
 import org.crosswire.ksword.versification.BibleBook
-import org.crosswire.ksword.versification.localization.LocalizedBookNames
 
 /**
- * ResourceBundle for loading localized Bible book names.
- * This implementation uses the LocalizedBookNames system for efficient memory usage.
+ * Provider for localized Bible book names.
  */
-class ResourceBundle(private val locale: Locale) {
+class BookNameProvider(private val locale: Locale) {
 
     private val localization by lazy {
         LocalizedBookNames.forLanguage(locale.languageCode)
