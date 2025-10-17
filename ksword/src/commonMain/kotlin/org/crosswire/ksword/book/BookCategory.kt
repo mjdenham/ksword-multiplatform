@@ -76,6 +76,9 @@ enum class BookCategory
     /** Books that are not any of the above. This is a catch all for new book categories.  */ // TRANSLATOR: The name for the book category consisting of books not in any of the other categories.
     OTHER("Other", gettext("Other"));
 
+    val displayName: String
+        get() = name.split('_').joinToString(" ") { it.lowercase().replaceFirstChar(Char::titlecase) }
+
     /**
      * @return the internationalized name.
      */
