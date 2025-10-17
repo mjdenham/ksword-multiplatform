@@ -99,6 +99,9 @@ enum class Locale(val languageCode: String) {
     WEST_FLEMISH("vls"),
     UNKNOWN("??");
 
+    val displayName: String
+        get() = name.split('_').joinToString(" ") { it.lowercase().replaceFirstChar(Char::titlecase) }
+
     companion object {
         var current: Locale = ENGLISH
 
