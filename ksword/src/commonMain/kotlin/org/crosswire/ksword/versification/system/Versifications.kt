@@ -107,12 +107,8 @@ object Versifications {
 //        if (SystemSegond.V11N_NAME.equals(name)) {
 //            return new SystemSegond();
 //        }
-//        if (SystemSynodal.V11N_NAME.equals(name)) {
-//            return new SystemSynodal();
-//        }
-//        if (SystemSynodalProt.V11N_NAME.equals(name)) {
-//            return new SystemSynodalProt();
-//        }
+            SystemSynodal.V11N_NAME -> SystemSynodal()
+            SystemSynodalProt.V11N_NAME -> SystemSynodalProt()
 //        if (SystemVulg.V11N_NAME.equals(name)) {
 //            return new SystemVulg();
 //        }
@@ -175,8 +171,8 @@ object Versifications {
 //        known.add(SystemNRSVA.V11N_NAME);
 //        known.add(SystemOrthodox.V11N_NAME);
 //        known.add(SystemSegond.V11N_NAME);
-//        known.add(SystemSynodal.V11N_NAME);
-//        known.add(SystemSynodalProt.V11N_NAME);
+        known.add(SystemSynodal.V11N_NAME)
+        known.add(SystemSynodalProt.V11N_NAME)
 //        known.add(SystemVulg.V11N_NAME);
         fluffed = mutableMapOf()
     }
