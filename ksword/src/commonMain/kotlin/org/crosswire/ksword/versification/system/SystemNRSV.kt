@@ -42,7 +42,7 @@ class SystemNRSV : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, L
 
         private val LAST_VERSE_OT: Array<IntArray> = SystemKJV.LAST_VERSE_OT
 
-        private val LAST_VERSE_NT: Array<IntArray> = arrayOf(
+        val LAST_VERSE_NT: Array<IntArray> = arrayOf(
             // Matthew
             intArrayOf(
                 25, 23, 17, 25, 48, 34, 29, 34, 38, 42,

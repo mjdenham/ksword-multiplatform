@@ -71,47 +71,23 @@ object Versifications {
         return when (name) {
             SystemKJV.V11N_NAME -> SystemKJV()
         //then in alphabetical order, to ease the developer checking we have them all
-//        if (SystemCalvin.V11N_NAME.equals(name)) {
-//            return new SystemCalvin();
-//        }
-//        if (SystemCatholic.V11N_NAME.equals(name)) {
-//            return new SystemCatholic();
-//        }
-//        if (SystemCatholic2.V11N_NAME.equals(name)) {
-//            return new SystemCatholic2();
-//        }
-//        if (SystemDarbyFR.V11N_NAME.equals(name)) {
-//            return new SystemDarbyFR();
-//        }
+            SystemCalvin.V11N_NAME -> SystemCalvin()
+            SystemCatholic.V11N_NAME -> SystemCatholic()
+            SystemCatholic2.V11N_NAME -> SystemCatholic2()
+            SystemDarbyFR.V11N_NAME -> SystemDarbyFR()
             SystemGerman.V11N_NAME -> SystemGerman()
             SystemKJVA.V11N_NAME -> SystemKJVA()
-//        if (SystemLeningrad.V11N_NAME.equals(name)) {
-//            return new SystemLeningrad();
-//        }
-//        if (SystemLuther.V11N_NAME.equals(name)) {
-//            return new SystemLuther();
-//        }
-//        if (SystemLXX.V11N_NAME.equals(name)) {
-//            return new SystemLXX();
-//        }
-//        if (SystemMT.V11N_NAME.equals(name)) {
-//            return new SystemMT();
-//        }
+            SystemLeningrad.V11N_NAME -> SystemLeningrad()
+            SystemLuther.V11N_NAME -> SystemLuther()
+            SystemLXX.V11N_NAME -> SystemLXX()
+            SystemMT.V11N_NAME -> SystemMT()
             SystemNRSV.V11N_NAME -> SystemNRSV()
-//        if (SystemNRSVA.V11N_NAME.equals(name)) {
-//            return new SystemNRSVA();
-//        }
-//        if (SystemOrthodox.V11N_NAME.equals(name)) {
-//            return new SystemOrthodox();
-//        }
-//        if (SystemSegond.V11N_NAME.equals(name)) {
-//            return new SystemSegond();
-//        }
+            SystemNRSVA.V11N_NAME -> SystemNRSVA()
+            SystemOrthodox.V11N_NAME -> SystemOrthodox()
+            SystemSegond.V11N_NAME -> SystemSegond()
             SystemSynodal.V11N_NAME -> SystemSynodal()
             SystemSynodalProt.V11N_NAME -> SystemSynodalProt()
-//        if (SystemVulg.V11N_NAME.equals(name)) {
-//            return new SystemVulg();
-//        }
+            SystemVulg.V11N_NAME -> SystemVulg()
             else -> throw RuntimeException("Unknown Versification: $name")
         }
     }
@@ -156,24 +132,24 @@ object Versifications {
      * This class is a singleton, enforced by a private constructor.
      */
     init {
-        //        known.add(SystemCalvin.V11N_NAME);
-//        known.add(SystemCatholic.V11N_NAME);
-//        known.add(SystemCatholic2.V11N_NAME);
-//        known.add(SystemDarbyFR.V11N_NAME);
+        known.add(SystemCalvin.V11N_NAME)
+        known.add(SystemCatholic.V11N_NAME)
+        known.add(SystemCatholic2.V11N_NAME)
+        known.add(SystemDarbyFR.V11N_NAME)
         known.add(SystemGerman.V11N_NAME)
         known.add(SystemKJV.V11N_NAME)
         known.add(SystemKJVA.V11N_NAME)
-//        known.add(SystemLeningrad.V11N_NAME);
-//        known.add(SystemLuther.V11N_NAME);
-//        known.add(SystemLXX.V11N_NAME);
-//        known.add(SystemMT.V11N_NAME);
+        known.add(SystemLeningrad.V11N_NAME)
+        known.add(SystemLuther.V11N_NAME)
+        known.add(SystemLXX.V11N_NAME)
+        known.add(SystemMT.V11N_NAME)
         known.add(SystemNRSV.V11N_NAME)
-//        known.add(SystemNRSVA.V11N_NAME);
-//        known.add(SystemOrthodox.V11N_NAME);
-//        known.add(SystemSegond.V11N_NAME);
+        known.add(SystemNRSVA.V11N_NAME)
+        known.add(SystemOrthodox.V11N_NAME)
+        known.add(SystemSegond.V11N_NAME)
         known.add(SystemSynodal.V11N_NAME)
         known.add(SystemSynodalProt.V11N_NAME)
-//        known.add(SystemVulg.V11N_NAME);
+        known.add(SystemVulg.V11N_NAME)
         fluffed = mutableMapOf()
     }
 
