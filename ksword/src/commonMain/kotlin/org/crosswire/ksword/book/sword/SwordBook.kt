@@ -19,6 +19,8 @@ class SwordBook(override var bookMetaData: BookMetaData, val backend: Backend<*>
 
     override fun getPreviousKey(key: Key): Key? = backend.findPreviousKey(key)
 
+    override fun contains(key: Key): Boolean = backend.contains(key)
+
     override fun readToOsis(key: Key): List<KeyText> = backend.readToOsis(key)
 
     override fun getRawText(key: Key): String = backend.getRawText(key)

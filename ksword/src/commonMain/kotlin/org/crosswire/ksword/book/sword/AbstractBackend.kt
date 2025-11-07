@@ -15,6 +15,11 @@ import org.crosswire.ksword.passage.VerseRange
 
 abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : StatefulFileBackedBackend<T>, Backend<T> {
 
+    override fun contains(key: Key): Boolean {
+        val text = getRawText(key)
+        return text.isNotBlank()
+    }
+
     override fun findNextKey(key: Key): Key? {
         val verse = (key as? Verse) ?: return null
         val v11n = verse.getVersification()

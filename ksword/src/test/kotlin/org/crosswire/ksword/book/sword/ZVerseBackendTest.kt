@@ -14,11 +14,11 @@ import org.crosswire.ksword.passage.VerseRange
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.system.Versifications
 import org.junit.AfterClass
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
-import kotlin.test.assertEquals
 import kotlin.time.measureTime
 
 class ZVerseBackendTest {
@@ -46,7 +46,7 @@ class ZVerseBackendTest {
     @Test
     fun readRawContent_readFirstVerse() {
         testDownloaded()
-        val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N;
+        val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N
         val v11n = Versifications.getVersification(v11nName)
         val result = backend.readRawContent(backendState, Verse(v11n, BibleBook.GEN, 1, 1))
         println(result)
@@ -99,6 +99,27 @@ class ZVerseBackendTest {
         })
     }
 
+    @Test
+    fun contains_returnsTrueForExistingVerseAndFalseForMissingVerse() {
+        // GIVEN a downloaded and initialized backend
+        testDownloaded()
+        val v11nName = bookMetaData.getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N
+        val v11n = Versifications.getVersification(v11nName)
+
+        // WHEN checking for verses that are known to exist
+        val firstVerse = Verse(v11n, BibleBook.GEN, 1, 1)
+        val ntVerse = Verse(v11n, BibleBook.JOHN, 3, 16)
+
+        // AND WHEN checking for a verse that does not exist (Genesis has only 50 chapters)
+        val nonExistentVerse = Verse(v11n, BibleBook.GEN, 51, 1)
+
+        // THEN the existing verses should return true
+        assertTrue("contains() should return true for Genesis 1:1", backend.contains(firstVerse))
+        assertTrue("contains() should return true for John 3:16", backend.contains(ntVerse))
+
+        // AND THEN the non-existent verse should return false
+        assertFalse("contains() should return false for Genesis 51:1", backend.contains(nonExistentVerse))
+    }
     @Test
     fun testDownloaded() = runTest {
         if (!FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/$MODULE_NAME.conf"))) {

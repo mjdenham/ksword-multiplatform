@@ -29,4 +29,8 @@ class NullBackend : Backend<OpenFileState> {
     override fun getRawText(key: Key): String {
         throw BookException("NullBackend does not support getRawText")
     }
+
+    override fun contains(key: Key): Boolean {
+        throw BookException("NullBackend does not support contains")
+    }
 }

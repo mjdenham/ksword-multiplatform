@@ -48,4 +48,6 @@ interface Backend<T : OpenFileState> {
      * @return the text from the module
      */
     fun getRawText(key: Key): String
+
+    fun contains(key: Key): Boolean
 }

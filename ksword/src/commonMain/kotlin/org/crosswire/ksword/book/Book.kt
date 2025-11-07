@@ -39,6 +39,9 @@ interface Book /* : Activatable, Comparable<Book?> */ {
 
     fun getPreviousKey(key: Key): Key?
 
+    fun contains(key: Key): Boolean
+
+
     fun readToOsis(key: Key): List<KeyText>
 
     /**

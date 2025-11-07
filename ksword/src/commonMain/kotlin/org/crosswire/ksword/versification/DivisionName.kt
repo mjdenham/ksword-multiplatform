@@ -47,9 +47,6 @@ import org.crosswire.ksword.JSMsg.gettext
  *  * A given V11N might be a single testament or just the gospels. In this case,
  * it'd be good to know whether a division isDefined()
  *
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
  * @author Joe Walker
  * @author DM Smith
  */
@@ -360,6 +357,41 @@ enum class DivisionName {
 
         override fun getRange(): String {
             return "Rev"
+        }
+    },
+
+    APOCRYPHA {
+        override fun contains(book: BibleBook): Boolean {
+            return book in BibleBook.TOB..BibleBook.ESTH_GR
+        }
+
+        override fun getSize(): Int {
+            return 58
+        }
+
+        override fun getName(): String {
+            return gettext("Apocrypha")
+        }
+
+        override fun getRange(): String {
+            return "Tob-EsthGr"
+        }
+    },
+    OTHER {
+        override fun contains(book: BibleBook): Boolean {
+            return OLD_TESTAMENT.contains(book) && !NEW_TESTAMENT.contains(book) && !APOCRYPHA.contains(book)
+        }
+
+        override fun getSize(): Int {
+            return 2
+        }
+
+        override fun getName(): String {
+            return gettext("Other")
+        }
+
+        override fun getRange(): String {
+            return ""
         }
     };
 

@@ -192,6 +192,17 @@ enum class BibleBook(
     }
 
     /**
+     * Determines the testament of the book based on its ordinal position.
+     */
+    val testament: DivisionName
+        get() = when (this) {
+            in GEN..MAL -> DivisionName.OLD_TESTAMENT
+            in MATT..REV -> DivisionName.NEW_TESTAMENT
+            in TOB..PSS151 -> DivisionName.APOCRYPHA // Example range for Apocrypha
+            else -> DivisionName.OTHER
+        }
+
+    /**
      * Get the OSIS representation of this BibleBook.
      *
      * @return the OSIS name
@@ -200,15 +211,6 @@ enum class BibleBook(
         return osis
     }
 
-    /**
-     * Get the OSIS representation of this BibleBook.
-     *
-     * @return the OSIS name
-     */
-
-    /**
-     * @return true to indicate a 1-chapter book only
-     */
     /**
      * Indicates that the book consists of a single chapter.
      */
