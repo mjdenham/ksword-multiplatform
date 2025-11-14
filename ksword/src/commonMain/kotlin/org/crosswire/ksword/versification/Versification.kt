@@ -1143,6 +1143,10 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         return Verse(this, patchedBook, patchedChapter, patchedVerse)
     }
 
+    override fun toString(): String {
+        return name
+    }
+
     /**
      * Get the OSIS name for this Versification.
      * @return the OSIS name of the Versification
