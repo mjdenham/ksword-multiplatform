@@ -271,6 +271,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
         return bookList.getPreviousBook(book)
     }
 
+    // Be very careful with this because it included INTRO_NT/OT/BIBLE
     val bookIterator: Iterator<BibleBook>
         /**
          * Get the BibleBooks in this Versification.

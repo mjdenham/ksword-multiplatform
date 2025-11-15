@@ -100,6 +100,26 @@ class ZVerseBackendTest {
     }
 
     @Test
+    fun readToOsis_readIntroductionToNT() {
+        testDownloaded()
+        val v11nName = "KJV" //getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION);
+        val v11n = Versifications.getVersification(v11nName)
+        val bibleBook = BibleBook.INTRO_NT
+        val start = Verse(v11n, bibleBook, 0, 0)
+        val lastChapter = v11n.getLastChapter(bibleBook)
+        val lastVerse = v11n.getLastVerse(bibleBook, lastChapter)
+        val end = Verse(v11n, bibleBook, lastChapter, lastVerse)
+        val verseRange = VerseRange(v11n, start, end)
+        val result: List<KeyText>
+        val time = measureTime {
+            result = backend.readToOsis(verseRange)
+        }
+        println("Time taken: ${time.inWholeMilliseconds} ms")
+        println(result)
+        assertTrue(result.size < 200)
+    }
+
+    @Test
     fun contains_returnsTrueForExistingVerseAndFalseForMissingVerse() {
         // GIVEN a downloaded and initialized backend
         testDownloaded()
