@@ -18,26 +18,31 @@ class WebResource() {
 
     suspend fun download(url: String, filePath: Path): Boolean {
         println("Downloading $url to $filePath")
-        var ok = false
-        var totalBytes = 0
-        filePath.createParentDirectories()
+        try {
+            var ok = false
+            var totalBytes = 0
+            filePath.createParentDirectories()
 
-        FileSystem.SYSTEM.sink(filePath).buffer().use { sink ->
-            client.prepareGet(url).execute { httpResponse ->
-                val channel: ByteReadChannel = httpResponse.body()
-                while (!channel.isClosedForRead) {
-                    val packet = channel.readRemaining(DEFAULT_HTTP_BUFFER_SIZE.toLong())
-                    while (!packet.exhausted()) {
-                        val bytes = packet.readByteArray()
-                        sink.write(bytes)
-                        totalBytes += bytes.size
-                        ok = true
+            FileSystem.SYSTEM.sink(filePath).buffer().use { sink ->
+                client.prepareGet(url).execute { httpResponse ->
+                    val channel: ByteReadChannel = httpResponse.body()
+                    while (!channel.isClosedForRead) {
+                        val packet = channel.readRemaining(DEFAULT_HTTP_BUFFER_SIZE.toLong())
+                        while (!packet.exhausted()) {
+                            val bytes = packet.readByteArray()
+                            sink.write(bytes)
+                            totalBytes += bytes.size
+                            ok = true
+                        }
                     }
                 }
             }
-        }
-        println("Downloaded ${totalBytes/1024} KB")
+            println("Downloaded ${totalBytes / 1024} KB")
 
-        return ok
+            return ok
+        } catch (e: Exception) {
+            println("Error downloading $url: ${e.message}")
+            return false
+        }
     }
 }

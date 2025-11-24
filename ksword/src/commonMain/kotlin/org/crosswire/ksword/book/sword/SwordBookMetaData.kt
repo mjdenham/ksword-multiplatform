@@ -130,6 +130,9 @@ class SwordBookMetaData: AbstractBookMetaData() {
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) == "OSIS"
 
+    override val isLeftToRight: Boolean
+        get() = getProperty(KEY_DIRECTION).equals("LtoR", ignoreCase = true)
+
     override val isEnciphered: Boolean
         get() = TODO("Not yet implemented")
     override val isLocked: Boolean
@@ -147,8 +150,6 @@ class SwordBookMetaData: AbstractBookMetaData() {
     lateinit var driver: SwordBookDriver
 
     override val driverName: String?
-        get() = TODO("Not yet implemented")
-    override val isLeftToRight: Boolean
         get() = TODO("Not yet implemented")
 
     var configFile: Path? = null

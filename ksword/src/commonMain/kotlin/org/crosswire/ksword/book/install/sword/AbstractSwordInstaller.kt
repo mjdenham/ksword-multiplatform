@@ -82,25 +82,29 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
 
     override suspend fun loadBookList(): Unit = withContext(Dispatchers.IO){
         if (!loaded) {
-            val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
-            if (!FileSystem.SYSTEM.exists(catalogFile)) {
-                refreshBookListFromServer()
-            }
-
-            val nullBackend = NullBackend()
-
-            TarGzExpander().handleTarGzContent(catalogFile) { name, content ->
-                val sbmd = SwordBookMetaData.createFromSource(content)
-
-                if (sbmd.isSupported) {
-                    val book: Book = SwordBook(sbmd, nullBackend)
-                    entries[sbmd.initials + sbmd.name] = book
-                } else {
-                    Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)} ${sbmd.getProperty(SwordBookMetaData.KEY_SOURCE_TYPE)}")
+            try {
+                val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
+                if (!FileSystem.SYSTEM.exists(catalogFile)) {
+                    refreshBookListFromServer()
                 }
-            }
 
-            loaded = true
+                val nullBackend = NullBackend()
+
+                TarGzExpander().handleTarGzContent(catalogFile) { name, content ->
+                    val sbmd = SwordBookMetaData.createFromSource(content)
+
+                    if (sbmd.isSupported) {
+                        val book: Book = SwordBook(sbmd, nullBackend)
+                        entries[sbmd.initials + sbmd.name] = book
+                    } else {
+                        Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)} ${sbmd.getProperty(SwordBookMetaData.KEY_SOURCE_TYPE)}")
+                    }
+                }
+
+                loaded = true
+            } catch (ex: Exception) {
+                Log.e("Failed to load book list", ex)
+            }
         }
     }
 

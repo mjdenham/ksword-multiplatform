@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Log
 import org.crosswire.ksword.JSMsg
 import org.crosswire.ksword.versification.Versification
 
@@ -54,20 +55,25 @@ object VerseRangeFactory {
      * @exception NoSuchVerseException
      * If the reference is illegal or the text can not be understood
      */
-    fun fromString(v11n: Versification, original: String, basis: VerseRange? = null): VerseRange {
-        val parts: List<String> = original.split(VerseRange.RANGE_OSIS_DELIM)
+    fun fromString(v11n: Versification, original: String, basis: VerseRange? = null): VerseRange? {
+        try {
+            val parts: List<String> = original.split(VerseRange.RANGE_OSIS_DELIM)
 
-        return when (parts.size) {
-            1 -> fromText(v11n, original, parts[0], parts[0], basis)
-            2 -> fromText(v11n, original, parts[0], parts[1], basis)
-            else ->             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
-                throw NoSuchVerseException(
-                    JSMsg.gettext(
-                        "A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}",
-                        VerseRange.RANGE_OSIS_DELIM,
-                        original
+            return when (parts.size) {
+                1 -> fromText(v11n, original, parts[0], parts[0], basis)
+                2 -> fromText(v11n, original, parts[0], parts[1], basis)
+                else ->             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
+                    throw NoSuchVerseException(
+                        JSMsg.gettext(
+                            "A verse range cannot have more than 2 parts. (Parts are separated by {0}) Given {1}",
+                            VerseRange.RANGE_OSIS_DELIM,
+                            original
+                        )
                     )
-                )
+            }
+        } catch (e: NoSuchVerseException) {
+            Log.w("VerseRangeFactory could not parse $original", e)
+            return null
         }
     }
 
