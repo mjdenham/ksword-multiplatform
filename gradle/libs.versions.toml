@@ -3,13 +3,13 @@ android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "35"
 agp = "8.12.1"
-kotlin = "2.2.10"
+kotlin = "2.2.21"
 junit = "4.13.2"
 kotlinxCoroutinesTest = "1.10.2"
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJson = "1.9.0"
-ktor = "3.2.3"
-okio = "3.16.0"
+ktor = "3.3.3"
+okio = "3.16.4"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }

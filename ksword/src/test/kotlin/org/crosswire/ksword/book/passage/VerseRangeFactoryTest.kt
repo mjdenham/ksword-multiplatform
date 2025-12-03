@@ -33,7 +33,7 @@ class VerseRangeFactoryTest {
         // Psa 23 has 6 verses in KJV.
         // AccuracyType logic should expand "Psa 23" to the whole chapter.
         val expected = rangePsaC23
-        val actual = VerseRangeFactory.fromString(v11n, "Ps 23")
+        val actual = VerseRangeFactory.fromString(v11n, "Ps 23")!!
         Assert.assertEquals("Expected start verse to be Psa 23:0", expected.start, actual.start)
         Assert.assertEquals("Expected end verse to be Psa 23:6", expected.end, actual.end)
         Assert.assertEquals("Expected range for Psa 23", expected, actual)
@@ -45,9 +45,9 @@ class VerseRangeFactoryTest {
         Assert.assertEquals(rangeGenC1V2To10, VerseRangeFactory.fromString(v11n, "Gen 1:10-Gen 1:2"))
     }
 
-    @Test(expected = NoSuchVerseException::class)
-    fun testInvalidRange_TooManyParts() {
-        VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:5-Gen 1:10")
+    @Test
+    fun testInvalidRange_TooManyParts_returnsNull() {
+        Assert.assertNull(VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:5-Gen 1:10"))
     }
 
     companion object {
