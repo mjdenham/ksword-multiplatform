@@ -26,17 +26,13 @@ package org.crosswire.ksword.passage
  * @author Joe Walker
  */
 open class NoSuchKeyException : Exception {
-    private var msg: String
-
     /**
      * Construct the Exception with a message
      *
      * @param msg
      * The resource id to read
      */
-    constructor(msg: String) {
-        this.msg = msg
-    }
+    constructor(msg: String) : super(msg)
 
     /**
      * Construct the Exception with a message and a nested Exception
@@ -46,9 +42,7 @@ open class NoSuchKeyException : Exception {
      * @param ex
      * The nested Exception
      */
-    constructor(msg: String, ex: Throwable?) {
-        this.msg = msg
-    }
+    constructor(msg: String, ex: Throwable?) : super(msg, ex)
 
     companion object {
         /**

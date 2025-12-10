@@ -14,6 +14,7 @@ import kotlin.time.ExperimentalTime
 object OpenFileStateManager {
 
     private val metaToState = mutableMapOf<BookMetaData, ZVerseBackendState>()
+    private val metaToRawLDState = mutableMapOf<BookMetaData, RawLDBackendState>()
 
     private var releaseResourceJob: Job? = null
 
@@ -31,6 +32,17 @@ object OpenFileStateManager {
         return state
     }
 
+    fun getRawLDBackendState(metadata: BookMetaData, dataSize: Int): RawLDBackendState {
+        var state = metaToRawLDState[metadata]
+        if (state == null) {
+            state = RawLDBackendState(metadata, dataSize)
+            metaToRawLDState[metadata] = state
+        }
+        state.lastAccess = timeMillis()
+
+        return state
+    }
+
     fun release(fileState: OpenFileState) {
         releaseResourceJob?.cancel()
         val releaseRequestTime = timeMillis()
@@ -40,9 +52,24 @@ object OpenFileStateManager {
         releaseResourceJob = CoroutineScope(EmptyCoroutineContext).launch(Dispatchers.Default) {
             delay(TIME_TO_RELEASE_MILLIS)
             if (releaseRequestTime == fileState.lastAccess) {
-                metaToState.remove(fileState.bookMetaData)?.let { removedState ->
-                    if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
-                        fileState.releaseResources()
+                var released = false
+
+                // Try ZVerseBackendState
+                if (fileState is ZVerseBackendState) {
+                    metaToState.remove(fileState.bookMetaData)?.let { removedState ->
+                        if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
+                            fileState.releaseResources()
+                            released = true
+                        }
+                    }
+                }
+
+                // Try RawLDBackendState
+                if (!released && fileState is RawLDBackendState) {
+                    metaToRawLDState.remove(fileState.bookMetaData)?.let { removedState ->
+                        if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
+                            fileState.releaseResources()
+                        }
                     }
                 }
             }

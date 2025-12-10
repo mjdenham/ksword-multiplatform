@@ -119,7 +119,7 @@ enum class BookType(
             val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
             return ZVerseBackend(sbmd, blockType, 4)
         }
-    };
+    },
 
 //    /**
 //     * Compressed Commentaries
@@ -164,39 +164,39 @@ enum class BookType(
 //        }
 //    },
 //
-//    /**
-//     * 2-Byte Index Uncompressed Dictionaries
-//     */
-//    RAW_LD("RawLD", BookCategory.DICTIONARY, KeyType.LIST) {
-//        protected override fun getBook(sbmd: SwordBookMetaData, backend: Backend?): Book {
-//            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
-//                return SwordDailyDevotion(sbmd, backend)
-//            }
-//            return SwordDictionary(sbmd, backend)
-//        }
-//
-//        @Throws(BookException::class)
-//        override fun getBackend(sbmd: SwordBookMetaData?): Backend {
-//            return RawLDBackend(sbmd, 2)
-//        }
-//    },
-//
-//    /**
-//     * 4-Byte Index Uncompressed Dictionaries
-//     */
-//    RAW_LD4("RawLD4", BookCategory.DICTIONARY, KeyType.LIST) {
-//        protected override fun getBook(sbmd: SwordBookMetaData, backend: Backend?): Book {
-//            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
-//                return SwordDailyDevotion(sbmd, backend)
-//            }
-//            return SwordDictionary(sbmd, backend)
-//        }
-//
-//        @Throws(BookException::class)
-//        override fun getBackend(sbmd: SwordBookMetaData?): Backend {
-//            return RawLDBackend(sbmd, 4)
-//        }
-//    },
+    /**
+     * 2-Byte Index Uncompressed Dictionaries
+     */
+    RAW_LD("RawLD", BookCategory.DICTIONARY, KeyType.LIST) {
+        override fun getBook(sbmd: SwordBookMetaData): Book {
+            // Daily devotions support left commented for now
+            // if (sbmd.bookCategory == BookCategory.DAILY_DEVOTIONS) {
+            //     return SwordDailyDevotion(sbmd, getBackend(sbmd))
+            // }
+            return SwordDictionary(sbmd, getBackend(sbmd) as RawLDBackend)
+        }
+
+        override fun getBackend(sbmd: SwordBookMetaData): Backend<*> {
+            return RawLDBackend(sbmd, 2)
+        }
+    },
+
+    /**
+     * 4-Byte Index Uncompressed Dictionaries
+     */
+    RAW_LD4("RawLD4", BookCategory.DICTIONARY, KeyType.LIST) {
+        override fun getBook(sbmd: SwordBookMetaData): Book {
+            // Daily devotions support left commented for now
+            // if (sbmd.bookCategory == BookCategory.DAILY_DEVOTIONS) {
+            //     return SwordDailyDevotion(sbmd, getBackend(sbmd))
+            // }
+            return SwordDictionary(sbmd, getBackend(sbmd) as RawLDBackend)
+        }
+
+        override fun getBackend(sbmd: SwordBookMetaData): Backend<*> {
+            return RawLDBackend(sbmd, 4)
+        }
+    };
 //
 //    /**
 //     * Compressed Dictionaries

@@ -282,7 +282,7 @@ object SwordUtil {
         var txt = ""
         try {
             if (offset + length <= data.size) {
-                txt = data.decodeToString(offset, length) //String(data, offset, length, charset(charset))
+                txt = data.decodeToString(offset, offset + length) //String(data, offset, length, charset(charset))
             }
         } catch (ex: Exception) {
             // It is impossible! In case, use system default...
