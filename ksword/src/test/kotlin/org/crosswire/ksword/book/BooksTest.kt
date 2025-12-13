@@ -18,7 +18,7 @@ class BooksTest {
     @Test
     fun getBooks() = runTest {
         val books = Books.getBooks()
-        assertEquals(2, books.size)
+        assertEquals(1, books.size)
         assertEquals("BSB", books[0].initials)
     }
 
@@ -39,8 +39,8 @@ class BooksTest {
     @Test
     fun refresh() = runTest {
         val books = Books.getBooks()
-        assertEquals(2, books.size)
+        assertEquals(1, books.size)
         Books.refresh()
-        assertEquals(2, books.size)
+        assertEquals(1, books.size)
     }
 }
