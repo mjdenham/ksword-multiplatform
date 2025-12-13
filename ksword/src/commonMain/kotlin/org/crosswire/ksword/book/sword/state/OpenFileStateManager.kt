@@ -11,10 +11,9 @@ import org.crosswire.ksword.book.sword.BlockType
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.time.ExperimentalTime
 
-object OpenFileStateManager {
+internal object OpenFileStateManager {
 
-    private val metaToState = mutableMapOf<BookMetaData, ZVerseBackendState>()
-    private val metaToRawLDState = mutableMapOf<BookMetaData, RawLDBackendState>()
+    private val metaToState = mutableMapOf<BookMetaData, AbstractOpenFileState>()
 
     private var releaseResourceJob: Job? = null
 
@@ -22,24 +21,23 @@ object OpenFileStateManager {
     private const val TIME_TO_RELEASE_MILLIS: Long = 1000 * 10
 
     fun getZVerseBackendState(metadata: BookMetaData, blockType: BlockType): ZVerseBackendState {
-        var state = metaToState[metadata]
-        if (state == null) {
-            state = ZVerseBackendState(metadata, blockType)
-            metaToState[metadata] = state
-        }
-        state.lastAccess = timeMillis()
-
-        return state
+        return getOrCreateState(metadata) { ZVerseBackendState(metadata, blockType) }
     }
 
     fun getRawLDBackendState(metadata: BookMetaData, dataSize: Int): RawLDBackendState {
-        var state = metaToRawLDState[metadata]
+        return getOrCreateState(metadata) { RawLDBackendState(metadata, dataSize) }
+    }
+
+    private inline fun <reified T : AbstractOpenFileState> getOrCreateState(
+        metadata: BookMetaData,
+        factory: () -> T
+    ): T {
+        var state = metaToState[metadata] as? T
         if (state == null) {
-            state = RawLDBackendState(metadata, dataSize)
-            metaToRawLDState[metadata] = state
+            state = factory()
+            metaToState[metadata] = state
         }
         state.lastAccess = timeMillis()
-
         return state
     }
 
@@ -52,24 +50,9 @@ object OpenFileStateManager {
         releaseResourceJob = CoroutineScope(EmptyCoroutineContext).launch(Dispatchers.Default) {
             delay(TIME_TO_RELEASE_MILLIS)
             if (releaseRequestTime == fileState.lastAccess) {
-                var released = false
-
-                // Try ZVerseBackendState
-                if (fileState is ZVerseBackendState) {
-                    metaToState.remove(fileState.bookMetaData)?.let { removedState ->
-                        if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
-                            fileState.releaseResources()
-                            released = true
-                        }
-                    }
-                }
-
-                // Try RawLDBackendState
-                if (!released && fileState is RawLDBackendState) {
-                    metaToRawLDState.remove(fileState.bookMetaData)?.let { removedState ->
-                        if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
-                            fileState.releaseResources()
-                        }
+                metaToState.remove(fileState.bookMetaData)?.let { removedState ->
+                    if (removedState == fileState && releaseRequestTime == removedState.lastAccess) {
+                        fileState.releaseResources()
                     }
                 }
             }
