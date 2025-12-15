@@ -36,7 +36,7 @@ import org.crosswire.ksword.passage.NoSuchKeyException
  */
 class SwordDictionary(
     override var bookMetaData: BookMetaData,
-    private val backend: RawLDBackend
+    val backend: RawLDBackend
 ) : Book {
 
     override val name: String = bookMetaData.name

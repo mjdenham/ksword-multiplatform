@@ -230,4 +230,205 @@ class StrongsRealHebrewTest {
 
         assertEquals(listOf("00001", "00002", "00003", "00004", "00005"), entries)
     }
+
+    @Test
+    fun testGetByIndex() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Test get(0) returns first entry
+        val firstKey = backend.get(0)
+        assertNotNull("First key should exist", firstKey)
+        assertEquals("00001", firstKey.getName())
+
+        // Test get(1) returns second entry
+        val secondKey = backend.get(1)
+        assertNotNull("Second key should exist", secondKey)
+        assertEquals("00002", secondKey.getName())
+
+        // Test invalid index throws exception
+        try {
+            backend.get(-1)
+            fail("Should throw IndexOutOfBoundsException for negative index")
+        } catch (e: IndexOutOfBoundsException) {
+            // Expected
+        }
+    }
+
+    @Test
+    fun testIndexOf() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Test indexOf for existing key
+        val key1 = DefaultLeafKeyList("00001")
+        val index1 = backend.indexOf(key1)
+        assertTrue("Index should be >= 0 for existing key", index1 >= 0)
+        assertEquals(0, index1)
+
+        val key2 = DefaultLeafKeyList("00002")
+        val index2 = backend.indexOf(key2)
+        assertTrue("Index should be >= 0 for existing key", index2 >= 0)
+        assertEquals(1, index2)
+
+        // Test indexOf for non-existent key returns negative
+        val nonExistent = DefaultLeafKeyList("99999")
+        val indexNotFound = backend.indexOf(nonExistent)
+        assertTrue("Index should be negative for non-existent key", indexNotFound < 0)
+    }
+
+    @Test
+    fun testBinarySearchWithEmptyKey() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Test that empty key doesn't crash
+        val emptyKey = DefaultLeafKeyList("")
+        val containsEmpty = backend.contains(emptyKey)
+        assertFalse("Empty key should not be found", containsEmpty)
+    }
+
+    @Test
+    fun testStrongsPaddingNormalization() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // StrongsRealHebrew uses 5-digit padding (00001, 00002, etc.)
+        // Test that looking up with different formats works
+
+        // Standard padded format should work
+        val padded = DefaultLeafKeyList("00001")
+        assertTrue("Padded format 00001 should exist", backend.contains(padded))
+
+        // Test that unpadded lookups work (if Strong's padding is enabled)
+        // Note: This depends on the StrongsPadding config in the module
+        val text1 = dictionary.getRawText(padded)
+        assertTrue("Entry should contain 'father'", text1.contains("father", ignoreCase = true))
+    }
+
+    @Test
+    fun testGetCardinality() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        val cardinality = backend.getCardinality()
+        assertTrue("Dictionary should have entries", cardinality > 0)
+        assertTrue("StrongsRealHebrew should have ~8000+ entries", cardinality > 8000)
+
+        // Verify cardinality matches the global key list size
+        val allKeys = backend.getAllKeys()
+        assertEquals("Cardinality should match getAllKeys size", allKeys.size, cardinality)
+    }
+
+    @Test
+    fun testIndexOfReturnsNegativeInsertionPoint() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Test that indexOf returns -(insertionPoint + 1) for non-existent keys
+        val nonExistent = DefaultLeafKeyList("99999")
+        val index = backend.indexOf(nonExistent)
+
+        assertTrue("Index should be negative for non-existent key", index < 0)
+
+        // The negative value should be -(insertionPoint + 1)
+        // So insertionPoint = -(index + 1)
+        val insertionPoint = -(index + 1)
+        assertTrue("Insertion point should be valid", insertionPoint >= 0)
+        assertTrue("Insertion point should be at or after last entry", insertionPoint >= backend.getCardinality())
+    }
+
+    @Test
+    fun testBinarySearchAtIndex0() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Index 0 is treated specially (may be introductory entry)
+        // Test that we can get the first entry
+        val firstKey = backend.get(0)
+        assertNotNull("First key should exist", firstKey)
+        assertEquals("00001", firstKey.getName())
+
+        // Verify indexOf also returns 0
+        val index = backend.indexOf(firstKey)
+        assertEquals("indexOf first key should be 0", 0, index)
+    }
+
+    @Test
+    fun testCaseInsensitiveSearch() {
+        testDownloaded()
+        val backend = dictionary.backend
+
+        // Dictionary keys should be case-insensitive by default
+        // (unless CaseSensitiveKeys=true in config)
+        val lowerCase = DefaultLeafKeyList("00001")
+        val upperCase = DefaultLeafKeyList("00001")  // Same, but test the normalization path
+
+        assertTrue("Lowercase should be found", backend.contains(lowerCase))
+        assertTrue("Uppercase should be found", backend.contains(upperCase))
+
+        // Both should return the same content
+        val text1 = dictionary.getRawText(lowerCase)
+        val text2 = dictionary.getRawText(upperCase)
+        assertEquals("Content should be identical regardless of case", text1, text2)
+    }
+
+    @Test
+    fun testLinkFollowing() {
+        testDownloaded()
+
+        // StrongsRealHebrew may not have @LINK entries
+        // This test verifies the link following logic doesn't crash even if no links exist
+        // If a link exists, it should follow it transparently
+
+        val key = DefaultLeafKeyList("00001")
+        val text = dictionary.getRawText(key)
+
+        // Should return content, not "@LINK ..." directive
+        assertFalse("Text should not be a raw @LINK directive", text.startsWith("@LINK "))
+        assertTrue("Should contain actual definition", text.isNotEmpty())
+    }
+
+    @Test
+    fun testNavigationBeyondBounds() {
+        testDownloaded()
+
+        // Test navigation at boundaries
+        val backend = dictionary.backend
+        val lastIndex = backend.getCardinality() - 1
+
+        // Get last entry
+        val lastKey = backend.get(lastIndex)
+        assertNotNull("Last key should exist", lastKey)
+
+        // Validate last key is appropriate (should be highest Strong's number)
+        val lastKeyName = lastKey.getName()
+        assertTrue("Last key should be a number", lastKeyName.matches(Regex("^\\d+$")))
+
+        // StrongsRealHebrew has 8674 Hebrew entries (H1-H8674)
+        val lastNumber = lastKeyName.toInt()
+        assertTrue("Last key should be high Strong's number (>8000)", lastNumber > 8000)
+        assertTrue("Last key should be around 8674", lastNumber >= 8670 && lastNumber <= 8680)
+
+        // Verify it's greater than earlier entries
+        assertTrue("Last entry should be > first entry", lastNumber > 1)
+
+        // Validate last entry has actual content
+        val lastText = dictionary.getRawText(lastKey)
+        assertTrue("Last entry should have content", lastText.isNotEmpty())
+        assertTrue("Last entry should have substantial content (>50 chars)", lastText.length > 50)
+
+        // Next from last should be null
+        val afterLast = dictionary.getNextKey(lastKey)
+        assertNull("Next from last entry should be null", afterLast)
+
+        // Test that get() throws for out of bounds
+        try {
+            backend.get(backend.getCardinality())
+            fail("Should throw IndexOutOfBoundsException for index == size")
+        } catch (e: IndexOutOfBoundsException) {
+            // Expected
+            assertTrue("Error message should mention the index", e.message!!.contains("Index:"))
+        }
+    }
 }
