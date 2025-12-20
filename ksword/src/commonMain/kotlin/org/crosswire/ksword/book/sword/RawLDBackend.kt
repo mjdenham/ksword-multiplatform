@@ -236,21 +236,46 @@ class RawLDBackend(
         // Check if this is a Strong's dictionary
         // In SWORD modules, these have Feature=GreekDef or Feature=HebrewDef
         val feature = bmd.getProperty(SwordBookMetaData.KEY_FEATURE) ?: ""
-        if (!feature.contains("GreekDef") && !feature.contains("HebrewDef")) {
+        val isStrongsDict = feature.contains("GreekDef") || feature.contains("HebrewDef")
+
+        if (!isStrongsDict) {
             return externalKey
         }
 
-        // Validate Strong's number format: G1234 or H5678
-        STRONGS_PATTERN.matchEntire(externalKey) ?: return externalKey
+        // Check if padding is enabled (default is true per JSword)
+        val strongsPadding = bmd.getProperty(SwordBookMetaData.KEY_STRONGS_PADDING) ?: "true"
 
-        // Check if padding is enabled
-        if (bmd.getProperty(SwordBookMetaData.KEY_STRONGS_PADDING) != "true") {
-            // Unpad: G0001 -> G1
-            return unpadStrongsNumber(externalKey)
+        // Try to match Strong's number format with G/H prefix: G1234 or H5678
+        val matcher = STRONGS_PATTERN.matchEntire(externalKey)
+        if (matcher != null) {
+            // Has G/H prefix - pad/unpad and strip prefix
+            // Our dictionary keys are stored without prefix: "00001", not "H00001"
+            if (strongsPadding != "true") {
+                // Unpad: G0001 -> G1, then strip G -> 1
+                return unpadStrongsNumber(externalKey).substring(1)
+            }
+            // Pad: G1 -> G00001, then strip G -> 00001
+            return padStrongsNumber(externalKey, pattern).substring(1)
         }
 
-        // Pad to 4 or 5 digits based on pattern
-        return padStrongsNumber(externalKey, pattern)
+        // Handle plain numeric keys (no G/H prefix): "1", "00001", "123"
+        if (externalKey.matches(Regex("^\\d+$"))) {
+            if (strongsPadding == "true") {
+                // Determine padding length from pattern (typically 5 digits)
+                val padLength = if (pattern.matches(Regex("^\\d+$"))) {
+                    pattern.length
+                } else {
+                    5  // Default to 5 digits
+                }
+
+                // Pad the number: "1" -> "00001"
+                val num = externalKey.toIntOrNull() ?: return externalKey
+                return num.toString().padStart(padLength, '0')
+            }
+        }
+
+        // Return as-is if no transformation needed
+        return externalKey
     }
 
     /**

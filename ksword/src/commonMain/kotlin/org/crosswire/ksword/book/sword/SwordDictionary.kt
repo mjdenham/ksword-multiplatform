@@ -53,18 +53,18 @@ class SwordDictionary(
      * Get a key for the given text.
      * Throws NoSuchKeyException if the key is not found.
      *
-     * This method normalizes Strong's numbers (e.g., "123" -> "G123" or "H123")
-     * based on the dictionary name.
+     * Key normalization (e.g., "H1" -> "00001" or "1" -> "00001") is handled
+     * automatically by the backend's external2internal method during search.
      *
      * @param text the key name to look up
      * @return the Key if found
      * @throws NoSuchKeyException if the key is not found
      */
     fun getKey(text: String): Key {
-        val normalizedKey = normalizeKey(text)
+        val key = DefaultLeafKeyList(text)
 
-        if (backend.contains(DefaultLeafKeyList(normalizedKey))) {
-            return DefaultLeafKeyList(normalizedKey)
+        if (backend.contains(key)) {
+            return key
         }
 
         throw NoSuchKeyException("Key not found: $text")
@@ -104,64 +104,6 @@ class SwordDictionary(
      */
     fun getGlobalKeyList(): List<Key> {
         return backend.getAllKeys().map { DefaultLeafKeyList(it) }
-    }
-
-    /**
-     * Normalize dictionary keys, especially Strong's numbers.
-     *
-     * Examples:
-     * - "123" -> "G123" or "00123" (depending on dictionary format)
-     * - "G123" -> "G123" (already normalized)
-     * - "g123" -> "G123" (case normalization)
-     * - "H456" -> "H456" (Hebrew)
-     * - "00001" -> "00001" (zero-padded, return as-is)
-     * - "Word" -> "Word" (regular dictionary entry)
-     *
-     * @param key the key to normalize
-     * @return the normalized key
-     */
-    private fun normalizeKey(key: String): String {
-        // If it's prefixed with G/H, try zero-padding the number part
-        if (key.matches(Regex("^[GHgh]\\d+$"))) {
-            val prefix = key[0].uppercase()
-            val number = key.substring(1)
-
-            // Try zero-padding the number to 5 digits (e.g., H1 -> 00001)
-            val paddedNumber = number.padStart(5, '0')
-            if (backend.contains(DefaultLeafKeyList(paddedNumber))) {
-                return paddedNumber
-            }
-
-            // Try zero-padding to 4 digits (e.g., H1 -> 0001)
-            val paddedNumber4 = number.padStart(4, '0')
-            if (backend.contains(DefaultLeafKeyList(paddedNumber4))) {
-                return paddedNumber4
-            }
-
-            // If padding didn't work, return the uppercase version with prefix
-            return key.uppercase()
-        }
-
-        // If it's a pure number without zero-padding (1-4 digits), try to add prefix or padding
-        if (key.matches(Regex("^\\d{1,4}$"))) {
-            // First try zero-padding to 5 digits (common in StrongsRealHebrew)
-            val paddedKey = key.padStart(5, '0')
-            if (backend.contains(DefaultLeafKeyList(paddedKey))) {
-                return paddedKey
-            }
-
-            // Try to infer prefix from book metadata name
-            val bookName = bookMetaData.name.lowercase()
-            val prefix = when {
-                bookName.contains("greek") || bookName.contains("robinson") || bookName.contains("thayer") -> "G"
-                bookName.contains("hebrew") || bookName.contains("brown") || bookName.contains("bdb") -> "H"
-                else -> return key // Can't determine, return as-is
-            }
-            return "$prefix$key"
-        }
-
-        // Already zero-padded (5+ digits) or regular dictionary entry - return as-is
-        return key
     }
 
     override fun equals(other: Any?): Boolean {
