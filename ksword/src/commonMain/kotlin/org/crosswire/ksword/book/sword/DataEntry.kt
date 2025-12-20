@@ -38,13 +38,25 @@ class DataEntry(
 ) {
     /**
      * Extract the key name from the entry.
-     * Finds the terminator (CRLF, LF, or null) and decodes bytes before it.
+     * Handles two formats:
+     * 1. Simple: "00001\r\n" or "00001\\r\n" - backslash at end is removed (JSword approach)
+     * 2. Formatted: "00001\ extra text\r\n" - backslash separates key from extra metadata
      *
      * @return The key name, or empty string if malformed
      */
     fun getKey(): String {
+        // Some entries are empty
+        if (data.isEmpty()) {
+            return ""
+        }
+
         val keyEndIndex = findKeyTerminator()
-        if (keyEndIndex < 0) return ""
+        if (keyEndIndex < 0) {
+            // No terminator found, return entire data as key
+            return SwordUtil.decode(name, data, 0, data.size.coerceAtMost(50), charset)
+        }
+
+        // Decode only the bytes before the terminator
         return SwordUtil.decode(name, data, 0, keyEndIndex, charset)
     }
 
@@ -100,28 +112,67 @@ class DataEntry(
     }
 
     /**
-     * Find the index of the key terminator (CRLF, LF, or null).
-     * Tries CRLF first (most common), then LF, then null terminator.
+     * Find the index where the key portion ends.
+     * Handles two cases:
+     * 1. If backslash has content after it: "00001\ extra\r\n" → returns index of backslash
+     * 2. If backslash at end or no backslash: "00001\\r\n" → returns index adjusted to skip trailing \ and \r
      *
-     * @return Index of the last byte of the terminator, or -1 if not found
+     * This combines JSword's approach (remove trailing \) with formatted key support.
+     *
+     * @return Index where key ends, or -1 if not found
      */
     private fun findKeyTerminator(): Int {
-        // Try CRLF first (\r\n)
+        // Find newline position (CRLF or LF)
+        var newlineIndex = -1
         for (i in 0 until data.size - 1) {
             if (data[i] == 0x0D.toByte() && data[i + 1] == 0x0A.toByte()) {
-                return i
+                newlineIndex = i
+                break
+            }
+        }
+        if (newlineIndex < 0) {
+            newlineIndex = data.indexOfFirst { it == 0x0A.toByte() }
+        }
+        if (newlineIndex < 0) {
+            // No newline, try null terminator
+            newlineIndex = data.indexOfFirst { it == 0.toByte() }
+        }
+        if (newlineIndex < 0) return -1
+
+        // Find backslash position
+        val backslashIndex = data.indexOfFirst { it == '\\'.code.toByte() }
+
+        // If there's a backslash before the newline
+        if (backslashIndex >= 0 && backslashIndex < newlineIndex) {
+            // Check if there's meaningful content between backslash and newline
+            // (more than just whitespace and \r)
+            val hasContentAfterBackslash = backslashIndex < newlineIndex - 1 &&
+                    data.slice(backslashIndex + 1 until newlineIndex).any {
+                        it != 0x0D.toByte() && it != 0x20.toByte()
+                    }
+
+            if (hasContentAfterBackslash) {
+                // Case 2: Formatted key like "00001\ extra text\r\n"
+                // Use backslash as terminator
+                return backslashIndex
             }
         }
 
-        // Try LF (\n)
-        val lfIndex = data.indexOfFirst { it == 0x0A.toByte() }
-        if (lfIndex >= 0) return lfIndex
+        // Case 1: Simple key like "00001\r\n" or "00001\\r\n"
+        // Use newline as terminator, but remove trailing \r and \
+        var end = newlineIndex
 
-        // Try null terminator (\0)
-        val nullIndex = data.indexOfFirst { it == 0.toByte() }
-        if (nullIndex >= 0) return nullIndex
+        // Remove trailing \r if present
+        if (end > 0 && data[end - 1] == 0x0D.toByte()) {
+            end--
+        }
 
-        return -1
+        // Remove trailing \ if present (JSword: "plain text dictionaries all get \ added to the ends")
+        if (end > 0 && data[end - 1] == '\\'.code.toByte()) {
+            end--
+        }
+
+        return end
     }
 
     /**

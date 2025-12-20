@@ -121,8 +121,24 @@ class SwordDictionary(
      * @return the normalized key
      */
     private fun normalizeKey(key: String): String {
-        // If it's already prefixed with G/H, just uppercase it
+        // If it's prefixed with G/H, try zero-padding the number part
         if (key.matches(Regex("^[GHgh]\\d+$"))) {
+            val prefix = key[0].uppercase()
+            val number = key.substring(1)
+
+            // Try zero-padding the number to 5 digits (e.g., H1 -> 00001)
+            val paddedNumber = number.padStart(5, '0')
+            if (backend.contains(DefaultLeafKeyList(paddedNumber))) {
+                return paddedNumber
+            }
+
+            // Try zero-padding to 4 digits (e.g., H1 -> 0001)
+            val paddedNumber4 = number.padStart(4, '0')
+            if (backend.contains(DefaultLeafKeyList(paddedNumber4))) {
+                return paddedNumber4
+            }
+
+            // If padding didn't work, return the uppercase version with prefix
             return key.uppercase()
         }
 

@@ -128,7 +128,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
     override val isSupported: Boolean
         get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
-                getProperty(KEY_SOURCE_TYPE) == "OSIS"
+                getProperty(KEY_SOURCE_TYPE) in listOf("OSIS", "ThML", "Plaintext")
 
     override val isLeftToRight: Boolean
         get() = getProperty(KEY_DIRECTION).equals("LtoR", ignoreCase = true)
