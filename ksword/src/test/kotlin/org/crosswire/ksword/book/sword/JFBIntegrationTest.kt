@@ -1,11 +1,11 @@
 package org.crosswire.ksword.book.sword
 
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
-import org.crosswire.common.util.IoUtil
-import org.crosswire.common.util.WebResource
-import org.crosswire.common.util.delete
+import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.install.sword.SwordInstallerFactory
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 import org.crosswire.ksword.passage.KeyText
 import org.crosswire.ksword.passage.Verse
@@ -18,28 +18,32 @@ import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class JFBIntegrationTest {
-
-    private val webResource = WebResource()
-    private val ioUtil = IoUtil()
 
     private lateinit var bookMetaData: SwordBookMetaData
     private lateinit var backendState: ZVerseBackendState
     private lateinit var backend: ZVerseBackend
 
     companion object {
+        private const val MODULE_NAME = "JFB"
+        private val dir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("JFBIntegrationTest".toPath())
+
         @JvmStatic
-        @AfterClass
         @BeforeClass
-        fun removeDownloads() {
-            zipFilePath.delete()
-            folderToUnzipInto.delete()
+        fun setUp() {
+            SwordBookPath.swordBookPath = dir
+            FileSystem.SYSTEM.createDirectories(SwordBookPath.swordBookPath)
+            Books.refresh()
         }
 
-        const val downloadUrl = "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/JFB.zip"
-        val zipFilePath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("downloaded.zip".toPath())
-        val folderToUnzipInto = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("unzipto".toPath())
+        @JvmStatic
+        @AfterClass
+        fun tearDown() {
+            FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
+            SwordBookPath.swordBookPath = "../testFiles".toPath()
+        }
     }
 
     @Test
@@ -154,25 +158,15 @@ class JFBIntegrationTest {
 
     @Test
     fun testDownloaded() = runTest {
-        if (!FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/jfb.conf"))) {
-            println("Temp dir: " + FileSystem.SYSTEM_TEMPORARY_DIRECTORY)
-            zipFilePath.delete()
-
-            val success = webResource.download(downloadUrl, zipFilePath)
-            assertTrue(success)
-            assertTrue(FileSystem.SYSTEM.exists(zipFilePath))
-
-            ioUtil.unpackZip(
-                zipFilePath,
-                folderToUnzipInto,
-                true,
-                SwordConstants.DIR_CONF,
-                SwordConstants.DIR_DATA
-            )
-            assertTrue(FileSystem.SYSTEM.exists(folderToUnzipInto.resolve("mods.d/jfb.conf")))
+        var book = Books.getBook(MODULE_NAME)
+        if (book == null) {
+            SwordInstallerFactory().crosswireInstaller.install(MODULE_NAME)
+            delay(5000)
+            book = Books.getBook(MODULE_NAME)
+            assertNotNull(book, "$MODULE_NAME module should be installed")
         }
 
-        bookMetaData = SwordBookMetaData.createFromFile(folderToUnzipInto.resolve("mods.d/jfb.conf"), folderToUnzipInto)
+        bookMetaData = book!!.bookMetaData as SwordBookMetaData
         backendState = ZVerseBackendState(bookMetaData, BlockType.BLOCK_BOOK)
         backend = ZVerseBackend(bookMetaData, BlockType.BLOCK_BOOK, 4)
     }

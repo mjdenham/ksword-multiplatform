@@ -13,27 +13,28 @@ class BooksTest {
     @Before
     fun setUp() {
         SwordBookPath.swordBookPath = "../testFiles".toPath()
+        Books.refresh()
     }
 
     @Test
     fun getBooks() = runTest {
         val books = Books.getBooks()
         assertEquals(1, books.size)
-        assertEquals("BSB", books[0].initials)
+        assertEquals("BSBTEST", books[0].initials)
     }
 
     @Test
     fun getBookByInitials() = runTest {
-        val book = Books.getBook("BSB")
+        val book = Books.getBook("BSBTEST")
         assertNotNull(book)
-        assertEquals("BSB", book!!.initials)
+        assertEquals("BSBTEST", book!!.initials)
     }
 
     @Test
     fun getBookByName() = runTest {
         val book = Books.getBook("Berean Standard Bible")
         assertNotNull(book)
-        assertEquals("BSB", book!!.initials)
+        assertEquals("BSBTEST", book!!.initials)
     }
 
     @Test

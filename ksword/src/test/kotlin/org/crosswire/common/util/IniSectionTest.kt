@@ -24,6 +24,6 @@ class IniSectionTest {
         assertTrue(FileSystem.SYSTEM.exists(TestConfigFile))
         iniSection.load(TestConfigFile)
 
-        assertEquals("BSB", iniSection.name)
+        assertEquals("BSBTEST", iniSection.name)
     }
 }
