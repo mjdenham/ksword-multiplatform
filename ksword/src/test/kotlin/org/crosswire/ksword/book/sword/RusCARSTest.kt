@@ -154,7 +154,6 @@ class RusCARSTest {
         var book = Books.getBook("RusCARS")
         if (book == null) {
             SwordInstallerFactory().crosswireInstaller.install("RusCARS")
-            delay(5000)
             book = Books.getBook("RusCARS")
             assertNotNull(book, "RusCARS module should be installed")
         }

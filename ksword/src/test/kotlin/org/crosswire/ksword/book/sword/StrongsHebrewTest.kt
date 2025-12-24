@@ -47,7 +47,6 @@ class StrongsHebrewTest {
         var book = Books.getBook(STRONGS_HEBREW)
         if (book == null) {
             SwordInstallerFactory().crosswireInstaller.install(STRONGS_HEBREW)
-            delay(5000)
             book = Books.getBook(STRONGS_HEBREW)
             assertTrue(book != null)
         }

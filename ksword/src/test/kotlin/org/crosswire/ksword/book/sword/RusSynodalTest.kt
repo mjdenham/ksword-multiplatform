@@ -242,7 +242,6 @@ class RusSynodalTest {
         var book = Books.getBook("RusSynodal")
         if (book == null) {
             SwordInstallerFactory().crosswireInstaller.install("RusSynodal")
-            delay(5000)
             book = Books.getBook("RusSynodal")
             assertNotNull(book, "RusSynodal module should be installed")
         }

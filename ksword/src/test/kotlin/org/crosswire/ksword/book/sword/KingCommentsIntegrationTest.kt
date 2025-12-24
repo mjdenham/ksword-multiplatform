@@ -111,7 +111,6 @@ class KingCommentsIntegrationTest {
         var book = Books.getBook(MODULE_NAME)
         if (book == null) {
             SwordInstallerFactory().crosswireInstaller.install(MODULE_NAME)
-            delay(5000)
             book = Books.getBook(MODULE_NAME)
             assertNotNull(book, "$MODULE_NAME module should be installed")
         }

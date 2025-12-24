@@ -150,7 +150,6 @@ class ZVerseBackendTest {
         if (book == null) {
             println("Installing $MODULE_NAME")
             SwordInstallerFactory().crosswireInstaller.install(MODULE_NAME)
-            delay(5000)
             book = Books.getBook(MODULE_NAME)
             assertNotNull(book, "$MODULE_NAME module should be installed")
         }

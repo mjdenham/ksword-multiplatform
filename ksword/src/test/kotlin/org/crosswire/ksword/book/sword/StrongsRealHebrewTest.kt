@@ -44,7 +44,6 @@ class StrongsRealHebrewTest {
         var book = Books.getBook("StrongsRealHebrew")
         if (book == null) {
             SwordInstallerFactory().andBibleInstaller.install("StrongsRealHebrew")
-            delay(5000)
             book = Books.getBook("StrongsRealHebrew")
             assertTrue(book != null)
         }

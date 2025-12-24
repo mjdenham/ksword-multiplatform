@@ -99,7 +99,6 @@ class KjvaTest {
         var book = Books.getBook("KJVA")
         if (book == null) {
             SwordInstallerFactory().crosswireInstaller.install("KJVA")
-            delay(5000)
             book = Books.getBook("KJVA")
             assertTrue(book != null)
         }

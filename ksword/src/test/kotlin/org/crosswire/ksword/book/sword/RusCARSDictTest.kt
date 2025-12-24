@@ -55,7 +55,6 @@ class RusCARSDictTest {
         var dictionary = Books.getBook("RusCARSDict")
         if (dictionary == null) {
             SwordInstallerFactory().crosswireInstaller.install("RusCARSDict")
-            delay(5000)
             dictionary = Books.getBook("RusCARSDict")
             assertNotNull("RusCARSDict module should be installed", dictionary)
         }
