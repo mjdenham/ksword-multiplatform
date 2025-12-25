@@ -45,7 +45,7 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
             if (currentVerse.ordinal == 0 || currentVerse.ordinal == v11n.maximumOrdinal()) return null
 
             getRawText(currentVerse).let { currentContent ->
-                if (currentContent.isNotBlank() && currentContent != startContent && currentVerse.verse > 0) {
+                if (currentContent.isNotBlank() && currentContent != startContent && currentVerse.verse >= 0) {
                     return currentVerse
                 }
             }
