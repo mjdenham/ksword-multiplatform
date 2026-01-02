@@ -204,19 +204,19 @@ class BibleNames private constructor() {
          * Alternative shortened names for the New Testament books of the Bible
          * normalized, generated at runtime.
          */
-        private var altNT: Map<String, BookName>? = null
+        private var altNT: MutableMap<String, BookName>? = null
 
         /**
          * Alternative shortened names for the Old Testament books of the Bible
          * normalized, generated at runtime.
          */
-        private var altOT: Map<String, BookName>? = null
+        private var altOT: MutableMap<String, BookName>? = null
 
         /**
          * Alternative shortened names for the Deuterocanonical books of the
          * Bible normalized, generated at runtime.
          */
-        private var altNC: Map<String, BookName>? = null
+        private var altNC: MutableMap<String, BookName>? = null
 
         /**
          * Load up the resources for Bible book and section names, and cache the
@@ -387,7 +387,7 @@ class BibleNames private constructor() {
             book: BibleBook,
             fullMap: MutableMap<String, BookName>,
             shortMap: MutableMap<String, BookName>,
-            altMap: Map<*, *>?
+            altMap: MutableMap<String, BookName>?
         ) {
             val fullBook = resources.getName(book, BookNameProvider.NameType.FULL)
             var shortBook = resources.getName(book, BookNameProvider.NameType.SHORT)
@@ -404,10 +404,16 @@ class BibleNames private constructor() {
             fullMap[bookName.normalizedLongName] = bookName
             shortMap[bookName.normalizedShortName] = bookName
 
-            //            String[] alternates = null; //StringUtil.split(BookName.normalize(altBook, locale), ',');
-//            for (int j = 0; j < alternates.length; j++) {
-//                altMap.put(alternates[j], bookName);
-//            }
+            // Parse and store alternate names
+            if (altBook.isNotEmpty()) {
+                val alternates = BookName.normalize(altBook, locale).split(',')
+                for (alternate in alternates) {
+                    val trimmed = alternate.trim()
+                    if (trimmed.isNotEmpty()) {
+                        altMap?.put(trimmed, bookName)
+                    }
+                }
+            }
         }
     }
 

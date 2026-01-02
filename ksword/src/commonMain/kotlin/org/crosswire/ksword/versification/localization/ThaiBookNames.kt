@@ -164,7 +164,58 @@ object ThaiBookNames : BookNameLocalization {
         BibleBook.REV to "วว."
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.JUDG to "jdg,jud",
+        BibleBook.RUTH to "รูธ",
+        BibleBook.SAM1 to "1 ซามูเอล,1 ซมอ.",
+        BibleBook.SAM2 to "2 ซามูเอล,2 ซมอ.",
+        BibleBook.KGS1 to "1 พงศ์กษัตริย์,1 พกษ.",
+        BibleBook.KGS2 to "2 พงษ์กษัตริย์,2 พกษ.",
+        BibleBook.CHR1 to "1 พงศาวดาร,1 พศด.",
+        BibleBook.CHR2 to "2 พงศาวดาร,2 พศด.",
+        BibleBook.PS to "pss,psm",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "is",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jnh",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk,mrk",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn,jhn",
+        BibleBook.COR1 to "1 โครินธ์,1 คร.",
+        BibleBook.COR2 to "2 โครินธ์,2 คร.",
+        BibleBook.PHIL to "php",
+        BibleBook.THESS1 to "1 เธสะโลนิกา,1 ธส.",
+        BibleBook.THESS2 to "2 เธสะโลนิกา,2 ธส.",
+        BibleBook.TIM1 to "1 ทิโมธี,1 ทธ.",
+        BibleBook.TIM2 to "2 ทิโมธี,2 ทธ.",
+        BibleBook.PHLM to "phm,phlm",
+        BibleBook.JAS to "jas",
+        BibleBook.PET1 to "1 เปโตร,1 ปต.",
+        BibleBook.PET2 to "2 เปโตร,2 ปต.",
+        BibleBook.JOHN1 to "1 ยอห์น,1 ยน.",
+        BibleBook.JOHN2 to "2 ยอห์น,2 ยน.",
+        BibleBook.JOHN3 to "3 ยอห์น,3 ยน.",
+        BibleBook.REV to "rv,apocalypse",
+        BibleBook.SIR to "Ecclesiasticus",
+        BibleBook.EP_JER to "letterofjeremiah,letterjeremiah,epistlejeremiah,epjeremiah",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "เบลและมังกร",
+        BibleBook.MACC1 to "1 มัคคาบี,1 มคบ.",
+        BibleBook.MACC2 to "2 มัคคาบี,2 มคบ.",
+        BibleBook.MACC3 to "3 มัคคาบี,3 มคบ.",
+        BibleBook.MACC4 to "4 มัคคาบี,4 มคบ.",
+        BibleBook.PR_MAN to "prayermanasseh,praymanasseh,prmanasseh",
+        BibleBook.ESD1 to "1 เอสดรา,1 อสด.",
+        BibleBook.ESD2 to "2 เอสดรา,2 อสด.",
+        BibleBook.EN1 to "1 เอโนค,1 อนค.",
+        BibleBook.CLEM1 to "1 เคลเมนต์,1 คลม.",
+        BibleBook.CLEM2 to "2 เคลเมนต์,2 คลม."
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

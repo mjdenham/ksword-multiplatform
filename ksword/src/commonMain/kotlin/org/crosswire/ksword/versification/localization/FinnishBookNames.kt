@@ -164,7 +164,38 @@ object FinnishBookNames : BookNameLocalization {
         BibleBook.REV to "Ilm"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.GEN to "1 moos,1. moos,1 mos,1.mos,mos",
+        BibleBook.EXOD to "2 moos,2. moos,2 mos,2.mos",
+        BibleBook.LEV to "3 moos,3. moos,3 mos,3.mos",
+        BibleBook.NUM to "4 moos,4. moos,4 mos,4.mos",
+        BibleBook.DEUT to "5 moos,5. moos,5 mos,5.mos",
+        BibleBook.SAM1 to "1. sam,1.sam",
+        BibleBook.KGS1 to "1. Kun",
+        BibleBook.PROV to "snl,san",
+        BibleBook.SONG to "korkv,kork,kv",
+        BibleBook.EZEK to "Hesek",
+        BibleBook.JOEL to "Jol",
+        BibleBook.MIC to "Mik",
+        BibleBook.NAH to "Nam",
+        BibleBook.COR1 to "1. Kor,1.kor",
+        BibleBook.COR2 to "2. Kor,2.kor",
+        BibleBook.EPH to "Efes",
+        BibleBook.THESS1 to "1. Tess,1.tess",
+        BibleBook.THESS2 to "2. Tess,2.tess",
+        BibleBook.TIM1 to "1. Tim,1.tim",
+        BibleBook.TIM2 to "2. Tim,2.Tim",
+        BibleBook.JAS to "Jak",
+        BibleBook.PET1 to "1. Piet,1.piet",
+        BibleBook.PET2 to "2. Piet,2.piet",
+        BibleBook.JOHN1 to "1. Joh,1.Joh",
+        BibleBook.JOHN2 to "2. Joh,2.Joh",
+        BibleBook.JOHN3 to "3. Joh,3.Joh",
+        BibleBook.JUDE to "Jud",
+        BibleBook.ESD1 to "Kr Esr"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

@@ -201,9 +201,64 @@ object SpanishBookNames : BookNameLocalization {
         BibleBook.PSS151 to "Sal151"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "dt",
+        BibleBook.JOSH to "jos",
+        BibleBook.JUDG to "jue,jc",
+        BibleBook.RUTH to "rt",
+        BibleBook.SAM1 to "1samuel",
+        BibleBook.SAM2 to "2samuel",
+        BibleBook.KGS1 to "1re,1reyes,ire",
+        BibleBook.KGS2 to "2re,2reyes",
+        BibleBook.CHR1 to "1crónicas",
+        BibleBook.CHR2 to "2crónicas",
+        BibleBook.PS to "sal",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "is",
+        BibleBook.JONAH to "jon",
+        BibleBook.NAH to "nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mc",
+        BibleBook.LUKE to "lc",
+        BibleBook.JOHN to "jn",
+        BibleBook.COR1 to "1corintios",
+        BibleBook.COR2 to "2corintios",
+        BibleBook.PHIL to "flp",
+        BibleBook.COL to "col",
+        BibleBook.THESS1 to "1te",
+        BibleBook.THESS2 to "2te",
+        BibleBook.TIM1 to "1tim",
+        BibleBook.TIM2 to "2tim",
+        BibleBook.PHLM to "flm",
+        BibleBook.JAS to "sant",
+        BibleBook.PET1 to "1pe",
+        BibleBook.PET2 to "2pe",
+        BibleBook.JOHN1 to "1jn",
+        BibleBook.JOHN2 to "2jn",
+        BibleBook.JOHN3 to "3jn",
+        BibleBook.REV to "ap",
+        BibleBook.SIR to "eclesiástico",
+        BibleBook.EP_JER to "epjer",
+        BibleBook.BEL to "bel",
+        BibleBook.MACC1 to "1macabeos",
+        BibleBook.MACC2 to "2macabeos",
+        BibleBook.MACC3 to "3macabeos",
+        BibleBook.MACC4 to "4mac",
+        BibleBook.ESD1 to "1esdras",
+        BibleBook.ESD2 to "2esdras",
+        BibleBook.PSS151 to "sl151",
+        BibleBook.EN1 to "ienoc",
+        BibleBook.CLEM1 to "iclemente",
+        BibleBook.CLEM2 to "iiclemente",
+        BibleBook.EP_LAO to "eplao",
+        BibleBook.ESD3 to "iiiesdras",
+        BibleBook.ESD4 to "ivesdras",
+        BibleBook.ESD5 to "vesdras"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
 
     override fun getShortName(book: BibleBook): String? = shortNames[book]
 
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

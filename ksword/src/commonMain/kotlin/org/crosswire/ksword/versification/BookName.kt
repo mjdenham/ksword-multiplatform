@@ -74,14 +74,8 @@ class BookName(
      */
     fun match(normalizedName: String): Boolean {
         // Does it match one of the alternative versions
-        for (j in alternateNames.indices) {
-            val targetBookName = alternateNames[j]
-            if (targetBookName.startsWith(normalizedName) || normalizedName.startsWith(
-                    targetBookName
-                )
-            ) {
-                return true
-            }
+        if (alternateNames.any { it.startsWith(normalizedName) || normalizedName.startsWith(it) }) {
+            return true
         }
 
         // Does it match a long version of the book
@@ -90,7 +84,7 @@ class BookName(
         }
 
         // or a short version
-        if (normalizedShortName.startsWith(normalizedName) || (normalizedShortName.length > 0 && normalizedName.startsWith(
+        if (normalizedShortName.startsWith(normalizedName) || (normalizedShortName.isNotEmpty() && normalizedName.startsWith(
                 normalizedShortName
             ))
         ) {
@@ -173,7 +167,7 @@ class BookName(
      * @return the normalizedShortName
      */
     val normalizedShortName: String
-    private val alternateNames: Array<String> = arrayOf()
+    private val alternateNames: List<String>
 
     /**
      * Create a BookName for a Book of the Bible in a given language.
@@ -194,9 +188,14 @@ class BookName(
         this.shortName = shortName
         this.normalizedShortName = normalize(shortName, locale)
 
-        //        if (alternateNames != null) {
-//            this.alternateNames = StringUtil.split(normalize(alternateNames, locale), ',');
-//        }
+        // Parse comma-separated alternate names
+        this.alternateNames = if (!alternateNames.isNullOrEmpty()) {
+            normalize(alternateNames, locale).split(',')
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+        } else {
+            emptyList()
+        }
     }
 
     companion object {

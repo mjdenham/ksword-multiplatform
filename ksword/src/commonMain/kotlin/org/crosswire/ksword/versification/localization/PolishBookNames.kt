@@ -141,7 +141,55 @@ object PolishBookNames : BookNameLocalization {
         BibleBook.REV to "Obj"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.GEN to "1Mj",
+        BibleBook.EXOD to "2Mj",
+        BibleBook.LEV to "3Mj",
+        BibleBook.NUM to "4Mj",
+        BibleBook.DEUT to "5Mj",
+        BibleBook.JUDG to "Sęd",
+        BibleBook.SAM1 to "1 Sm,1Sam",
+        BibleBook.SAM2 to "2 Sm,2Sam",
+        BibleBook.KGS1 to "1 Krl",
+        BibleBook.KGS2 to "2 Krl",
+        BibleBook.CHR1 to "1 Krn",
+        BibleBook.CHR2 to "2 Krn",
+        BibleBook.PROV to "Przyp",
+        BibleBook.ECCL to "Koh,Kazn,Ekl",
+        BibleBook.LAM to "Tr",
+        BibleBook.MATT to "Mat",
+        BibleBook.MARK to "Mar",
+        BibleBook.LUKE to "Łuk",
+        BibleBook.JOHN to "Jn,Jan",
+        BibleBook.GAL to "Gal",
+        BibleBook.THESS1 to "1 Tes",
+        BibleBook.THESS2 to "2 Tes",
+        BibleBook.TIM1 to "1 Tm",
+        BibleBook.TIM2 to "2 Tm",
+        BibleBook.HEB to "Żyd",
+        BibleBook.JAS to "Jak",
+        BibleBook.PET1 to "1 P",
+        BibleBook.PET2 to "2 P",
+        BibleBook.JOHN1 to "1 J,1 Jan,1Jan",
+        BibleBook.JOHN2 to "2 J,2 Jan,2Jan",
+        BibleBook.JOHN3 to "3 J,3 Jan,3Jan",
+        BibleBook.TOB to "Tob",
+        BibleBook.JDT to "Jdt",
+        BibleBook.SIR to "Ekli",
+        BibleBook.MACC1 to "1 Mch",
+        BibleBook.MACC2 to "2 Mch",
+        BibleBook.MACC3 to "3 Mch",
+        BibleBook.MACC4 to "4 Mch",
+        BibleBook.ESD1 to "1 Ezd",
+        BibleBook.ESD2 to "2 Ezd",
+        BibleBook.PSALM_SOL to "Ps Sal",
+        BibleBook.BAR2 to "4 Ba,2 Ba",
+        BibleBook.CLEM1 to "1 Klem",
+        BibleBook.CLEM2 to "2 Klem",
+        BibleBook.COR3 to "3 Kor"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

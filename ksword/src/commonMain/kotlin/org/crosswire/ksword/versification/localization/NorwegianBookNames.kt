@@ -164,7 +164,55 @@ object NorwegianBookNames : BookNameLocalization {
         BibleBook.REV to "Åp"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.JUDG to "jdg,jud",
+        BibleBook.RUTH to "rth",
+        BibleBook.SAM1 to "isamuel",
+        BibleBook.SAM2 to "iisamuel",
+        BibleBook.KGS1 to "1kg,ikings,ikgs",
+        BibleBook.KGS2 to "2kgs,iikings,iikgs",
+        BibleBook.CHR1 to "ichronicles",
+        BibleBook.CHR2 to "iichronicles",
+        BibleBook.PS to "pss,psm",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "is",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jnh",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk,mrk",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn,jhn",
+        BibleBook.COR1 to "icorinthians",
+        BibleBook.COR2 to "iicorinthians",
+        BibleBook.PHIL to "php",
+        BibleBook.COL to "co",
+        BibleBook.THESS1 to "ith",
+        BibleBook.THESS2 to "iith",
+        BibleBook.TIM1 to "1tm,iti,itm",
+        BibleBook.TIM2 to "2tm,iiti,iitm",
+        BibleBook.PHLM to "phm,phlm",
+        BibleBook.JAS to "jas",
+        BibleBook.JOHN1 to "1jn,1jh,ijo,ijn,ijh",
+        BibleBook.JOHN2 to "2jn,2jh,iijo,iijn,iijh",
+        BibleBook.JOHN3 to "3jn,3jh,iiijo,iiijn,iiijh",
+        BibleBook.SIR to "Ecclesiasticus",
+        BibleBook.EP_JER to "letterofjeremiah,letterjeremiah,epistlejeremiah,epjeremiah",
+        BibleBook.BEL to "beldragon,belanddragon",
+        BibleBook.MACC1 to "imaccabees",
+        BibleBook.MACC2 to "iimacabees",
+        BibleBook.MACC3 to "iiimacabees",
+        BibleBook.MACC4 to "ivmac",
+        BibleBook.ESD1 to "iesdras",
+        BibleBook.ESD2 to "iiesdras",
+        BibleBook.PSS151 to "pss151,psm151",
+        BibleBook.EN1 to "ienoch",
+        BibleBook.CLEM1 to "iiclement",
+        BibleBook.CLEM2 to "iiclement"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

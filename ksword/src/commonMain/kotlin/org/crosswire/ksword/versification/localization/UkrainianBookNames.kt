@@ -164,7 +164,47 @@ object UkrainianBookNames : BookNameLocalization {
         BibleBook.REV to "Об"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "пвт",
+        BibleBook.JUDG to "судд,суд",
+        BibleBook.RUTH to "рут",
+        BibleBook.SAM1 to "ісамуїла",
+        BibleBook.SAM2 to "іісамуїла",
+        BibleBook.KGS1 to "1цр,іцарів,іцар",
+        BibleBook.KGS2 to "2цр,iiцарів,iiцар",
+        BibleBook.CHR1 to "іхроніки",
+        BibleBook.CHR2 to "ііхроніки",
+        BibleBook.PS to "псл,пслм",
+        BibleBook.ECCL to "кохелет",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "Іс",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "йни",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "Мт",
+        BibleBook.MARK to "мк,мрк",
+        BibleBook.LUKE to "лк",
+        BibleBook.JOHN to "ів,івн",
+        BibleBook.COR1 to "ікоринтян",
+        BibleBook.COR2 to "іікоринтян",
+        BibleBook.PHIL to "флп",
+        BibleBook.COL to "ко",
+        BibleBook.THESS1 to "ісо",
+        BibleBook.THESS2 to "іісо",
+        BibleBook.TIM1 to "1тм,іти,ітм",
+        BibleBook.TIM2 to "2тм,ііти,іітм",
+        BibleBook.PHLM to "фм,флм",
+        BibleBook.JAS to "якв",
+        BibleBook.PET1 to "1птр,іп",
+        BibleBook.PET2 to "2пт,ііп",
+        BibleBook.JOHN1 to "1ів,1ін,іів,іівн",
+        BibleBook.JOHN2 to "2ів,2ін,ііів,ііівн",
+        BibleBook.JOHN3 to "3ів,3ін,іііів,іііівн",
+        BibleBook.REV to "об,апокаліпсис"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

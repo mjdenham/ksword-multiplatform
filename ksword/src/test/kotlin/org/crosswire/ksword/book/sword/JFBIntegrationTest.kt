@@ -62,7 +62,7 @@ class JFBIntegrationTest {
         val v11n = Versifications.getVersification(v11nName)
         val result = backend.findNextKey(Verse(v11n, BibleBook.JOHN, 3, 35))
         println(result)
-        assertEquals(Verse(v11n, BibleBook.JOHN, 4, 1), result)
+        assertEquals(Verse(v11n, BibleBook.JOHN, 4, 0), result)
     }
 
     @Test

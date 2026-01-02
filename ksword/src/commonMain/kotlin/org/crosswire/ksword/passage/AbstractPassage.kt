@@ -23,19 +23,6 @@ import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.Versification
 import kotlin.jvm.Transient
 
-/**
- * This is a base class to help with some of the common implementation details
- * of being a Passage.
- *
- *
- * Importantly, this class takes care of Serialization in a general yet
- * optimized way. I think I am going to have a look at replacement here.
- *
- * @see gnu.lgpl.License The GNU Lesser General Public License for details.
- *
- * @author Joe Walker
- * @author DM Smith
- */
 abstract class AbstractPassage protected constructor(
     val v11n: Versification,
     passageName: String? = null
@@ -804,37 +791,54 @@ abstract class AbstractPassage protected constructor(
      * if the string is invalid
      */
     protected fun addVerses(refs: String, basis: Key?) {
-//        optimizeWrites()
-//
-//        val parts = refs.split(REF_ALLOWED_DELIMS_RE)
-//        if (parts.size == 0) {
-//            return
-//        }
-//
-//        var start = 0
-//        var vrBasis: VerseRange? = null
-//        if (basis is Verse) {
-//            vrBasis = VerseRange(v11n, (basis as Verse?)!!)
-//        } else if (basis is VerseRange) {
-//            vrBasis = basis
-//        } else {
-//            // If we are not passed a useful basis,
-//            // then we treat the first as a special case because there is
-//            // nothing to sensibly base this reference on
-//            vrBasis = VerseRangeFactory.fromString(v11n, parts[0].trim { it <= ' ' })
-//            // We add it because it was part of the given input
-//            add(vrBasis)
-//            start = 1
-//        }
-//
-//        // Loop for the other verses, interpreting each on the
-//        // basis of the one before.
-//        for (i in start until parts.size) {
-//            val next: VerseRange =
-//                VerseRangeFactory.fromString(v11n, parts[i].trim { it <= ' ' }, vrBasis)
-//            add(next)
-//            vrBasis = next
-//        }
+        // Split on allowed delimiters (comma, semicolon, newline, carriage return, tab)
+        val parts = refs.split(REF_ALLOWED_DELIMS_RE)
+        if (parts.isEmpty()) {
+            return
+        }
+
+        var start = 0
+        var vrBasis: VerseRange? = null
+        var anyAdded = false
+
+        // Convert basis to VerseRange if needed
+        if (basis is Verse) {
+            vrBasis = VerseRange(v11n, basis)
+        } else if (basis is VerseRange) {
+            vrBasis = basis
+        } else {
+            // If we are not passed a useful basis,
+            // then we treat the first as a special case because there is
+            // nothing to sensibly base this reference on
+            val firstPart = parts[0].trim()
+            if (firstPart.isNotEmpty()) {
+                vrBasis = VerseRangeFactory.fromString(v11n, firstPart)
+                    ?: throw NoSuchVerseException("Cannot parse reference: $firstPart")
+                // We add it because it was part of the given input
+                add(vrBasis)
+                anyAdded = true
+                start = 1
+            }
+        }
+
+        // Loop for the other verses, interpreting each on the
+        // basis of the one before.
+        for (i in start until parts.size) {
+            val trimmedPart = parts[i].trim()
+            if (trimmedPart.isNotEmpty()) {
+                val next: VerseRange? = VerseRangeFactory.fromString(v11n, trimmedPart, vrBasis)
+                if (next != null) {
+                    add(next)
+                    vrBasis = next
+                    anyAdded = true
+                }
+            }
+        }
+
+        // If nothing was added and we have a non-empty reference, it means parsing failed
+        if (!anyAdded && refs.trim().isNotEmpty()) {
+            throw NoSuchVerseException("Cannot parse reference: $refs")
+        }
     }
 
     /**
@@ -1282,7 +1286,7 @@ abstract class AbstractPassage protected constructor(
         /**
          * What characters can we use to separate VerseRanges in a Passage
          */
-        val REF_ALLOWED_DELIMS_RE = "[,;\n\t]".toRegex()
+        val REF_ALLOWED_DELIMS_RE = "[,;\n\r\t]".toRegex()
 
         /**
          * What characters should we use to separate VerseRanges in a Passage

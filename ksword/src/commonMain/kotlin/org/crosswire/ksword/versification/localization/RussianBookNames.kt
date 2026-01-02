@@ -141,7 +141,60 @@ object RussianBookNames : BookNameLocalization {
         BibleBook.REV to "Откр"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "вт",
+        BibleBook.JUDG to "судь,суд",
+        BibleBook.RUTH to "рф",
+        BibleBook.SAM1 to "iцарств",
+        BibleBook.SAM2 to "iiцарств",
+        BibleBook.KGS1 to "3цр,iiiцарств,iiiцрст",
+        BibleBook.KGS2 to "4цр,ivцарств,ivцрст",
+        BibleBook.CHR1 to "iпаралипоменон",
+        BibleBook.CHR2 to "iiпаралипоменон",
+        BibleBook.PS to "псл,пслт",
+        BibleBook.ISA to "ис",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "ина",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "мт",
+        BibleBook.MARK to "мк,мрк",
+        BibleBook.LUKE to "лк",
+        BibleBook.JOHN to "ин,инн",
+        BibleBook.COR1 to "iкоринфянам",
+        BibleBook.COR2 to "iiкоринфянам",
+        BibleBook.THESS1 to "iф",
+        BibleBook.THESS2 to "iiф",
+        BibleBook.TIM1 to "1тм,iти,iтм",
+        BibleBook.TIM2 to "2тм,iiти,iiтм",
+        BibleBook.PHLM to "фм,филм",
+        BibleBook.JAS to "иав",
+        BibleBook.PET1 to "1птр,iп",
+        BibleBook.PET2 to "2птр,iiп",
+        BibleBook.JOHN1 to "1ин,1инн,iио,iин,iинн",
+        BibleBook.JOHN2 to "2ин,2инн,iiио,iiин,iiинн",
+        BibleBook.JOHN3 to "3ин,3инн,iiiио,iiiин,iiiинн",
+        BibleBook.EP_JER to "письмоиеремии,посланиеиеремии,посиеремии",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "виледраконе,вилиидракон",
+        BibleBook.MACC1 to "iмаккавейская",
+        BibleBook.MACC2 to "iiмаккавейская",
+        BibleBook.MACC3 to "iiiмаккавейская",
+        BibleBook.MACC4 to "ivмак",
+        BibleBook.PR_MAN to "молитваманассии,молиманассии,молманасси",
+        BibleBook.ESD1 to "iездры",
+        BibleBook.ESD2 to "iiездры",
+        BibleBook.PSS151 to "псл151,псм151",
+        BibleBook.EP_LAO to "полаодикийцам",
+        BibleBook.ESD3 to "iiiездры",
+        BibleBook.ESD4 to "ivездры",
+        BibleBook.ESD5 to "vездры",
+        BibleBook.EN1 to "iенох",
+        BibleBook.CLEM1 to "iклемента",
+        BibleBook.CLEM2 to "iiклемента"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

@@ -141,7 +141,63 @@ object JapaneseBookNames : BookNameLocalization {
         BibleBook.REV to "默"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "dt",
+        BibleBook.RUTH to "rth",
+        BibleBook.SAM1 to "母前,一シェム",
+        BibleBook.SAM2 to "母後,二シェム",
+        BibleBook.KGS1 to "列王上,一列王",
+        BibleBook.KGS2 to "列王下,二列王",
+        BibleBook.CHR1 to "歴代上,一歴代",
+        BibleBook.CHR2 to "歴代下,二歴代",
+        BibleBook.PS to "pss,psm",
+        BibleBook.ECCL to "傳,コヘ",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "イシャ",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "拿",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "太,マタイ",
+        BibleBook.MARK to "可,マルコ",
+        BibleBook.LUKE to "路",
+        BibleBook.JOHN to "約,ヨハネ",
+        BibleBook.COR1 to "哥前,Iコリ",
+        BibleBook.COR2 to "哥後,IIコリ",
+        BibleBook.PHIL to "腓,フィリ",
+        BibleBook.COL to "西",
+        BibleBook.THESS1 to "撤前,Iテサ,一テサ",
+        BibleBook.THESS2 to "撤後,IIテサ,二テサ",
+        BibleBook.TIM1 to "提前,Iテモ,一テモ",
+        BibleBook.TIM2 to "提後,IIテモ,二ティモ",
+        BibleBook.PHLM to "門,フィレ",
+        BibleBook.PET1 to "彼前,Iペト,一ペト",
+        BibleBook.PET2 to "彼後,IIペト,二ペト",
+        BibleBook.JOHN1 to "一ヨハ,Iヨハ,約壹",
+        BibleBook.JOHN2 to "二ヨハ,IIヨハ,約貳",
+        BibleBook.JOHN3 to "三ヨハ,IIIヨハ,約參",
+        BibleBook.EP_JER to "letterofjeremiah,letterjeremiah,epistlejeremiah,epjeremiah",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "beldragon,belanddragon",
+        BibleBook.MACC1 to "imaccabees",
+        BibleBook.MACC2 to "iimacabees",
+        BibleBook.MACC3 to "iiimacabees",
+        BibleBook.MACC4 to "ivmac",
+        BibleBook.PR_MAN to "prayermanasseh,praymanasseh,prmanasseh",
+        BibleBook.ESD1 to "iesdras",
+        BibleBook.ESD2 to "iiesdras",
+        BibleBook.PSS151 to "pss151,psm151",
+        BibleBook.PSALM_SOL to "psssolomon,psmsolomon",
+        BibleBook.EP_LAO to "eplaodiceans",
+        BibleBook.ESD3 to "iiiesdras",
+        BibleBook.ESD4 to "ivesdras",
+        BibleBook.ESD5 to "vesdras",
+        BibleBook.EN1 to "ienoch",
+        BibleBook.CLEM1 to "iiclement",
+        BibleBook.CLEM2 to "iiclement"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

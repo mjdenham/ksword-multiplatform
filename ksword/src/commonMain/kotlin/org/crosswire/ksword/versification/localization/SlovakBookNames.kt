@@ -164,7 +164,57 @@ object SlovakBookNames : BookNameLocalization {
         BibleBook.REV to "Zj"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "dt",
+        BibleBook.JUDG to "sud,sdc",
+        BibleBook.KGS1 to "1krľ,ikrl,ikrľ",
+        BibleBook.KGS2 to "2krľ,iikrl,iikrľ",
+        BibleBook.CHR1 to "ikronicka",
+        BibleBook.CHR2 to "iikronicka",
+        BibleBook.PS to "ž,žlm",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "iz",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jnš",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk,mar",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn,jan",
+        BibleBook.COR2 to "iikorintanom",
+        BibleBook.PHIL to "flp",
+        BibleBook.COL to "kol",
+        BibleBook.THESS1 to "ites",
+        BibleBook.THESS2 to "iites",
+        BibleBook.TIM1 to "1tm,iti,itm",
+        BibleBook.TIM2 to "2tm,iiti,iitm",
+        BibleBook.JAS to "jak",
+        BibleBook.PET1 to "1ptr,ipt",
+        BibleBook.PET2 to "2pt,iip",
+        BibleBook.JOHN1 to "1jn,1ja,ija,ijn,ija",
+        BibleBook.JOHN2 to "2jn,2ja,iijoa,iijn,iija",
+        BibleBook.JOHN3 to "3jn,3ja,iiijo,iiijn,iiija",
+        BibleBook.REV to "zj,apokalypsa",
+        BibleBook.SIR to "Ekleziastikus",
+        BibleBook.EP_JER to "letterofjeremiah,letterjeremiah,epistlejeremiah,epjeremiah",
+        BibleBook.BEL to "beldragon,belanddragon",
+        BibleBook.MACC1 to "imaccabees",
+        BibleBook.MACC2 to "iimacabees",
+        BibleBook.MACC3 to "iiimacabees",
+        BibleBook.ESD1 to "iesdras",
+        BibleBook.ESD2 to "iiesdras",
+        BibleBook.PSALM_SOL to "psssolomon,psmsolomon",
+        BibleBook.EP_LAO to "eplaodiceans",
+        BibleBook.ESD3 to "iiiesdras",
+        BibleBook.ESD4 to "ivesdras",
+        BibleBook.ESD5 to "vesdras",
+        BibleBook.EN1 to "ienoch",
+        BibleBook.CLEM1 to "iiclement",
+        BibleBook.CLEM2 to "iiclement"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

@@ -141,7 +141,49 @@ object GermanBookNames : BookNameLocalization {
         BibleBook.REV to "Offb"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "Dt,Deut",
+        BibleBook.JUDG to "Ri",
+        BibleBook.RUTH to "Rut",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "Jes",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "Mt",
+        BibleBook.MARK to "Mk",
+        BibleBook.LUKE to "Lk",
+        BibleBook.JOHN to "Joh",
+        BibleBook.COR1 to "1Kor",
+        BibleBook.COR2 to "2Kor",
+        BibleBook.COL to "Kol",
+        BibleBook.THESS1 to "1Thes",
+        BibleBook.THESS2 to "Ilith",
+        BibleBook.TIM1 to "1Tim",
+        BibleBook.TIM2 to "2Tim",
+        BibleBook.PHLM to "Phlm",
+        BibleBook.JAS to "Jak",
+        BibleBook.PET1 to "1Pet",
+        BibleBook.PET2 to "2Pet",
+        BibleBook.JOHN1 to "1Joh",
+        BibleBook.JOHN2 to "2Joh",
+        BibleBook.JOHN3 to "3Joh",
+        BibleBook.SIR to "Sir",
+        BibleBook.EP_JER to "BrJer",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "Bel und der Drache",
+        BibleBook.MACC1 to "1Mak",
+        BibleBook.MACC2 to "2Mak",
+        BibleBook.MACC3 to "3Mak",
+        BibleBook.MACC4 to "4Mak",
+        BibleBook.PR_MAN to "GebMan",
+        BibleBook.ESD1 to "1Ezr",
+        BibleBook.ESD2 to "2ezr",
+        BibleBook.EP_LAO to "Lao",
+        BibleBook.EN1 to "1Hen",
+        BibleBook.CLEM1 to "1. Clemens"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

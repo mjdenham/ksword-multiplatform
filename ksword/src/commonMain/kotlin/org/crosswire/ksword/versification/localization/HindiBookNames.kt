@@ -164,7 +164,34 @@ object HindiBookNames : BookNameLocalization {
         BibleBook.REV to "प्रका"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "व्यव",
+        BibleBook.JUDG to "न्यय,न्या",
+        BibleBook.KGS1 to "1रज,iराजा,iरा",
+        BibleBook.KGS2 to "2रज,iiराजा,iiरा",
+        BibleBook.PS to "भज,भजं",
+        BibleBook.ECCL to "कोहलेट",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "यश",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "यन",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "मत",
+        BibleBook.MARK to "मक,मर्क",
+        BibleBook.LUKE to "लक",
+        BibleBook.JOHN to "युह,यूहन",
+        BibleBook.COR1 to "iकुरिन्थियों",
+        BibleBook.COR2 to "iiकुरिन्थियों",
+        BibleBook.PHIL to "फलप",
+        BibleBook.COL to "को",
+        BibleBook.JAS to "यकब",
+        BibleBook.PHLM to "फल,फलम",
+        BibleBook.SIR to "एकलेशियास्तिकस",
+        BibleBook.BEL to "बेलड्रैगन,बेलऔरड्रैगन"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

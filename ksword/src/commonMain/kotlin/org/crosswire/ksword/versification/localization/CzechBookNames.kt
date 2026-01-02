@@ -164,7 +164,59 @@ object CzechBookNames : BookNameLocalization {
         BibleBook.REV to "Zjev"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "dt",
+        BibleBook.JUDG to "soud",
+        BibleBook.RUTH to "rut",
+        BibleBook.SAM1 to "isamuel",
+        BibleBook.SAM2 to "iisamuel",
+        BibleBook.KGS1 to "1kr",
+        BibleBook.KGS2 to "2kr",
+        BibleBook.CHR1 to "1par",
+        BibleBook.CHR2 to "2par",
+        BibleBook.PS to "zal",
+        BibleBook.ECCL to "kaz",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "iz",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jon",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk,mrk",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn",
+        BibleBook.COR1 to "1kor",
+        BibleBook.COR2 to "2kor",
+        BibleBook.PHIL to "fil",
+        BibleBook.COL to "kol",
+        BibleBook.THESS1 to "1tes",
+        BibleBook.THESS2 to "2tes",
+        BibleBook.TIM1 to "1tm,iti,itm",
+        BibleBook.TIM2 to "2tm,iiti,iitm",
+        BibleBook.JAS to "jak",
+        BibleBook.PET1 to "1ptr,ip",
+        BibleBook.PET2 to "2pt,iip",
+        BibleBook.JOHN1 to "1jn",
+        BibleBook.JOHN2 to "2jn",
+        BibleBook.JOHN3 to "3jn",
+        BibleBook.SIR to "Ecclesiasticus",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "beldrak,beladrak",
+        BibleBook.MACC1 to "1mak",
+        BibleBook.MACC2 to "2mak",
+        BibleBook.MACC3 to "3mak",
+        BibleBook.MACC4 to "4mak",
+        BibleBook.PR_MAN to "modlitbamanassesova",
+        BibleBook.ESD1 to "1ezdras",
+        BibleBook.ESD2 to "2ezdras",
+        BibleBook.EP_LAO to "listlaodikejskym,listlaodicejskym",
+        BibleBook.EN1 to "1hen",
+        BibleBook.CLEM1 to "1klement",
+        BibleBook.CLEM2 to "2klement"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

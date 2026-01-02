@@ -164,7 +164,32 @@ object TeluguBookNames : BookNameLocalization {
         BibleBook.REV to "ప్రకట"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "ద్వితీ",
+        BibleBook.JUDG to "న్యాయా",
+        BibleBook.RUTH to "రూతు",
+        BibleBook.SAM1 to "1 సమూయేలు",
+        BibleBook.SAM2 to "2 సమూయేలు",
+        BibleBook.KGS1 to "1 రాజులు,1రాజు",
+        BibleBook.KGS2 to "2 రాజులు,ii రాజులు",
+        BibleBook.PS to "కీర్తన,కీర్తనలు",
+        BibleBook.ECCL to "ప్రసంగి",
+        BibleBook.ISA to "యెష",
+        BibleBook.MATT to "మత్తయి",
+        BibleBook.MARK to "మార్కు,మార్కు",
+        BibleBook.JOHN to "యోహాను,యోహాను",
+        BibleBook.COR1 to "i కొరింథీయులకు",
+        BibleBook.COR2 to "ii కొరింథీయులకు",
+        BibleBook.PHIL to "ఫిలిప్పి",
+        BibleBook.COL to "కొలస్సి",
+        BibleBook.PET1 to "1 పేతురు,1 పేతు",
+        BibleBook.PET2 to "2 పేతురు,2 పేతు",
+        BibleBook.JAS to "యాకోబు",
+        BibleBook.SIR to "ప్రసంగి",
+        BibleBook.EP_JER to "యిర్మీయా లేఖనం"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

@@ -164,7 +164,49 @@ object TamilBookNames : BookNameLocalization {
         BibleBook.REV to "திவெ"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.GEN to "ஆதியாகமம்",
+        BibleBook.EXOD to "யாத்திராகமம்,யாத்",
+        BibleBook.LEV to "லேவியராகமம்",
+        BibleBook.NUM to "எண்ணாகமம்",
+        BibleBook.DEUT to "உபாகமம்",
+        BibleBook.JUDG to "நியாயாதிபதிகள்",
+        BibleBook.KGS1 to "1 இராஜாக்கள்",
+        BibleBook.KGS2 to "2 இராஜாக்கள்",
+        BibleBook.CHR1 to "1 நாளாகமம்",
+        BibleBook.CHR2 to "2 நாளாகமம்",
+        BibleBook.EZRA to "எஸ்றா",
+        BibleBook.ISA to "ஏசாயா,ஏசா",
+        BibleBook.HOS to "ஓசியா,ஓசி",
+        BibleBook.MIC to "மீகா",
+        BibleBook.HAB to "ஆபகூக்",
+        BibleBook.ZECH to "சகரியா",
+        BibleBook.MAL to "மல்கியா",
+        BibleBook.PS to "சங்கீதம்,சங்கீதங்கள்",
+        BibleBook.PROV to "பழமொழி ஆகமம்",
+        BibleBook.ECCL to "பிரசங்கி,சங்கத் திருவுரை ஆகமம்",
+        BibleBook.SONG to "உன்னதப்பாட்டு,உன்னத சங்கீதம்",
+        BibleBook.ACTS to "அப்போஸ்தலருடைய நடபடிகள்,அப்போஸ்தலர் பணி",
+        BibleBook.ROM to "ரோமர்",
+        BibleBook.COL to "கொலோசெயர்",
+        BibleBook.THESS1 to "1 தெசலோனிக்கேயர்",
+        BibleBook.THESS2 to "2 தெசலோனிக்கேயர்",
+        BibleBook.TIM1 to "1 தீமோத்தேயு,1 தீமோ",
+        BibleBook.TIM2 to "2 தீமோத்தேயு,2 தீமோ",
+        BibleBook.PHLM to "பிலேமோன்",
+        BibleBook.HEB to "எபிரெயர்",
+        BibleBook.PET1 to "1 இராயப்பர்",
+        BibleBook.PET2 to "2 இராயப்பர்",
+        BibleBook.JOHN1 to "1 அருளப்பர்,1 அரு",
+        BibleBook.JOHN2 to "2 அருளப்பர்,2 அரு",
+        BibleBook.JOHN3 to "3 அருளப்பர்,3 அரு",
+        BibleBook.SIR to "சீராக்கின் ஞானம்",
+        BibleBook.WIS to "சாலமோனின் ஞானம்",
+        BibleBook.EP_JER to "எரேமியாவின் மடல்",
+        BibleBook.BEL to "பேல் தெய்வமும் அரக்கப் பாம்பும்"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

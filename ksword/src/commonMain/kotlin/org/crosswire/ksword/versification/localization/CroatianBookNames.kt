@@ -164,7 +164,58 @@ object CroatianBookNames : BookNameLocalization {
         BibleBook.REV to "Otk"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "dt",
+        BibleBook.JUDG to "sdj,sud",
+        BibleBook.RUTH to "rut",
+        BibleBook.SAM1 to "1sam",
+        BibleBook.SAM2 to "2sam",
+        BibleBook.KGS1 to "1kr,1kraljevima",
+        BibleBook.KGS2 to "2kr,2raljevima",
+        BibleBook.CHR1 to "1lje",
+        BibleBook.CHR2 to "2lje",
+        BibleBook.PS to "ps,psm",
+        BibleBook.ECCL to "prop",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "isa",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jona",
+        BibleBook.NAH to "Nam",
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn",
+        BibleBook.COR1 to "1kor",
+        BibleBook.COR2 to "2kor",
+        BibleBook.PHIL to "flp",
+        BibleBook.COL to "kol",
+        BibleBook.THESS1 to "1sol",
+        BibleBook.THESS2 to "2sol",
+        BibleBook.TIM1 to "1tim",
+        BibleBook.TIM2 to "2tim",
+        BibleBook.PHLM to "flm",
+        BibleBook.JAS to "jak",
+        BibleBook.PET1 to "1pt",
+        BibleBook.PET2 to "2pt",
+        BibleBook.JOHN1 to "1jn",
+        BibleBook.JOHN2 to "2jn",
+        BibleBook.JOHN3 to "3jn",
+        BibleBook.REV to "otk",
+        BibleBook.EP_JER to "pjer",
+        BibleBook.BEL to "bel",
+        BibleBook.MACC1 to "1mak",
+        BibleBook.MACC2 to "2mak",
+        BibleBook.MACC3 to "3mak",
+        BibleBook.MACC4 to "4mak",
+        BibleBook.PSALM_SOL to "pssol",
+        BibleBook.EP_LAO to "laod",
+        BibleBook.EN1 to "1hen",
+        BibleBook.CLEM1 to "1klement,1klem",
+        BibleBook.CLEM2 to "2klement,3klem"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

@@ -141,7 +141,46 @@ object FrenchBookNames : BookNameLocalization {
         BibleBook.REV to "Ap"
     )
 
+    private val alternateNames = mapOf(
+        BibleBook.DEUT to "Dt,De,Deut",
+        BibleBook.SAM1 to "ISamuel",
+        BibleBook.SAM2 to "IISamuel",
+        BibleBook.KGS1 to "1R,IR,IRo",
+        BibleBook.KGS2 to "2R,IIR,IIRo",
+        BibleBook.CHR1 to "IChroniques",
+        BibleBook.CHR2 to "IIChroniques",
+        BibleBook.PS to "Ps,psa",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "Es,Is",
+        BibleBook.JOEL to "Joë",
+        BibleBook.JONAH to "Jon",
+        BibleBook.NAH to "Nah",
+        BibleBook.MATT to "Mat",
+        BibleBook.MARK to "Mc,Marc",
+        BibleBook.LUKE to "Lc,Lu",
+        BibleBook.COR1 to "1Co",
+        BibleBook.COR2 to "2Co",
+        BibleBook.PHIL to "Phil",
+        BibleBook.COL to "Col",
+        BibleBook.THESS1 to "ITh",
+        BibleBook.THESS2 to "2Th",
+        BibleBook.TIM1 to "1Ti,1Tm",
+        BibleBook.TIM2 to "2Ti,2Tm",
+        BibleBook.JAS to "Jc,Ja,Jacq",
+        BibleBook.PET1 to "1P",
+        BibleBook.PET2 to "2P",
+        BibleBook.JOHN1 to "1Jn",
+        BibleBook.JOHN2 to "2Jn",
+        BibleBook.JOHN3 to "3Jn",
+        BibleBook.REV to "Ap,Ré",
+        BibleBook.SIR to "Si,Sir",
+        BibleBook.EP_JER to "EpJe,LettredeJérémie",
+        BibleBook.BEL to "Bel",
+        BibleBook.PSALM_SOL to "PsSal",
+        BibleBook.EP_LAO to "EpLao"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
     override fun getShortName(book: BibleBook): String? = shortNames[book]
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }

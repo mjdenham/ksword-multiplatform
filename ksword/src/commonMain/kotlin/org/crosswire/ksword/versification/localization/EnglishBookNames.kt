@@ -201,9 +201,73 @@ object EnglishBookNames : BookNameLocalization {
         BibleBook.PSS151 to "Ps151"
     )
 
+    private val alternateNames = mapOf(
+        // Old Testament
+        BibleBook.EXOD to "ex",
+        BibleBook.RUTH to "rth",
+        BibleBook.SAM1 to "isamuel,Samuel,isam,1 sam",
+        BibleBook.SAM2 to "iisamuel,iisa,2 sam,Second Samuel",
+        BibleBook.KGS1 to "1kg,ikings,ikgs,Kings,iki,ikg,1 kin",
+        BibleBook.KGS2 to "2kgs,iikings,iikgs,iiki,iikg,2 kin, Second Kings",
+        BibleBook.CHR1 to "ichronicles,1 Chron, 1. Chron,1.Chron,ich,1 chr",
+        BibleBook.CHR2 to "iichronicles, 2. Chron, 2 chron, 2.Chron,iich, 2 chr, Second Chronicles",
+        BibleBook.PS to "pss,psm,psalm",
+        BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
+        BibleBook.ISA to "is",
+        BibleBook.EZEK to "Ezk",
+        BibleBook.JOEL to "Jol",
+        BibleBook.JONAH to "jnh",
+        BibleBook.NAH to "Nam",
+
+        // New Testament
+        BibleBook.MATT to "mt",
+        BibleBook.MARK to "mk,mrk",
+        BibleBook.LUKE to "lk",
+        BibleBook.JOHN to "jn,jhn",
+        BibleBook.COR1 to "icorinthians,corinthians,ico",
+        BibleBook.COR2 to "iicorinthians,iico, Second Corinthians",
+        BibleBook.PHIL to "php",
+        BibleBook.COL to "co",
+        BibleBook.THESS1 to "ith,thessalonians",
+        BibleBook.THESS2 to "iith, Second Thessalonians",
+        BibleBook.TIM1 to "1tm,iti,itm,tim,timothy",
+        BibleBook.TIM2 to "2tm,iiti,iitm, Second Timothy",
+        BibleBook.PHLM to "phm,phlm,philem",
+        BibleBook.HEB to "Hebrew",
+        BibleBook.JAS to "jas",
+        BibleBook.PET1 to "1ptr,ip,1. Pet, 1.Pet, peter",
+        BibleBook.PET2 to "2pt,iip,2. Pet, 2.Pet, Second Peter",
+        BibleBook.JOHN1 to "1jn,1jh,ijo,ijn,ijh",
+        BibleBook.JOHN2 to "2jn,2jh,iijo,iijn,iijh, Second John",
+        BibleBook.JOHN3 to "3jn,3jh,iiijo,iiijn,iiijh",
+        BibleBook.REV to "rv,apocalypse,revelation",
+
+        // Apocrypha & Other
+        BibleBook.SIR to "Ecclesiasticus",
+        BibleBook.EP_JER to "letterofjeremiah,letterjeremiah,epistlejeremiah,epjeremiah",
+        BibleBook.PR_AZAR to "prayerazariah,prayazariah,songofthreechildren,songthreechildren,songof3children,song3children,S3Y",
+        BibleBook.BEL to "beldragon,belanddragon",
+        BibleBook.MACC1 to "imaccabees",
+        BibleBook.MACC2 to "iimacabees",
+        BibleBook.MACC3 to "iiimacabees",
+        BibleBook.MACC4 to "ivmac",
+        BibleBook.PR_MAN to "prayermanasseh,praymanasseh,prmanasseh",
+        BibleBook.ESD1 to "iesdras",
+        BibleBook.ESD2 to "iiesdras",
+        BibleBook.PSS151 to "pss151,psm151",
+        BibleBook.PSALM_SOL to "psssolomon,psmsolomon",
+        BibleBook.EP_LAO to "eplaodiceans",
+        BibleBook.ESD3 to "iiiesdras",
+        BibleBook.ESD4 to "ivesdras",
+        BibleBook.ESD5 to "vesdras",
+        BibleBook.EN1 to "ienoch",
+        BibleBook.CLEM1 to "iclement",
+        BibleBook.CLEM2 to "iiclement"
+    )
+
     override fun getFullName(book: BibleBook): String? = fullNames[book]
 
     override fun getShortName(book: BibleBook): String? = shortNames[book]
 
-    override fun getAlternateName(book: BibleBook): String? = null
+    override fun getAlternateName(book: BibleBook): String? = alternateNames[book]
 }
