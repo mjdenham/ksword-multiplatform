@@ -82,6 +82,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
         const val KEY_UNLOCK_URL: String = "UnlockURL"
         const val KEY_VERSION: String = "Version"
 
+        const val ENCODING_UTF8: String = "UTF-8"
+
         // Some keys have defaults
         val DEFAULTS = mapOf(
             KEY_COMPRESS_TYPE to "ZIP",
@@ -91,7 +93,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
             KEY_VERSIFICATION to "KJV",
             KEY_DIRECTION to "LtoR",
             KEY_SOURCE_TYPE to "Plaintext",
-            KEY_ENCODING to "UTF-8",
+            KEY_ENCODING to ENCODING_UTF8,
             KEY_DISPLAY_LEVEL to "1",
             KEY_OSIS_Q_TO_TICK to "true",
             KEY_VERSION to "1.0",
@@ -115,8 +117,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override val name: String
         get() = getProperty(KEY_DESCRIPTION) ?: ""
-    override val bookCharset: String?
-        get() = TODO("Not yet implemented")
+    override val bookCharset: String
+        get() = getProperty(KEY_ENCODING) ?: ENCODING_UTF8
     override val abbreviation: String
         get() = configAll[KEY_ABBREVIATION].orEmpty()
     override val initials: String

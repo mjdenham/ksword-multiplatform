@@ -58,7 +58,7 @@ interface BookMetaData : Comparable<BookMetaData?> {
      *
      * @return the encoding of the Book
      */
-    val bookCharset: String?
+    val bookCharset: String
 
     /**
      * How this Book organizes it's keys.

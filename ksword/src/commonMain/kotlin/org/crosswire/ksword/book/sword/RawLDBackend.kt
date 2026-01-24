@@ -146,7 +146,7 @@ class RawLDBackend(
     private fun getEntry(state: RawLDBackendState, name: String, dataIndex: DataIndex): DataEntry {
         val datFile = state.getDatFile() ?: throw IOException("Data file not available")
         val data = SwordUtil.readFile(datFile, dataIndex.offset, dataIndex.size)
-        val charset = bmd.getProperty("Encoding") ?: "UTF-8"
+        val charset = bmd.bookCharset
         return DataEntry(name, data, charset)
     }
 

@@ -133,7 +133,7 @@ class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockTyp
     }
 
     override fun readRawContent(state: ZVerseBackendState, key: Key): String {
-        val charset = "UTF-8" //bookMetaData.getBookCharset();
+        val charset = bookMetaData.bookCharset
         val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
 
         val v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N
