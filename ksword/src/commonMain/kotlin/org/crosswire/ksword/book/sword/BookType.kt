@@ -52,7 +52,7 @@ enum class BookType(
         }
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
-            val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
+            val blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
             return ZVerseBackend(sbmd, blockType, 2)
         }
     },
@@ -106,7 +106,7 @@ enum class BookType(
         }
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
-            val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
+            val blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
             return ZVerseBackend(sbmd, blockType, 2)
         }
     },
@@ -116,7 +116,7 @@ enum class BookType(
         }
 
         override fun getBackend(sbmd: SwordBookMetaData): Backend<ZVerseBackendState> {
-            val blockType = BlockType.BLOCK_BOOK //BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
+            val blockType = BlockType.fromString(sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
             return ZVerseBackend(sbmd, blockType, 4)
         }
     },
