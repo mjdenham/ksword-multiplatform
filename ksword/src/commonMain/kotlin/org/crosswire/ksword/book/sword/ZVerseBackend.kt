@@ -136,8 +136,7 @@ class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockTyp
         val charset = bookMetaData.bookCharset
         val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
 
-        val v11nName = getBookMetaData().getProperty(BookMetaData.KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N
-        val v11n: Versification = Versifications.getVersification(v11nName)
+        val v11n: Versification = bookMetaData.versification
         val verse: Verse = KeyUtil.getVerse(key)
 
         var index = verse.ordinal

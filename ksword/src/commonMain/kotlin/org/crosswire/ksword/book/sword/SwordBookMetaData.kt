@@ -106,34 +106,47 @@ class SwordBookMetaData: AbstractBookMetaData() {
         )
     }
 
-    override val keyType: KeyType
-        get() = bookType.keyType
+    val bookType: BookType by lazy {
+        BookType.fromString(getProperty(KEY_MOD_DRV))
+    }
 
-    val bookType: BookType
-        get() = BookType.fromString(getProperty(KEY_MOD_DRV))
+    override val keyType: KeyType by lazy {
+        bookType.keyType
+    }
 
-    override val language: Locale
-        get() = getProperty(KEY_LANG)?.let { Locale.findLocale(it) } ?: Locale.ENGLISH
+    override val language: Locale by lazy {
+        getProperty(KEY_LANG)?.let { Locale.findLocale(it) } ?: Locale.ENGLISH
+    }
 
-    override val name: String
-        get() = getProperty(KEY_DESCRIPTION) ?: ""
-    override val bookCharset: String
-        get() = getProperty(KEY_ENCODING) ?: ENCODING_UTF8
-    override val abbreviation: String
-        get() = configAll[KEY_ABBREVIATION].orEmpty()
-    override val initials: String
-        get() = configAll.name
+    override val name: String by lazy {
+        getProperty(KEY_DESCRIPTION).orEmpty()
+    }
 
-    override val versification: Versification
-        get() = Versifications.getVersification(getProperty(KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N)
+    override val bookCharset: String by lazy {
+        getProperty(KEY_ENCODING) ?: ENCODING_UTF8
+    }
 
-    override val isSupported: Boolean
-        get() = BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
+    override val abbreviation: String by lazy {
+        configAll[KEY_ABBREVIATION].orEmpty()
+    }
+
+    override val initials: String by lazy {
+        configAll.name
+    }
+
+    override val versification: Versification by lazy {
+        Versifications.getVersification(getProperty(KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N)
+    }
+
+    override val isSupported: Boolean by lazy {
+        BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) in listOf("OSIS", "ThML", "Plaintext")
+    }
 
-    override val isLeftToRight: Boolean
-        get() = getProperty(KEY_DIRECTION).equals("LtoR", ignoreCase = true)
+    override val isLeftToRight: Boolean by lazy {
+        getProperty(KEY_DIRECTION).equals("LtoR", ignoreCase = true)
+    }
 
     override val isEnciphered: Boolean
         get() = TODO("Not yet implemented")
