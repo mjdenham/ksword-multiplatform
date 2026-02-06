@@ -65,16 +65,20 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         val url = getDownloadUrl(bookInitials)
         val zipFile = getZipFile(bookInitials)
         if (WebResource().download(url, zipFile)) {
-            IoUtil().unpackZip(
-                zipFile,
-                SwordBookPath.swordBookPath,
-                true,
-                SwordConstants.DIR_CONF,
-                SwordConstants.DIR_DATA
-            )
-
-            Books.refresh()
+            install(zipFile)
         }
+    }
+
+    fun install(zipFile: Path) {
+        IoUtil().unpackZip(
+            zipFile,
+            SwordBookPath.swordBookPath,
+            true,
+            SwordConstants.DIR_CONF,
+            SwordConstants.DIR_DATA
+        )
+
+        Books.refresh()
     }
 
     private fun getDownloadUrl(bookInitials: String) = "https://${installerUrls.host}${installerUrls.packageDir}/$bookInitials.zip"
