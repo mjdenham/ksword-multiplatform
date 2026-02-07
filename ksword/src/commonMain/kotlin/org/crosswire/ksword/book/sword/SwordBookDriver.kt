@@ -52,9 +52,9 @@ class SwordBookDriver { //} : AbstractBookDriver() {
         }
 
         val bookConfPaths: List<Path> = SwordBookPath.getBookList(confDir)
-        return bookConfPaths.map { bookConfPath ->
+        return bookConfPaths.mapNotNull { bookConfPath ->
             try {
-                  val sbmd = SwordBookMetaData.createFromFile(bookConfPath, SwordBookPath.swordBookPath)
+                val sbmd = SwordBookMetaData.createFromFile(bookConfPath, SwordBookPath.swordBookPath)
 
                 sbmd.driver = this
                 createBook(sbmd)
@@ -62,7 +62,7 @@ class SwordBookDriver { //} : AbstractBookDriver() {
                 Log.e("Couldn't create SwordBookMetaData: $bookConfPath", e)
                 null
             }
-        }.filterNotNull()
+        }
     }
 
     /**

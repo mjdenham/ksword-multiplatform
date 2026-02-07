@@ -104,6 +104,10 @@ class SwordBookMetaData: AbstractBookMetaData() {
             KEY_CASE_SENSITIVE_KEYS to "false",
             KEY_STRONGS_PADDING to "true"
         )
+
+        private val SUPPORTED_BOOK_TYPES = BookType.entries.map { type -> type.nameInConfig }
+        private val SUPPORTED_SOURCE_TYPES = listOf("OSIS", "ThML", "Plaintext")
+
     }
 
     val bookType: BookType by lazy {
@@ -138,10 +142,14 @@ class SwordBookMetaData: AbstractBookMetaData() {
         Versifications.getVersification(getProperty(KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N)
     }
 
+    /**
+     * Cannot use all methods like get bookType because some assume property matches an enum value.
+     */
     override val isSupported: Boolean by lazy {
-        BookType.entries.map { it.nameInConfig }.contains(getProperty(KEY_MOD_DRV)) &&
+        SUPPORTED_BOOK_TYPES.contains(getProperty(KEY_MOD_DRV)) &&
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
-                getProperty(KEY_SOURCE_TYPE) in listOf("OSIS", "ThML", "Plaintext")
+                getProperty(KEY_SOURCE_TYPE) in SUPPORTED_SOURCE_TYPES &&
+                !isQuestionable
     }
 
     override val isLeftToRight: Boolean by lazy {
@@ -159,13 +167,16 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override val unlockKey: String?
         get() = TODO("Not yet implemented")
-    override val isQuestionable: Boolean
-        get() = TODO("Not yet implemented")
+
+    override val isQuestionable: Boolean by lazy {
+        getProperty(KEY_CATEGORY)?.contains("Questionable") ?: false
+    }
 
     lateinit var driver: SwordBookDriver
 
-    override val driverName: String?
-        get() = TODO("Not yet implemented")
+    override val driverName: String by lazy {
+        driver.driverName
+    }
 
     var configFile: Path? = null
 
