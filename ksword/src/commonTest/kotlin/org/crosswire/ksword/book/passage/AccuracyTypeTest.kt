@@ -43,7 +43,7 @@ class AccuracyTypeTest {
             AccuracyType.fromText(rs, "10", arrayOf<String>("10"), null, null)
         } catch (expected: NoSuchVerseException) {
             // This is allowed
-        } catch (aioobe: ArrayIndexOutOfBoundsException) {
+        } catch (aioobe: IndexOutOfBoundsException) {
             fail("ArrayIndexOutOfBoundsException caught, expecting NoSuchVerseException")
         }
     }
@@ -54,7 +54,7 @@ class AccuracyTypeTest {
             AccuracyType.fromText(rs, "10", arrayOf<String>("10"), null, null)
         } catch (expected: NoSuchVerseException) {
             // This is allowed
-        } catch (aioobe: ArrayIndexOutOfBoundsException) {
+        } catch (aioobe: IndexOutOfBoundsException) {
             fail("ArrayIndexOutOfBoundsException caught, expecting NoSuchVerseException")
         }
     }
