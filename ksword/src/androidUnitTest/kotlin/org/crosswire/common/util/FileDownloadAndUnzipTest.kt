@@ -4,19 +4,18 @@ import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.sword.SwordConstants
-import org.junit.After
-import org.junit.Assert.*
-
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class FileDownloadAndUnzipTest {
 
     private val webResource = WebResource()
     private val ioUtil = IoUtil()
 
-    @After
-    @Before
+    @AfterTest
+    @BeforeTest
     fun tidyUp() {
         zipFilePath.delete()
         folderToUnzipInto.delete()

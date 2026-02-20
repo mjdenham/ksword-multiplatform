@@ -3,10 +3,10 @@ package org.crosswire.common.util
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class IniSectionTest {
 
@@ -14,7 +14,7 @@ class IniSectionTest {
 
     private lateinit var iniSection: IniSection
 
-    @Before
+    @BeforeTest
     fun setup() {
         iniSection = IniSection()
     }

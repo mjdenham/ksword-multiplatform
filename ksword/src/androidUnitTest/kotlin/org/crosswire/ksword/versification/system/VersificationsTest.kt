@@ -3,13 +3,13 @@ package org.crosswire.ksword.versification.system
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.sword.SwordBookPath
 import org.crosswire.ksword.versification.BibleBook
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class VersificationsTest {
 
-    @Before
+    @BeforeTest
     fun setUp() {
         SwordBookPath.swordBookPath = "../testFiles".toPath()
     }

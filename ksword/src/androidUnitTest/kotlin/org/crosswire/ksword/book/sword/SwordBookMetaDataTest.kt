@@ -2,13 +2,13 @@ package org.crosswire.ksword.book.sword
 
 import okio.Path.Companion.toPath
 import org.crosswire.TestConstants
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SwordBookMetaDataTest {
 
-    @Before
+    @BeforeTest
     fun setUp() {
         SwordBookPath.swordBookPath = "../testFiles".toPath()
     }

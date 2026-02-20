@@ -6,8 +6,12 @@ import org.crosswire.ksword.passage.Verse
 import org.crosswire.ksword.passage.VerseRange
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.system.Versifications
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class RangedPassageTest {
 
@@ -16,9 +20,9 @@ class RangedPassageTest {
     @Test
     fun testEmptyPassage() {
         val passage = RangedPassage(v11n)
-        Assert.assertTrue(passage.isEmpty())
-        Assert.assertEquals(0, passage.countVerses())
-        Assert.assertEquals(0, passage.countRanges(RestrictionType.NONE))
+        assertTrue(passage.isEmpty())
+        assertEquals(0, passage.countVerses())
+        assertEquals(0, passage.countRanges(RestrictionType.NONE))
     }
 
     @Test
@@ -26,8 +30,8 @@ class RangedPassageTest {
         val passage = RangedPassage(v11n)
         val verse = Verse(v11n, BibleBook.JOHN, 1, 1)
         passage.add(verse)
-        Assert.assertEquals(1, passage.countVerses())
-        Assert.assertTrue(passage.contains(verse))
+        assertEquals(1, passage.countVerses())
+        assertTrue(passage.contains(verse))
     }
 
     @Test
@@ -37,9 +41,9 @@ class RangedPassageTest {
         val end = Verse(v11n, BibleBook.GEN, 1, 5)
         val range = VerseRange(v11n, start, end)
         passage.add(range)
-        Assert.assertEquals(5, passage.countVerses())
-        Assert.assertTrue(passage.contains(start))
-        Assert.assertTrue(passage.contains(end))
+        assertEquals(5, passage.countVerses())
+        assertTrue(passage.contains(start))
+        assertTrue(passage.contains(end))
     }
 
     @Test
@@ -50,8 +54,8 @@ class RangedPassageTest {
         passage.add(range1)
         passage.add(range2)
 
-        Assert.assertEquals(5, passage.countVerses())
-        Assert.assertEquals(2, passage.countRanges(RestrictionType.NONE))
+        assertEquals(5, passage.countVerses())
+        assertEquals(2, passage.countRanges(RestrictionType.NONE))
     }
 
     @Test
@@ -66,8 +70,8 @@ class RangedPassageTest {
         passage.add(range2)
 
         // Should have merged into one range
-        Assert.assertEquals(6, passage.countVerses())
-        Assert.assertEquals(1, passage.countRanges(RestrictionType.NONE))
+        assertEquals(6, passage.countVerses())
+        assertEquals(1, passage.countRanges(RestrictionType.NONE))
     }
 
     @Test
@@ -80,9 +84,9 @@ class RangedPassageTest {
         val verseToRemove = Verse(v11n, BibleBook.GEN, 1, 3)
         passage.remove(verseToRemove)
 
-        Assert.assertEquals(4, passage.countVerses())
-        Assert.assertFalse(passage.contains(verseToRemove))
-        Assert.assertEquals(2, passage.countRanges(RestrictionType.NONE)) // Should split into two ranges
+        assertEquals(4, passage.countVerses())
+        assertFalse(passage.contains(verseToRemove))
+        assertEquals(2, passage.countRanges(RestrictionType.NONE)) // Should split into two ranges
     }
 
     @Test
@@ -92,23 +96,19 @@ class RangedPassageTest {
         passage.add(range)
 
         val verse0 = passage.getVerseAt(0)
-        Assert.assertNotNull(verse0)
-        Assert.assertEquals(1, (verse0 as Verse).verse)
+        assertNotNull(verse0)
+        assertEquals(1, (verse0 as Verse).verse)
 
         val verse1 = passage.getVerseAt(1)
-        Assert.assertNotNull(verse1)
-        Assert.assertEquals(2, (verse1 as Verse).verse)
+        assertNotNull(verse1)
+        assertEquals(2, (verse1 as Verse).verse)
 
         val verse2 = passage.getVerseAt(2)
-        Assert.assertNotNull(verse2)
-        Assert.assertEquals(3, (verse2 as Verse).verse)
+        assertNotNull(verse2)
+        assertEquals(3, (verse2 as Verse).verse)
 
-        // Out of bounds throws exception in AbstractPassage
-        try {
+        assertFailsWith<IndexOutOfBoundsException> {
             passage.getVerseAt(3)
-            Assert.fail("Should have thrown IndexOutOfBoundsException")
-        } catch (e: IndexOutOfBoundsException) {
-            // Expected
         }
     }
 
@@ -121,19 +121,15 @@ class RangedPassageTest {
         passage.add(range2)
 
         val retrievedRange0 = passage.getRangeAt(0, RestrictionType.NONE)
-        Assert.assertNotNull(retrievedRange0)
-        Assert.assertEquals(3, retrievedRange0!!.getCardinality())
+        assertNotNull(retrievedRange0)
+        assertEquals(3, retrievedRange0!!.getCardinality())
 
         val retrievedRange1 = passage.getRangeAt(1, RestrictionType.NONE)
-        Assert.assertNotNull(retrievedRange1)
-        Assert.assertEquals(2, retrievedRange1!!.getCardinality())
+        assertNotNull(retrievedRange1)
+        assertEquals(2, retrievedRange1!!.getCardinality())
 
-        // Out of bounds throws exception in AbstractPassage
-        try {
+        assertFailsWith<IndexOutOfBoundsException> {
             passage.getRangeAt(2, RestrictionType.NONE)
-            Assert.fail("Should have thrown IndexOutOfBoundsException")
-        } catch (e: IndexOutOfBoundsException) {
-            // Expected
         }
     }
 
@@ -149,10 +145,10 @@ class RangedPassageTest {
             verses.add(iterator.next() as Verse)
         }
 
-        Assert.assertEquals(3, verses.size)
-        Assert.assertEquals(1, verses[0].verse)
-        Assert.assertEquals(2, verses[1].verse)
-        Assert.assertEquals(3, verses[2].verse)
+        assertEquals(3, verses.size)
+        assertEquals(1, verses[0].verse)
+        assertEquals(2, verses[1].verse)
+        assertEquals(3, verses[2].verse)
     }
 
     @Test
@@ -170,7 +166,7 @@ class RangedPassageTest {
             ranges.add(iterator.next())
         }
 
-        Assert.assertEquals(2, ranges.size)
+        assertEquals(2, ranges.size)
     }
 
     @Test
@@ -180,8 +176,8 @@ class RangedPassageTest {
         passage.add(range)
 
         val name = passage.getName()
-        Assert.assertTrue(name.contains("Gen") || name.contains("Genesis"))
-        Assert.assertTrue(name.contains("1") && name.contains("3"))
+        assertTrue(name.contains("Gen") || name.contains("Genesis"))
+        assertTrue(name.contains("1") && name.contains("3"))
     }
 
     @Test
@@ -191,9 +187,9 @@ class RangedPassageTest {
         passage.add(range)
 
         val osisRef = passage.getOsisRef()
-        Assert.assertNotNull(osisRef)
-        Assert.assertTrue(osisRef.contains("John") || osisRef.contains("Joh"))
-        Assert.assertTrue(osisRef.contains("1.1"))
+        assertNotNull(osisRef)
+        assertTrue(osisRef.contains("John") || osisRef.contains("Joh"))
+        assertTrue(osisRef.contains("1.1"))
     }
 
     @Test
@@ -202,10 +198,10 @@ class RangedPassageTest {
         val range = VerseRange(v11n, Verse(v11n, BibleBook.GEN, 1, 1), Verse(v11n, BibleBook.GEN, 1, 5))
         passage.add(range)
 
-        Assert.assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 1)))
-        Assert.assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 3)))
-        Assert.assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 5)))
-        Assert.assertFalse(passage.contains(Verse(v11n, BibleBook.GEN, 1, 6)))
+        assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 1)))
+        assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 3)))
+        assertTrue(passage.contains(Verse(v11n, BibleBook.GEN, 1, 5)))
+        assertFalse(passage.contains(Verse(v11n, BibleBook.GEN, 1, 6)))
     }
 
     @Test
@@ -213,11 +209,11 @@ class RangedPassageTest {
         val passage = RangedPassage(v11n)
         val verse = Verse(v11n, BibleBook.JOHN, 1, 1)
         passage.add(verse)
-        Assert.assertFalse(passage.isEmpty())
+        assertFalse(passage.isEmpty())
 
         passage.clear()
-        Assert.assertTrue(passage.isEmpty())
-        Assert.assertEquals(0, passage.countVerses())
+        assertTrue(passage.isEmpty())
+        assertEquals(0, passage.countVerses())
     }
 
     @Test
@@ -226,10 +222,10 @@ class RangedPassageTest {
         val range = VerseRange(v11n, Verse(v11n, BibleBook.GEN, 1, 1), Verse(v11n, BibleBook.GEN, 1, 3))
         passage.add(range)
 
-        Assert.assertEquals(0, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 1)))
-        Assert.assertEquals(1, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 2)))
-        Assert.assertEquals(2, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 3)))
-        Assert.assertEquals(-1, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 4)))
+        assertEquals(0, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 1)))
+        assertEquals(1, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 2)))
+        assertEquals(2, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 3)))
+        assertEquals(-1, passage.indexOf(Verse(v11n, BibleBook.GEN, 1, 4)))
     }
 
     @Test
@@ -239,9 +235,9 @@ class RangedPassageTest {
         val range2 = VerseRange(v11n, Verse(v11n, BibleBook.JOHN, 1, 1), Verse(v11n, BibleBook.JOHN, 1, 2))
 
         passage.add(range1)
-        Assert.assertEquals(1, passage.booksInPassage())
+        assertEquals(1, passage.booksInPassage())
 
         passage.add(range2)
-        Assert.assertEquals(2, passage.booksInPassage())
+        assertEquals(2, passage.booksInPassage())
     }
 }

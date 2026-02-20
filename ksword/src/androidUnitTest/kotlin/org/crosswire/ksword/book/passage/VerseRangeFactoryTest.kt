@@ -1,31 +1,32 @@
 package org.crosswire.ksword.book.passage
 
-import org.crosswire.ksword.passage.NoSuchVerseException
 import org.crosswire.ksword.passage.Verse
 import org.crosswire.ksword.passage.VerseRange
 import org.crosswire.ksword.passage.VerseRangeFactory
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.system.Versifications
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertNull
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class VerseRangeFactoryTest {
 
     @Test
     fun testSimpleRange() {
-        Assert.assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"))
-        Assert.assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"))
-        Assert.assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:2"))
+        assertEquals(rangeGenC1V1, VerseRangeFactory.fromString(v11n, "Gen 1:1-1"))
+        assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-2"))
+        assertEquals(rangeGenC1V12, VerseRangeFactory.fromString(v11n, "Gen 1:1-1:2"))
     }
 
     @Test
     fun testBookRange() {
-        Assert.assertEquals(rangeGenMal, VerseRangeFactory.fromString(v11n, "Gen-Mal"))
+        assertEquals(rangeGenMal, VerseRangeFactory.fromString(v11n, "Gen-Mal"))
     }
 
     @Test
     fun testSingleVerseRange() {
-        Assert.assertEquals(rangeJohnC3V16, VerseRangeFactory.fromString(v11n, "John 3:16"))
+        assertEquals(rangeJohnC3V16, VerseRangeFactory.fromString(v11n, "John 3:16"))
     }
 
     @Test
@@ -34,20 +35,20 @@ class VerseRangeFactoryTest {
         // AccuracyType logic should expand "Psa 23" to the whole chapter.
         val expected = rangePsaC23
         val actual = VerseRangeFactory.fromString(v11n, "Ps 23")!!
-        Assert.assertEquals("Expected start verse to be Psa 23:0", expected.start, actual.start)
-        Assert.assertEquals("Expected end verse to be Psa 23:6", expected.end, actual.end)
-        Assert.assertEquals("Expected range for Psa 23", expected, actual)
-        Assert.assertTrue("Expected isWholeChapter to be true for Psa 23", actual.isWholeChapter)
+        assertEquals(expected.start, actual.start, "Expected start verse to be Psa 23:0")
+        assertEquals(expected.end, actual.end, "Expected end verse to be Psa 23:6")
+        assertEquals(expected, actual, "Expected range for Psa 23")
+        assertTrue(actual.isWholeChapter, "Expected isWholeChapter to be true for Psa 23")
     }
 
     @Test
     fun testVerseOrderSwap() {
-        Assert.assertEquals(rangeGenC1V2To10, VerseRangeFactory.fromString(v11n, "Gen 1:10-Gen 1:2"))
+        assertEquals(rangeGenC1V2To10, VerseRangeFactory.fromString(v11n, "Gen 1:10-Gen 1:2"))
     }
 
     @Test
     fun testInvalidRange_TooManyParts_returnsNull() {
-        Assert.assertNull(VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:5-Gen 1:10"))
+        assertNull(VerseRangeFactory.fromString(v11n, "Gen 1:1-Gen 1:5-Gen 1:10"))
     }
 
     companion object {

@@ -1,7 +1,9 @@
 package org.crosswire.ksword.versification.localization
 
-import org.junit.Assert.*
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
+import kotlin.test.assertNotNull
 
 class LocalizedStringsTest {
 
@@ -44,7 +46,7 @@ class LocalizedStringsTest {
         val languages = LocalizedStrings.supportedLanguages()
         for (langCode in languages) {
             val localization = LocalizedStrings.forLanguage(langCode)
-            assertNotNull("Language $langCode should be accessible", localization)
+            assertNotNull(localization, "Language $langCode should be accessible")
         }
     }
 
@@ -84,8 +86,8 @@ class LocalizedStringsTest {
         for ((langCode, localization) in languagesToTest) {
             for (key in criticalKeys) {
                 val translation = localization.getString(key)
-                assertNotNull("Language $langCode should have translation for '$key'", translation)
-                assertNotEquals("Language $langCode should not have empty translation for '$key'", "", translation)
+                assertNotNull(translation, "Language $langCode should have translation for '$key'")
+                assertNotEquals("", translation, "Language $langCode should not have empty translation for '$key'")
             }
         }
     }
@@ -138,8 +140,8 @@ class LocalizedStringsTest {
 
         for (key in keys) {
             val translation = EnglishStrings.getString(key)
-            assertNotNull("English should have translation for '$key'", translation)
-            assertEquals("English translation for '$key' should match key", key, translation)
+            assertNotNull(translation, "English should have translation for '$key'")
+            assertEquals(key, translation, "English translation for '$key' should match key")
         }
     }
 }

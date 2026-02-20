@@ -5,11 +5,10 @@ import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.Books
 import org.crosswire.ksword.book.sword.SwordBookPath
-import org.junit.After
-import org.junit.Assert.*
-
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class HttpsSwordInstallerTest {
 
@@ -17,14 +16,14 @@ class HttpsSwordInstallerTest {
 
     private val dir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("HttpsSwordInstallerTest".toPath())
 
-    @Before
+    @BeforeTest
     fun setUp() {
         httpsSwordInstaller = SwordInstallerFactory().crosswireInstaller
         SwordBookPath.swordBookPath = dir
         FileSystem.SYSTEM.createDirectories(SwordBookPath.swordBookPath)
     }
 
-    @After
+    @AfterTest
     fun tearDown() {
         FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
     }

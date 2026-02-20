@@ -3,14 +3,14 @@ package org.crosswire.ksword.book
 import kotlinx.coroutines.test.runTest
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.sword.SwordBookPath
-import org.junit.Assert.*
-
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class BooksTest {
 
-    @Before
+    @BeforeTest
     fun setUp() {
         SwordBookPath.swordBookPath = "../testFiles".toPath()
         Books.refresh()
