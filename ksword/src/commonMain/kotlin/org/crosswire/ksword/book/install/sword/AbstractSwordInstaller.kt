@@ -45,16 +45,10 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
     private var loaded: Boolean = false
 
     override suspend fun getBooks(): List<Book> {
-        try {
-            if (!loaded) {
-                loadBookList()
-            }
-
-            return entries.values.toList()
-        } catch (ex: Exception) {
-            Log.e("Failed to reload cached index file", ex)
-            return listOf()
+        if (!loaded) {
+            loadBookList()
         }
+        return entries.values.toList()
     }
 
     suspend fun install(book: Book) {
@@ -86,39 +80,46 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
 
     override suspend fun loadBookList(): Unit = withContext(Dispatchers.IO){
         if (!loaded) {
-            try {
-                val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
-                if (!FileSystem.SYSTEM.exists(catalogFile)) {
-                    refreshBookListFromServer()
-                }
-
-                val nullBackend = NullBackend()
-
-                TarGzExpander().handleTarGzContent(catalogFile) { name, content ->
-                    val sbmd = SwordBookMetaData.createFromSource(content)
-
-                    if (sbmd.isSupported) {
-                        val book: Book = SwordBook(sbmd, nullBackend)
-                        entries[sbmd.initials + sbmd.name] = book
-                    } else {
-                        Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)} ${sbmd.getProperty(SwordBookMetaData.KEY_SOURCE_TYPE)}")
-                    }
-                }
-
-                loaded = true
-            } catch (ex: Exception) {
-                Log.e("Failed to load book list", ex)
+            val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
+            val fileIsEmptyOrMissing = !FileSystem.SYSTEM.exists(catalogFile) ||
+                    (FileSystem.SYSTEM.metadata(catalogFile).size ?: 0L) == 0L
+            if (fileIsEmptyOrMissing) {
+                refreshBookListFromServer()
             }
+
+            val nullBackend = NullBackend()
+
+            TarGzExpander().handleTarGzContent(catalogFile) { name, content ->
+                val sbmd = SwordBookMetaData.createFromSource(content)
+
+                if (sbmd.isSupported) {
+                    val book: Book = SwordBook(sbmd, nullBackend)
+                    entries[sbmd.initials + sbmd.name] = book
+                } else {
+                    Log.d("Skipping unsupported book: ${sbmd.initials} ${sbmd.getProperty(SwordBookMetaData.KEY_MOD_DRV)} ${sbmd.getProperty(BookMetaData.KEY_VERSIFICATION)} ${sbmd.getProperty(SwordBookMetaData.KEY_SOURCE_TYPE)}")
+                }
+            }
+
+            loaded = true
         }
     }
 
     override suspend fun refreshBookListFromServer(): Unit = withContext(Dispatchers.IO){
-        val tarGzdownloadUrl = getRemoteCatalogFile() //"https://www.crosswire.org/ftpmirror/pub/sword/raw/mods.d.tar.gz"
+        val tarGzdownloadUrl = getRemoteCatalogFile()
         val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
-        WebResource().download(tarGzdownloadUrl, catalogFile)
-
-        entries.clear()
-        loaded = false
+        val tempFile = getCatalogDirectory().resolve("$FILE_LIST_GZ.tmp")
+        try {
+            val downloaded = WebResource().download(tarGzdownloadUrl, tempFile)
+            if (!downloaded) throw Exception("Empty response from $tarGzdownloadUrl")
+            FileSystem.SYSTEM.atomicMove(tempFile, catalogFile)
+            entries.clear()
+            loaded = false
+        } catch (e: Exception) {
+            if (FileSystem.SYSTEM.exists(tempFile)) {
+                FileSystem.SYSTEM.delete(tempFile)
+            }
+            throw e
+        }
     }
 
     private fun getRemoteCatalogFile(): String = HttpRequestBuilder().let { builder ->
