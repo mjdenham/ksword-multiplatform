@@ -225,13 +225,16 @@ object LocalizedBookNames {
     /**
      * Get localization for a specific language code.
      * Defaults to English if language not found.
+     * Non-English localizations are wrapped with an English fallback so that
+     * any book name missing from the requested locale falls back to English
+     * rather than to the raw OSIS identifier.
      *
      * @param languageCode ISO 639-1 language code (e.g., "en", "es", "fr", "de", "pt", "it", "nl", "ru", "zh", "pl", "ko", "ja", "ar", "cs", "fi", "fa", "hi", "hr", "hu", "id", "lt", "lv", "he", "nb", "ro", "sk", "sl", "sv", "ta", "te", "th", "tr", "uk", "vi", "yue")
      * @return the localization for that language, or English as fallback
      */
     fun forLanguage(languageCode: String): BookNameLocalization {
-        return when (languageCode.lowercase()) {
-            "en" -> en
+        val localization = when (languageCode.lowercase()) {
+            "en" -> return en
             "es" -> es
             "fr" -> fr
             "de" -> de
@@ -266,8 +269,18 @@ object LocalizedBookNames {
             "uk" -> uk
             "vi" -> vi
             "yue" -> yue
-            else -> en // Default to English
+            else -> return en // Default to English
         }
+        return EnglishFallbackBookNameLocalization(localization, en)
+    }
+
+    private class EnglishFallbackBookNameLocalization(
+        private val primary: BookNameLocalization,
+        private val fallback: BookNameLocalization
+    ) : BookNameLocalization {
+        override fun getFullName(book: BibleBook): String? = primary.getFullName(book) ?: fallback.getFullName(book)
+        override fun getShortName(book: BibleBook): String? = primary.getShortName(book) ?: fallback.getShortName(book)
+        override fun getAlternateName(book: BibleBook): String? = primary.getAlternateName(book) ?: fallback.getAlternateName(book)
     }
 
     /**
