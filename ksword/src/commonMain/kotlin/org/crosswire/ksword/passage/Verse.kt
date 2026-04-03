@@ -336,19 +336,23 @@ class Verse : VerseKey<Verse> {
             buf.append(BibleNames.instance().getPreferredName(book))
             buf.append(VERSE_PREF_DELIM1)
             buf.append(chapter)
-            buf.append(VERSE_PREF_DELIM2)
-            buf.append(verse)
+            if (verse != 0) {
+                buf.append(VERSE_PREF_DELIM2)
+                buf.append(verse)
+            }
             return buf.toString()
         }
 
         if (verseBase.chapter != chapter) {
             buf.append(chapter)
-            buf.append(VERSE_PREF_DELIM2)
-            buf.append(verse)
+            if (verse != 0) {
+                buf.append(VERSE_PREF_DELIM2)
+                buf.append(verse)
+            }
             return buf.toString()
         }
 
-        return verse.toString()
+        return if (verse != 0) verse.toString() else ""
     }
 
 //    /**
