@@ -161,7 +161,7 @@ class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockTyp
         // If the Bible does not contain the desired verse, return nothing.
         // Some Bibles have different versification, so the requested verse
         // may not exist.
-        if (temp == null || temp.size == 0) {
+        if (temp.isEmpty()) {
             return ""
         }
 

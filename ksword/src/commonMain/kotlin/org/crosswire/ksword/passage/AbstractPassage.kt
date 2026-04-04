@@ -79,17 +79,17 @@ abstract class AbstractPassage protected constructor(
 //        return copy
     }
 
-    override fun equals(obj: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {
         // This is cheating because I am supposed to say:
         // <code>!obj.getClass().equals(this.getClass())</code>
         // However I think it is entirely valid for a RangedPassage
         // to equal a DistinctPassage since the point of the Factory
         // is that the user does not need to know the actual type of the
         // Object he is using.
-        if (obj !is Passage) {
+        if (other !is Passage) {
             return false
         }
-        val that: Passage = obj
+        val that: Passage = other
         // The real test
         // FIXME: this is not really true since the versification any longer.
         return that.getOsisRef().equals(getOsisRef())
@@ -499,7 +499,7 @@ abstract class AbstractPassage protected constructor(
 
         val temp: Passage = this.clone()
         for (verse in temp) {
-            if (!key.contains(verse!!)) {
+            if (!key.contains(verse)) {
                 remove(verse)
             }
         }
@@ -633,8 +633,8 @@ abstract class AbstractPassage protected constructor(
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Passage#contains(org.crosswire.ksword.passage.Key)
      */
-    override fun contains(that: Key): Boolean {
-        val ref: Passage = KeyUtil.getPassage(that)
+    override fun contains(key: Key): Boolean {
+        val ref: Passage = KeyUtil.getPassage(key)
         return containsAll(ref)
     }
 

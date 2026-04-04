@@ -238,7 +238,7 @@ enum class BookType(
      * @return true if this is a usable BookType
      */
     fun isSupported(sbmd: SwordBookMetaData?): Boolean {
-        return category != null && sbmd != null
+        return sbmd != null
     }
 
     /**

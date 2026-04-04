@@ -57,7 +57,7 @@ enum class RestrictionType {
             blurDown: Int,
             blurUp: Int
         ): VerseRange {
-            val start = v11n.subtract(verse!!, blurDown)
+            val start = v11n.subtract(verse, blurDown)
             val end = v11n.add(verse, blurUp)
             return VerseRange(v11n, start, end)
         }
@@ -65,9 +65,9 @@ enum class RestrictionType {
         override fun toRange(v11n: Versification, verse: Verse, count: Int): VerseRange {
             var end = verse
             if (count > 1) {
-                end = v11n.add(verse!!, count - 1)
+                end = v11n.add(verse, count - 1)
             }
-            return VerseRange(v11n, verse!!, end!!)
+            return VerseRange(v11n, verse, end)
         }
     },
 

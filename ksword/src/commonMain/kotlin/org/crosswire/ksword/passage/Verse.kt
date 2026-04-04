@@ -187,7 +187,7 @@ class Verse : VerseKey<Verse> {
             return getName()
         }
 
-        val verseName = doGetName(base as Verse?)
+        val verseName = doGetName(base)
 
         // Only shape it if it can be unshaped.
 //        if (shaper.canUnshape()) {
@@ -250,13 +250,13 @@ class Verse : VerseKey<Verse> {
         return this
     }
 
-    override fun equals(obj: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {
         // Since this can not be null
-        if (obj !is Verse) {
+        if (other !is Verse) {
             return false
         }
 
-        val that = obj
+        val that = other
 
         // The real tests
         return this.ordinal == that.ordinal && (this.v11n == that.v11n) && bothNullOrEqual(
@@ -266,8 +266,8 @@ class Verse : VerseKey<Verse> {
 
     override fun hashCode(): Int {
         var result = 31 + ordinal
-        result = 31 * result + (if ((v11n == null)) 0 else v11n.hashCode())
-        return 31 * result + (if ((subIdentifier == null)) 0 else subIdentifier.hashCode())
+        result = 31 * result + (v11n.hashCode())
+        return 31 * result + (subIdentifier?.hashCode() ?: 0)
     }
 
     /* (non-Javadoc)

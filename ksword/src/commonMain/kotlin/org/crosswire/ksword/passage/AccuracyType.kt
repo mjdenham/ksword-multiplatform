@@ -102,7 +102,7 @@ enum class AccuracyType {
             parts: Array<String>
         ): Verse {
             val book: BibleBook = v11n.getBook(parts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
-            val chapter = Companion.getChapter(v11n, book, parts[1]!!)
+            val chapter = getChapter(v11n, book, parts[1])
             val verse = 0 // chapter > 0 ? 1 : 0; // 0 ?
             return Verse(v11n, book, chapter, verse)
         }
@@ -114,7 +114,7 @@ enum class AccuracyType {
         ): Verse {
             // Very similar to the start verse but we want the end of the chapter
             val book: BibleBook = v11n.getBook(endParts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
-            val chapter = Companion.getChapter(v11n, book, endParts[1])
+            val chapter = getChapter(v11n, book, endParts[1])
             val verse: Int = v11n.getLastVerse(book, chapter)
             return Verse(v11n, book, chapter, verse)
         }

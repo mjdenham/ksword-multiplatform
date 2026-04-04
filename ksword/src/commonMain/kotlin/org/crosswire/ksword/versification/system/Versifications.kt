@@ -48,9 +48,7 @@ object Versifications {
         var rs = fluffed[actual]
         if (rs == null) {
             rs = fluff(actual)
-            if (rs != null) {
-                fluffed[actual] = rs
-            }
+            fluffed[actual] = rs
         }
 
         return rs

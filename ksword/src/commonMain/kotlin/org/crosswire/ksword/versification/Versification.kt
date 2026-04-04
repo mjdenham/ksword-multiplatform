@@ -789,7 +789,7 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
     fun getOrdinal(verse: Verse): Int {
         return try {
             chapterStarts[bookList.getOrdinal(verse.book)]!![verse.chapter] + verse.verse
-        } catch (e: IndexOutOfBoundsException) {
+        } catch (_: IndexOutOfBoundsException) {
             0
         }
     }
