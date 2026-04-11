@@ -1281,7 +1281,8 @@ enum class Locale(val iso639_1: String?, val iso639_3: String, val isPopular: Bo
          * @param languageCode ISO 639-1 language code
          */
         fun setDefaultLocale(languageCode: String) {
-            current = findLocale(languageCode)
+            val locale = findLocale(languageCode)
+            current = if (locale != UNKNOWN) locale else ENGLISH
         }
     }
 }
