@@ -2,13 +2,13 @@
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "35"
-agp = "9.1.0"
-kotlin = "2.3.10"
+agp = "9.1.1"
+kotlin = "2.3.21"
 junit = "4.13.2"
 kotlinxCoroutinesTest = "1.10.2"
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJson = "1.10.0"
-ktor = "3.4.2"
+ktor = "3.4.3"
 okio = "3.17.0"
 
 [libraries]
