@@ -196,24 +196,20 @@ enum class BookType(
         override fun getBackend(sbmd: SwordBookMetaData): Backend<*> {
             return RawLDBackend(sbmd, 4)
         }
+    },
+
+    /**
+     * Compressed Dictionaries
+     */
+    Z_LD("zLD", BookCategory.DICTIONARY, KeyType.LIST) {
+        override fun getBook(sbmd: SwordBookMetaData): Book {
+            return SwordDictionary(sbmd, getBackend(sbmd) as RawLDBackend)
+        }
+
+        override fun getBackend(sbmd: SwordBookMetaData): Backend<*> {
+            return ZLDBackend(sbmd)
+        }
     };
-//
-//    /**
-//     * Compressed Dictionaries
-//     */
-//    Z_LD("zLD", BookCategory.DICTIONARY, KeyType.LIST) {
-//        protected override fun getBook(sbmd: SwordBookMetaData, backend: Backend?): Book {
-//            if (sbmd.getBookCategory().equals(BookCategory.DAILY_DEVOTIONS)) {
-//                return SwordDailyDevotion(sbmd, backend)
-//            }
-//            return SwordDictionary(sbmd, backend)
-//        }
-//
-//        @Throws(BookException::class)
-//        override fun getBackend(sbmd: SwordBookMetaData?): Backend {
-//            return ZLDBackend(sbmd)
-//        }
-//    },
 //
 //    /**
 //     * Generic Books

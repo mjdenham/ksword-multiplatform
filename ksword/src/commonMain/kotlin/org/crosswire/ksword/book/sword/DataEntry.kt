@@ -34,7 +34,13 @@ package org.crosswire.ksword.book.sword
 class DataEntry(
     val name: String,
     private val data: ByteArray,
-    private val charset: String
+    val charset: String,
+    /**
+     * True when [data] is body content with no leading "key\r?\n" prefix.
+     * Set by ZLDBackend after resolving an entry from a compressed `.zdt` block,
+     * where the .dat-side key terminator does not exist in the body bytes.
+     */
+    private val bodyOnly: Boolean = false
 ) {
     /**
      * Extract the key name from the entry.
@@ -68,33 +74,52 @@ class DataEntry(
      * @return The definition text
      */
     fun getRawText(cipherKey: ByteArray?): String {
-        val keyEndIndex = findKeyTerminator()
-        if (keyEndIndex < 0) return ""
-
-        // Skip past terminator to get definition start
-        val definitionStart = skipTerminator(keyEndIndex)
-        if (definitionStart >= data.size) return ""
-
-        val definitionLength = data.size - definitionStart
-        val text = SwordUtil.decode(name, data, definitionStart, definitionLength, charset)
-
-        // Apply cipher if needed (for encrypted modules)
-        return if (cipherKey != null) {
-            decipher(text, cipherKey)
+        val text = if (bodyOnly) {
+            // ZLD body-only: data is the entire payload; no key prefix to skip.
+            // Match jsword's DataEntry.getRawText (decode whole, trim).
+            if (data.isEmpty()) return ""
+            SwordUtil.decode(name, data, 0, data.size, charset).trim()
         } else {
-            text
+            val keyEndIndex = findKeyTerminator()
+            if (keyEndIndex < 0) return ""
+            val definitionStart = skipTerminator(keyEndIndex)
+            if (definitionStart >= data.size) return ""
+            SwordUtil.decode(name, data, definitionStart, data.size - definitionStart, charset)
         }
+
+        return if (cipherKey != null) decipher(text, cipherKey) else text
     }
 
     /**
-     * Check if this entry is a link to another entry.
-     * Link format: "@LINK <target_key>"
+     * For zLD entries, the .dat slice holds `[key text][\r?\n][4-byte blockNum LE][4-byte blockEntry LE]`.
+     * The returned DataIndex packs (blockNum, blockEntry) into (offset, size) — same convention as jsword.
+     */
+    fun getBlockIndex(): DataIndex {
+        val nlIdx = data.indexOfFirst { it == 0x0A.toByte() }
+        if (nlIdx < 0 || nlIdx + 1 + 8 > data.size) return DataIndex(0, 0)
+        val start = nlIdx + 1
+        val blockNum = SwordUtil.decodeLittleEndian32(data, start)
+        val blockEntry = SwordUtil.decodeLittleEndian32(data, start + 4)
+        return DataIndex(blockNum, blockEntry)
+    }
+
+    /**
+     * Check if this entry is a link to another entry. Link format: `@LINK <target>`.
      *
-     * @return true if this is a link entry
+     * Matches jsword's byte-level check: looks at data[keyEnd+1..keyEnd+5] where
+     * keyEnd is the position of the first \n, or -1 if none. With keyEnd=-1 the
+     * check naturally falls back to data[0..4] — exactly what's needed for a zLD
+     * body-only entry whose payload is the bare string "@LINK target".
      */
     fun isLinkEntry(): Boolean {
-        val text = getRawText(null)
-        return text.startsWith("@LINK ")
+        val keyEnd = SwordUtil.findByte(data, SEP_NL)
+        val start = keyEnd + 1
+        return start + 5 <= data.size &&
+            data[start] == AT_BYTE &&
+            data[start + 1] == L_BYTE &&
+            data[start + 2] == I_BYTE &&
+            data[start + 3] == N_BYTE &&
+            data[start + 4] == K_BYTE
     }
 
     /**
@@ -103,12 +128,16 @@ class DataEntry(
      * @return Target key name, or empty string if not a link
      */
     fun getLinkTarget(): String {
-        val text = getRawText(null)
-        return if (isLinkEntry()) {
-            text.substring(6).trim()
-        } else {
-            ""
-        }
+        if (!isLinkEntry()) return ""
+        val keyEnd = SwordUtil.findByte(data, SEP_NL)
+        val linkStart = keyEnd + 1 + 5  // skip "[\n]@LINK"
+        if (linkStart >= data.size) return ""
+
+        // linkEnd: next \n after linkStart, or end of data.
+        val nextNl = SwordUtil.findByte(data, linkStart, SEP_NL)
+        val linkEnd = if (nextNl == -1) data.size - 1 else nextNl
+        val len = linkEnd - linkStart + 1
+        return SwordUtil.decode(name, data, linkStart, len, charset).trim()
     }
 
     /**
@@ -205,5 +234,14 @@ class DataEntry(
             bytes[i] = (bytes[i].toInt() xor cipherKey[i % cipherKey.size].toInt()).toByte()
         }
         return bytes.decodeToString()
+    }
+
+    companion object {
+        private const val SEP_NL: Byte = 0x0A
+        private const val AT_BYTE: Byte = 0x40  // '@'
+        private const val L_BYTE: Byte = 0x4C   // 'L'
+        private const val I_BYTE: Byte = 0x49   // 'I'
+        private const val N_BYTE: Byte = 0x4E   // 'N'
+        private const val K_BYTE: Byte = 0x4B   // 'K'
     }
 }

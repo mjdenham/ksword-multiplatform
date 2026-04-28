@@ -80,6 +80,32 @@ object SwordUtil {
         return sink
     }
 
+    /**
+     * Inflate a ZIP-compressed slice from `file` without knowing the uncompressed size in advance.
+     * Used by zLD where `.zdx` only stores (blockStart, blockSize).
+     */
+    internal fun readAndInflateFileUnknownSize(file: FileHandle, offset: Int, theSize: Int): ByteArray {
+        var size = theSize
+        if (size <= 0) return ByteArray(0)
+
+        val fileSize = file.size()
+        if (offset >= fileSize) return ByteArray(0)
+        if (offset + size > fileSize) size = (fileSize - offset).toInt()
+
+        val compressed = ByteArray(size)
+        file.read(offset.toLong(), compressed, 0, size)
+
+        Buffer().use { source ->
+            source.write(compressed)
+            Buffer().use { inflated ->
+                InflaterSource(source, Inflater()).use { inflater ->
+                    inflated.writeAll(inflater)
+                }
+                return inflated.readByteArray()
+            }
+        }
+    }
+
     internal fun readAndInflateFile(file: FileHandle, offset: Int, theSize: Int, uncompressedSize: Int): ByteArray {
         println("readAndInflateFile offset: $offset theSize: $theSize uncompressedSize: $uncompressedSize")
         var size = theSize

@@ -40,7 +40,7 @@ import org.crosswire.ksword.book.sword.SwordUtil
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-class RawLDBackendState(
+open class RawLDBackendState(
     bookMetaData: BookMetaData,
     val dataSize: Int  // Made public for backend access
 ) : AbstractOpenFileState(bookMetaData) {

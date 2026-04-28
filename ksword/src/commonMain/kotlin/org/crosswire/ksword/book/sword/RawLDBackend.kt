@@ -41,7 +41,7 @@ import org.crosswire.ksword.passage.Key
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-class RawLDBackend(
+open class RawLDBackend(
     bookMetaData: SwordBookMetaData,
     private val dataSize: Int
 ) : AbstractBackend<RawLDBackendState>(bookMetaData) {
@@ -67,7 +67,8 @@ class RawLDBackend(
         val pos = search(state, keyName)
         if (pos >= 0) {
             val dataIndex = getIndex(state, pos.toLong())
-            val entry = getEntry(state, keyName, dataIndex)
+            val rawEntry = getEntry(state, keyName, dataIndex)
+            val entry = getEntry(state, rawEntry)
 
             // Follow links (@LINK entries)
             if (entry.isLinkEntry()) {
@@ -83,11 +84,18 @@ class RawLDBackend(
     }
 
     /**
+     * Second-stage entry resolution. The default implementation returns the entry as-is.
+     * Subclasses (e.g. ZLDBackend) override this to dereference block-pointer entries
+     * by reading and decompressing the actual content from a separate compressed store.
+     */
+    protected open fun getEntry(state: RawLDBackendState, entry: DataEntry): DataEntry = entry
+
+    /**
      * Get cipher key for encrypted modules.
      *
      * @return Cipher key bytes, or null if no cipher configured
      */
-    private fun getCipherKey(): ByteArray? {
+    protected fun getCipherKey(): ByteArray? {
         val cipherKeyString = bmd.getProperty(SwordBookMetaData.KEY_CIPHER_KEY) ?: return null
         return try {
             cipherKeyString.encodeToByteArray()

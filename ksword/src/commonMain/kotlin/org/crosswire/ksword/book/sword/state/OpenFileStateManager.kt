@@ -28,6 +28,10 @@ internal object OpenFileStateManager {
         return getOrCreateState(metadata) { RawLDBackendState(metadata, dataSize) }
     }
 
+    fun getZLDBackendState(metadata: BookMetaData): ZLDBackendState {
+        return getOrCreateState(metadata) { ZLDBackendState(metadata) }
+    }
+
     private inline fun <reified T : AbstractOpenFileState> getOrCreateState(
         metadata: BookMetaData,
         factory: () -> T
