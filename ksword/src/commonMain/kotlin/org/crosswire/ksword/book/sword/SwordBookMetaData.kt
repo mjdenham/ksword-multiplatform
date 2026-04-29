@@ -106,7 +106,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
         )
 
         private val SUPPORTED_BOOK_TYPES = BookType.entries.map { type -> type.nameInConfig }
-        private val SUPPORTED_SOURCE_TYPES = listOf("OSIS", "ThML", "Plaintext")
+        private val SUPPORTED_SOURCE_TYPES = listOf("OSIS", "ThML", "Plaintext", "TEI")
 
     }
 
