@@ -235,6 +235,7 @@ object OsisXmlConstants {
     const val OSIS_ELEMENT_LB: String = "lb"
     const val OSIS_ELEMENT_HI: String = "hi"
     const val OSIS_ELEMENT_DIVINENAME: String = "divineName"
+    const val OSIS_ELEMENT_TRANSCHANGE: String = "transChange"
 
     const val ATTRIBUTE_TEXT_OSISIDWORK: String = "osisIDWork"
     const val ATTRIBUTE_WORK_OSISWORK: String = "osisWork"
