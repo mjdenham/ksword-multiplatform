@@ -415,6 +415,13 @@ open class RawLDBackend(
     /**
      * Find next key in dictionary order.
      *
+     * Some modules (notably Hitchcock's Bible Names) have multiple .idx rows
+     * with the same key string — e.g. two distinct entries both keyed "ABEL".
+     * Since this backend resolves by string, only one is reachable through
+     * `getRawText`, and stepping naively to `currentIndex + 1` would return
+     * the same key text again, causing infinite-scroll callers to loop.
+     * Skip past any consecutive rows whose key equals the input.
+     *
      * @param key Current key
      * @return Next key, or null if at end
      */
@@ -428,17 +435,24 @@ open class RawLDBackend(
 
             if (currentIndex < 0) return null
 
-            val nextIndex = currentIndex + 1
-            if (nextIndex >= getCardinality()) return null
-
-            val dataIndex = getIndex(state, nextIndex.toLong())
-            val entry = getEntry(state, "next", dataIndex)
-            return DefaultLeafKeyList(entry.getKey())
+            val total = getCardinality()
+            var nextIndex = currentIndex + 1
+            while (nextIndex < total) {
+                val dataIndex = getIndex(state, nextIndex.toLong())
+                val entry = getEntry(state, "next", dataIndex)
+                val nextKey = entry.getKey()
+                if (!nextKey.equals(key.getName(), ignoreCase = true)) {
+                    return DefaultLeafKeyList(nextKey)
+                }
+                nextIndex++
+            }
+            return null
         }
     }
 
     /**
-     * Find previous key in dictionary order.
+     * Find previous key in dictionary order. Skips consecutive duplicates
+     * for the same reason as [findNextKey].
      *
      * @param key Current key
      * @return Previous key, or null if at beginning
@@ -453,10 +467,17 @@ open class RawLDBackend(
 
             if (currentIndex <= 0) return null
 
-            val prevIndex = currentIndex - 1
-            val dataIndex = getIndex(state, prevIndex.toLong())
-            val entry = getEntry(state, "previous", dataIndex)
-            return DefaultLeafKeyList(entry.getKey())
+            var prevIndex = currentIndex - 1
+            while (prevIndex >= 0) {
+                val dataIndex = getIndex(state, prevIndex.toLong())
+                val entry = getEntry(state, "previous", dataIndex)
+                val prevKey = entry.getKey()
+                if (!prevKey.equals(key.getName(), ignoreCase = true)) {
+                    return DefaultLeafKeyList(prevKey)
+                }
+                prevIndex--
+            }
+            return null
         }
     }
 
