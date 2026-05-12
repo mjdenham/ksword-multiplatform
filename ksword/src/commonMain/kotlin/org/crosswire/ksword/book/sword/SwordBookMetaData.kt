@@ -172,6 +172,11 @@ class SwordBookMetaData: AbstractBookMetaData() {
         getProperty(KEY_CATEGORY)?.contains("Questionable") ?: false
     }
 
+    override val isStrongsDictionary: Boolean by lazy {
+        val feature = getProperty(KEY_FEATURE).orEmpty()
+        "GreekDef" in feature || "HebrewDef" in feature
+    }
+
     lateinit var driver: SwordBookDriver
 
     override val driverName: String by lazy {

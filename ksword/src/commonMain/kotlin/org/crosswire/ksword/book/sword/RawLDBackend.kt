@@ -241,12 +241,7 @@ open class RawLDBackend(
     private fun external2internal(externalKey: String, pattern: String): String {
         if (externalKey.isEmpty()) return externalKey
 
-        // Check if this is a Strong's dictionary
-        // In SWORD modules, these have Feature=GreekDef or Feature=HebrewDef
-        val feature = bmd.getProperty(SwordBookMetaData.KEY_FEATURE) ?: ""
-        val isStrongsDict = feature.contains("GreekDef") || feature.contains("HebrewDef")
-
-        if (!isStrongsDict) {
+        if (!bmd.isStrongsDictionary) {
             return externalKey
         }
 

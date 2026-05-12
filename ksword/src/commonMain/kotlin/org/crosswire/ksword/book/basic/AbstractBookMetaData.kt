@@ -41,6 +41,9 @@ abstract class AbstractBookMetaData : BookMetaData {
         putProperty(key, value, false)
     }
 
+    override val isStrongsDictionary: Boolean
+        get() = false
+
     override val osisID: String
         get() = bookCategory.name + '.' + initials
 

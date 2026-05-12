@@ -164,6 +164,14 @@ interface BookMetaData : Comparable<BookMetaData?> {
     val isQuestionable: Boolean
 
     /**
+     * True for Strong's Greek/Hebrew lexicons (identified in SWORD modules by
+     * `Feature=GreekDef` or `Feature=HebrewDef`). These are dictionaries by
+     * category but are typically consumed via Strong's lookup rather than
+     * surfaced as general-purpose dictionaries.
+     */
+    val isStrongsDictionary: Boolean
+
+    /**
      * Calculated field: The name of the name, which could be helpful to
      * distinguish similar Books available through 2 BookDrivers.
      *
