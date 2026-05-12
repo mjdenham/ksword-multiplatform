@@ -49,6 +49,8 @@ class SwordDictionary(
     override fun readToOsis(key: Key): List<KeyText> = backend.readToOsis(key)
     override fun getRawText(key: Key): String = backend.getRawText(key)
 
+    val entryCount: Int get() = backend.getCardinality()
+
     /**
      * Get a key for the given text.
      * Throws NoSuchKeyException if the key is not found.
