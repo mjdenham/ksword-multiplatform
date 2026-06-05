@@ -1,14 +1,14 @@
 [versions]
 android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "35"
-agp = "9.1.1"
+android-targetSdk = "36"
+agp = "9.2.1"
 kotlin = "2.3.21"
 junit = "4.13.2"
-kotlinxCoroutinesTest = "1.10.2"
-kotlinxDatetime = "0.7.1"
+kotlinxCoroutinesTest = "1.11.0"
+kotlinxDatetime = "0.8.0"
 kotlinxSerializationJson = "1.11.0"
-ktor = "3.4.3"
+ktor = "3.5.0"
 okio = "3.17.0"
 
 [libraries]
