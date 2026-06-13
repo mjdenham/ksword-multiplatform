@@ -6,15 +6,19 @@ class SwordInstallerFactory {
         val EBIBLE_INSTALLER_URLS = InstallerUrls("eBible", "ebible.org", "/sword/zip", "/sword")
         val LOCKMAN_INSTALLER_URLS = InstallerUrls("Lockman", "www.crosswire.org", "/ftpmirror/pub/sword/lockmanpackages", "/ftpmirror/pub/sword/lockmanraw")
         val AND_BIBLE_INSTALLER_URLS = InstallerUrls("AndBible", "andbible.github.io", "/data/andbible/zip", "/data/andbible")
+        // Institute for Bible Translation — HTTPS mirror (ibtrussia.org), same /ftpmirror pattern as CrossWire.
+        val IBT_INSTALLER_URLS = InstallerUrls("IBT", "ibtrussia.org", "/ftpmirror/pub/modsword/rawzip", "/ftpmirror/pub/modsword/raw")
     }
 
     val crosswireInstaller = HttpsSwordInstaller(CROSSWIRE_INSTALLER_URLS)
     val ebibleInstaller = HttpsSwordInstaller(EBIBLE_INSTALLER_URLS)
     val lockmanInstaller = HttpsSwordInstaller(LOCKMAN_INSTALLER_URLS)
     val andBibleInstaller = HttpsSwordInstaller(AND_BIBLE_INSTALLER_URLS)
+    val ibtInstaller = HttpsSwordInstaller(IBT_INSTALLER_URLS)
 
     suspend fun findInstaller(initials: String): HttpsSwordInstaller {
-        listOf(crosswireInstaller, andBibleInstaller, lockmanInstaller, ebibleInstaller).forEach { installer ->
+        // IBT before eBible: eBible carries many duplicate copies, so a native IBT module wins.
+        listOf(crosswireInstaller, andBibleInstaller, lockmanInstaller, ibtInstaller, ebibleInstaller).forEach { installer ->
             if (installer.getBooks().find { it.initials == initials } != null) {
                 return installer
             }
