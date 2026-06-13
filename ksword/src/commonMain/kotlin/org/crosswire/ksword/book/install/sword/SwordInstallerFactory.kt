@@ -18,8 +18,12 @@ class SwordInstallerFactory {
 
     suspend fun findInstaller(initials: String): HttpsSwordInstaller {
         // IBT before eBible: eBible carries many duplicate copies, so a native IBT module wins.
+        // Skip a source whose catalog can't be reached, otherwise one source being down (e.g.
+        // CrossWire, listed first) would abort the whole search and modules in later sources
+        // (IBT, eBible) could never be installed.
         listOf(crosswireInstaller, andBibleInstaller, lockmanInstaller, ibtInstaller, ebibleInstaller).forEach { installer ->
-            if (installer.getBooks().find { it.initials == initials } != null) {
+            val books = runCatching { installer.getBooks() }.getOrDefault(emptyList())
+            if (books.find { it.initials == initials } != null) {
                 return installer
             }
         }
