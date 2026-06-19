@@ -149,7 +149,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
         SUPPORTED_BOOK_TYPES.contains(getProperty(KEY_MOD_DRV)) &&
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) in SUPPORTED_SOURCE_TYPES &&
-                !isQuestionable
+                !isQuestionable &&
+                !isLocked
     }
 
     override val isLeftToRight: Boolean by lazy {
@@ -157,16 +158,19 @@ class SwordBookMetaData: AbstractBookMetaData() {
     }
 
     override val isEnciphered: Boolean
-        get() = TODO("Not yet implemented")
+        get() = getProperty(KEY_CIPHER_KEY) != null
+
+    // Enciphered but without a key (empty CipherKey), per JSword.
     override val isLocked: Boolean
-        get() = TODO("Not yet implemented")
+        get() = getProperty(KEY_CIPHER_KEY)?.isEmpty() == true
 
     override fun unlock(unlockKey: String?): Boolean {
-        TODO("Not yet implemented")
+        setProperty(KEY_CIPHER_KEY, unlockKey ?: "")
+        return true
     }
 
     override val unlockKey: String?
-        get() = TODO("Not yet implemented")
+        get() = getProperty(KEY_CIPHER_KEY)
 
     override val isQuestionable: Boolean by lazy {
         getProperty(KEY_CATEGORY)?.contains("Questionable") ?: false
