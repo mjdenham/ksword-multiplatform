@@ -64,6 +64,11 @@ object LocalizedStrings {
     val zh: StringLocalization by lazy { ChineseSimplifiedStrings }
 
     /**
+     * Chinese Traditional string localization (loaded lazily)
+     */
+    val zhTw: StringLocalization by lazy { ChineseTraditionalStrings }
+
+    /**
      * Polish string localization (loaded lazily)
      */
     val pl: StringLocalization by lazy { PolishStrings }
@@ -211,6 +216,7 @@ object LocalizedStrings {
             "nl" -> nl
             "ru" -> ru
             "zh", "zh_cn" -> zh
+            "zh_tw", "zh_hant", "zh_hk", "zh_mo" -> zhTw
             "pl" -> pl
             "ko" -> ko
             "ja" -> ja

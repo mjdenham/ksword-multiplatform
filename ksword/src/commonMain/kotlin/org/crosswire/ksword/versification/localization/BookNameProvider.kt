@@ -9,7 +9,8 @@ import org.crosswire.ksword.versification.BibleBook
 class BookNameProvider(private val locale: Locale) {
 
     private val localization by lazy {
-        LocalizedBookNames.forLanguage(locale.languageCode)
+        // Chinese book names are region-blind in the data set; qualify by the active region.
+        LocalizedBookNames.forLanguage(Locale.scriptLanguageCode(locale.languageCode))
     }
 
     /**

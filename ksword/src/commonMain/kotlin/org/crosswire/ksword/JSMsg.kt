@@ -14,7 +14,7 @@ object JSMsg {
      * @return the formatted, internationalized text
      */
     fun gettext(key: String, vararg params: Any): String {
-        val localization = LocalizedStrings.forLanguage(Locale.current.languageCode)
+        val localization = LocalizedStrings.forLanguage(Locale.scriptLanguageCode(Locale.current.languageCode))
         val localizedString = localization.getString(key)
 
         // If we have a localized string, format it with params if any

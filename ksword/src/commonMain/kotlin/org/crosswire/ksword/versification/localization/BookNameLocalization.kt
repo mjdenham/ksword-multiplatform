@@ -93,6 +93,11 @@ object LocalizedBookNames {
     val zh: BookNameLocalization by lazy { ChineseSimplifiedBookNames }
 
     /**
+     * Chinese Traditional localization (loaded lazily)
+     */
+    val zhTw: BookNameLocalization by lazy { ChineseTraditionalBookNames }
+
+    /**
      * Polish localization (loaded lazily)
      */
     val pl: BookNameLocalization by lazy { PolishBookNames }
@@ -243,6 +248,7 @@ object LocalizedBookNames {
             "nl" -> nl
             "ru" -> ru
             "zh", "zh_cn" -> zh
+            "zh_tw", "zh_hant", "zh_hk", "zh_mo" -> zhTw
             "pl" -> pl
             "ko" -> ko
             "ja" -> ja
@@ -286,5 +292,5 @@ object LocalizedBookNames {
     /**
      * Get list of all supported language codes
      */
-    fun supportedLanguages(): List<String> = listOf("en", "es", "fr", "de", "pt", "it", "nl", "ru", "zh", "pl", "ko", "ja", "ar", "cs", "fi", "fa", "hi", "hr", "hu", "id", "lt", "lv", "he", "nb", "ro", "sk", "sl", "sv", "ta", "te", "th", "tr", "uk", "vi", "yue")
+    fun supportedLanguages(): List<String> = listOf("en", "es", "fr", "de", "pt", "it", "nl", "ru", "zh", "zh_tw", "pl", "ko", "ja", "ar", "cs", "fi", "fa", "hi", "hr", "hu", "id", "lt", "lv", "he", "nb", "ro", "sk", "sl", "sv", "ta", "te", "th", "tr", "uk", "vi", "yue")
 }

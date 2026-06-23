@@ -19,7 +19,6 @@ enum class Locale(val iso639_1: String?, val iso639_3: String, val isPopular: Bo
     CHEROKEE(null, "chr"),
     CHINESE_LITERARY(null, "lzh"),
     CHINESE_SIMPLIFIED("zh", "cmn", isPopular = true, nativeName = "中文（简体）"),
-    CHINESE_SIMPLIFIED_HANS("zh", "cmn", isPopular = true, nativeName = "中文（简体）"),
     CHINESE_TRADITIONAL_HANT("zh", "cmn", isPopular = true, nativeName = "中文（繁體）"),
     CHURCH_SLAVONIC("cu", "chu", nativeName = "Церковнославянский"),
     COPTIC(null, "cop"),
@@ -1269,24 +1268,58 @@ enum class Locale(val iso639_1: String?, val iso639_3: String, val isPopular: Bo
     companion object {
         var current: Locale = ENGLISH
 
+        /** Region of the current locale (e.g. "TW"), or null when the device reports no region. */
+        var currentCountryCode: String? = null
+            private set
+
         /**
          * Find a Locale enum by its language code (supports both ISO 639-1 and ISO 639-3).
          * @param languageCode ISO 639-1 (2-char) or ISO 639-3 (3-char) language code
          * @return matching Locale or UNKNOWN as fallback
          */
         fun findLocale(languageCode: String): Locale {
-            return entries.find { it.iso639_1 == languageCode || it.iso639_3 == languageCode } ?: UNKNOWN
+            entries.find { it.iso639_1 == languageCode || it.iso639_3 == languageCode }?.let { return it }
+            // Chinese module Lang fields carry the script (zh-Hans/zh-Hant); preserve it so the catalog
+            // distinguishes simplified from traditional. Other BCP-47 tags fall back to the primary subtag.
+            val lower = languageCode.lowercase()
+            if (lower.startsWith("zh")) {
+                if ("hant" in lower) return CHINESE_TRADITIONAL_HANT
+                if ("hans" in lower) return CHINESE_SIMPLIFIED
+            }
+            val primary = languageCode.substringBefore('-').substringBefore('_')
+            return entries.find { it.iso639_1 == primary || it.iso639_3 == primary } ?: UNKNOWN
         }
 
         /**
-         * Set the default locale from a language code.
+         * Set the default locale from a language code and optional region.
          * Automatically finds and sets the matching Locale enum.
          *
          * @param languageCode ISO 639-1 language code
+         * @param countryCode ISO 3166 region code, or null when none is known
          */
-        fun setDefaultLocale(languageCode: String) {
-            val locale = findLocale(languageCode)
-            current = if (locale != UNKNOWN) locale else ENGLISH
+        fun setDefaultLocale(languageCode: String, countryCode: String? = null) {
+            currentCountryCode = countryCode?.uppercase()
+            // For Chinese (incl. Cantonese) in a traditional region, make the active locale the
+            // traditional variant so the catalog's default filter matches traditional modules.
+            current = if ((languageCode == "zh" || languageCode == "yue") &&
+                currentCountryCode in CHINESE_TRADITIONAL_REGIONS
+            ) {
+                CHINESE_TRADITIONAL_HANT
+            } else {
+                findLocale(languageCode).takeIf { it != UNKNOWN } ?: ENGLISH
+            }
+        }
+
+        private val CHINESE_TRADITIONAL_REGIONS = setOf("TW", "HK", "MO")
+
+        /**
+         * The localization code for a (language, region), qualifying Chinese by script: Chinese
+         * (`zh`) and Cantonese (`yue`) resolve `zh_tw` in TW/HK/MO and `zh` (simplified) elsewhere,
+         * since the book-name and string data sets are region-blind. Other languages are unchanged.
+         */
+        fun scriptLanguageCode(languageCode: String, countryCode: String? = currentCountryCode): String {
+            if (languageCode != "zh" && languageCode != "yue") return languageCode
+            return if (countryCode?.uppercase() in CHINESE_TRADITIONAL_REGIONS) "zh_tw" else "zh"
         }
     }
 }
