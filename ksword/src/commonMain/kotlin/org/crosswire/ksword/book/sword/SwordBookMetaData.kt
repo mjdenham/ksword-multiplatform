@@ -4,6 +4,7 @@ import okio.BufferedSource
 import okio.Path
 import org.crosswire.common.util.IniSection
 import org.crosswire.common.util.Locale
+import org.crosswire.common.util.Version
 import org.crosswire.ksword.book.BookCategory
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_CATEGORY
@@ -140,6 +141,10 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override val versification: Versification by lazy {
         Versifications.getVersification(getProperty(KEY_VERSIFICATION) ?: Versifications.DEFAULT_V11N)
+    }
+
+    override val version: Version by lazy {
+        getProperty(KEY_VERSION)?.let { runCatching { Version(it) }.getOrNull() } ?: BookMetaData.DEFAULT_VERSION
     }
 
     /**

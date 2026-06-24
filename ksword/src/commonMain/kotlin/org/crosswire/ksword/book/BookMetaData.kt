@@ -21,6 +21,7 @@ package org.crosswire.ksword.book
 
 import okio.Path
 import org.crosswire.common.util.Locale
+import org.crosswire.common.util.Version
 import org.crosswire.ksword.versification.Versification
 
 /**
@@ -206,6 +207,12 @@ interface BookMetaData : Comparable<BookMetaData?> {
     var library: Path
 
     /**
+     * The module's [Version] from its `Version` conf field, defaulting to [DEFAULT_VERSION]
+     * when the field is absent or unparseable.
+     */
+    val version: Version
+
+    /**
      * If this BookMetaData is partially loaded, reload it fully.
      * If it is fully loaded, don't do it again.
      *
@@ -283,6 +290,17 @@ interface BookMetaData : Comparable<BookMetaData?> {
 //    fun toOSIS(): Document?
 
     companion object {
+        /**
+         * The key for the module version in the properties map
+         */
+        const val KEY_VERSION: String = "Version"
+
+        /**
+         * Module version assumed when the conf omits or malforms the `Version` field
+         * (matches SWORD's "1.0" default).
+         */
+        val DEFAULT_VERSION: Version = Version("1.0")
+
         /**
          * The key for the type in the properties map
          */
