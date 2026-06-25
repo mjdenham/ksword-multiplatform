@@ -132,7 +132,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
     }
 
     override val abbreviation: String by lazy {
-        configAll[KEY_ABBREVIATION].orEmpty()
+        configAll[KEY_ABBREVIATION] ?: initials
     }
 
     override val initials: String by lazy {
