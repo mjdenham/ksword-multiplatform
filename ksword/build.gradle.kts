@@ -9,6 +9,12 @@ plugins {
 group = "org.crosswire"
 
 kotlin {
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     androidLibrary {
         namespace = "org.crosswire.ksword"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -35,6 +41,9 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+        }
+        jvmMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
         iosMain.dependencies {
