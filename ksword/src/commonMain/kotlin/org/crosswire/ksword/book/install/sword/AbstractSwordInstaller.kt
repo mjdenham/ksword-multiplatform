@@ -5,9 +5,12 @@ import io.ktor.http.URLProtocol
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import okio.FileMetadata
 import okio.FileSystem
 import okio.Path
 import okio.SYSTEM
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import org.crosswire.common.util.IoUtil
 import org.crosswire.common.util.Log
 import org.crosswire.common.util.WebResource
@@ -81,10 +84,17 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
     override suspend fun loadBookList(): Unit = withContext(Dispatchers.IO){
         if (!loaded) {
             val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
-            val fileIsEmptyOrMissing = !FileSystem.SYSTEM.exists(catalogFile) ||
-                    (FileSystem.SYSTEM.metadata(catalogFile).size ?: 0L) == 0L
+            val metadata = if (FileSystem.SYSTEM.exists(catalogFile)) FileSystem.SYSTEM.metadata(catalogFile) else null
+            val fileIsEmptyOrMissing = metadata == null || (metadata.size ?: 0L) == 0L
             if (fileIsEmptyOrMissing) {
                 refreshBookListFromServer()
+            } else if (isStale(metadata)) {
+                // Best-effort refresh: fall back to the (usable) cached copy if we're offline.
+                try {
+                    refreshBookListFromServer()
+                } catch (e: Exception) {
+                    Log.w("Catalog refresh failed for ${installerUrls.name}, using cached copy: ${e.message}")
+                }
             }
 
             val nullBackend = NullBackend()
@@ -120,6 +130,12 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
             }
             throw e
         }
+    }
+
+    @OptIn(ExperimentalTime::class)
+    private fun isStale(metadata: FileMetadata): Boolean {
+        val lastModified = metadata.lastModifiedAtMillis ?: return false // unknown age → keep the cache
+        return Clock.System.now().toEpochMilliseconds() - lastModified > installerUrls.catalogMaxAgeMs
     }
 
     private fun getRemoteCatalogFile(): String = HttpRequestBuilder().let { builder ->
