@@ -8,6 +8,8 @@ class SwordInstallerFactory {
         val AND_BIBLE_INSTALLER_URLS = InstallerUrls("AndBible", "andbible.github.io", "/data/andbible/zip", "/data/andbible")
         // Institute for Bible Translation — HTTPS mirror (ibtrussia.org), same /ftpmirror pattern as CrossWire.
         val IBT_INSTALLER_URLS = InstallerUrls("IBT", "ibtrussia.org", "/ftpmirror/pub/modsword/rawzip", "/ftpmirror/pub/modsword/raw")
+        // Tap Bible's own modules (generated commentaries), GitHub Pages project site.
+        val TAP_BIBLE_INSTALLER_URLS = InstallerUrls("TapBible", "mjdenham.github.io", "/tap-bible-modules/zip", "/tap-bible-modules")
     }
 
     val crosswireInstaller = HttpsSwordInstaller(CROSSWIRE_INSTALLER_URLS)
@@ -15,13 +17,15 @@ class SwordInstallerFactory {
     val lockmanInstaller = HttpsSwordInstaller(LOCKMAN_INSTALLER_URLS)
     val andBibleInstaller = HttpsSwordInstaller(AND_BIBLE_INSTALLER_URLS)
     val ibtInstaller = HttpsSwordInstaller(IBT_INSTALLER_URLS)
+    val tapBibleInstaller = HttpsSwordInstaller(TAP_BIBLE_INSTALLER_URLS)
 
     suspend fun findInstaller(initials: String): HttpsSwordInstaller {
         // IBT before eBible: eBible carries many duplicate copies, so a native IBT module wins.
         // Skip a source whose catalog can't be reached, otherwise one source being down (e.g.
         // CrossWire, listed first) would abort the whole search and modules in later sources
         // (IBT, eBible) could never be installed.
-        listOf(crosswireInstaller, andBibleInstaller, lockmanInstaller, ibtInstaller, ebibleInstaller).forEach { installer ->
+        // TapBible first: our own modules win any (future) initials collision with other repos.
+        listOf(tapBibleInstaller, crosswireInstaller, andBibleInstaller, lockmanInstaller, ibtInstaller, ebibleInstaller).forEach { installer ->
             val books = runCatching { installer.getBooks() }.getOrDefault(emptyList())
             if (books.find { it.initials == initials } != null) {
                 return installer
