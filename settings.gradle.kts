@@ -16,4 +16,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "ksword-multiplatform"
 include(":ksword")
-includeBuild("../ktar-multiplatform")
+
+// ktar is consumed from Maven Central (io.github.mjdenham:ktar). It rarely changes, so the
+// composite build is off by default for reproducible, standalone builds. Uncomment to develop
+// ktar and ksword together — Gradle then substitutes the local ../ktar-multiplatform checkout.
+// includeBuild("../ktar-multiplatform")
