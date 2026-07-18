@@ -41,5 +41,5 @@ Check items off as they land; prefer closing via a commit that references the it
 ## P3 — Reach
 
 - [ ] Add `iosX64` (Intel simulator) and a desktop/macOS target if the app needs them.
-- [ ] Rewrite the README to describe the actual library (remove koin / composeApp / iosApp
-      template text; add a usage section).
+- [x] Rewrite the README to describe the actual library (removed koin / composeApp / iosApp
+      template text; added Maven Central coordinates + a usage section).
