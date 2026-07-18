@@ -7,7 +7,7 @@ plugins {
     id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
-group = "org.crosswire"
+group = "io.github.mjdenham"
 
 kotlin {
     jvm {
