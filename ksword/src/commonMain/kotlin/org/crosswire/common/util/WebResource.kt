@@ -24,7 +24,7 @@ internal class WebResource() {
     }
 
     suspend fun download(url: String, filePath: Path): Boolean {
-        println("Downloading $url to $filePath")
+        Log.d("Downloading $url to $filePath")
         var totalBytes = 0
         filePath.createParentDirectories()
 
@@ -41,7 +41,7 @@ internal class WebResource() {
                 }
             }
         }
-        println("Downloaded ${totalBytes / 1024} KB")
+        Log.d("Downloaded ${totalBytes / 1024} KB")
         return totalBytes > 0
     }
 }

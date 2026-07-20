@@ -109,7 +109,7 @@ internal object SwordUtil {
     }
 
     internal fun readAndInflateFile(file: FileHandle, offset: Int, theSize: Int, uncompressedSize: Int): ByteArray {
-        println("readAndInflateFile offset: $offset theSize: $theSize uncompressedSize: $uncompressedSize")
+        Log.v("inflate: offset=$offset size=$theSize uncompressedSize=$uncompressedSize")
         var size = theSize
 
         // It is common to have an entry that points to nothing.
@@ -137,7 +137,7 @@ internal object SwordUtil {
         Buffer().use { inflated ->
             val inflatingBuffer = InflaterSource(file.source(offset.toLong()).buffer(), Inflater())
             val written = inflated.write(inflatingBuffer, uncompressedSize.toLong())
-            println("bytesInflated: $written")
+            Log.v("inflated $written bytes")
 
             return inflated.readByteArray()
         }

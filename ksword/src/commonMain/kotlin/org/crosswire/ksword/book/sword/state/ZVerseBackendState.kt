@@ -38,7 +38,6 @@ import org.crosswire.ksword.versification.Testament
 internal class ZVerseBackendState(bookMetaData: BookMetaData, blockType: BlockType) :
     AbstractOpenFileState(bookMetaData) {
     override fun releaseResources() {
-        println("Releasing ZVerseBackendState files")
         otIdxFile?.close()
         otCompFile?.close()
         otTextFile?.close()
@@ -104,7 +103,6 @@ internal class ZVerseBackendState(bookMetaData: BookMetaData, blockType: BlockTy
     var lastLoadedBlock: LastLoadedBlock? = null
 
     init {
-        println("Opening ZVerseBackendState files")
         val path = SwordUtil.getExpandedDataPath(bookMetaData)
 
         val otAllButLast = path.resolve(SwordConstants.FILE_OT + '.' + blockType.indicator + SUFFIX_PART1).toString()

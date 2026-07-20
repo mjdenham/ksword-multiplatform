@@ -10,6 +10,7 @@ import okio.use
 
 internal class IoUtil {
     fun unpackZip(zipFile: Path, destDir: Path, include: Boolean, vararg includeExclude: String) {
+        Log.d("Unpacking $zipFile to $destDir")
         val zipFileSystem = FileSystem.SYSTEM.openZip(zipFile)
         val fileSystem = FileSystem.SYSTEM
 
@@ -23,11 +24,9 @@ internal class IoUtil {
             zipFileSystem.source(zipFilePath).buffer().use { source ->
                 val relativeFilePath = zipFilePath.toString().trimStart('/')
                 val fileToWrite = destDir.resolve(relativeFilePath)
-                println("Unzipping $zipFilePath to $fileToWrite")
                 fileToWrite.createParentDirectories()
                 fileSystem.sink(fileToWrite).buffer().use { sink ->
-                    val bytes = sink.writeAll(source)
-                    println("Unzipped: $relativeFilePath to $fileToWrite; $bytes bytes written")
+                    sink.writeAll(source)
                 }
             }
         }

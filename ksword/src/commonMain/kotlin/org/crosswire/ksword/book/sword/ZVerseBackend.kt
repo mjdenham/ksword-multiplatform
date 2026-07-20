@@ -20,7 +20,7 @@
 package org.crosswire.ksword.book.sword
 
 import okio.FileHandle
-import org.crosswire.ksword.book.BookMetaData
+import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.sword.state.LastLoadedBlock
 import org.crosswire.ksword.book.sword.state.OpenFileStateManager
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
@@ -29,7 +29,6 @@ import org.crosswire.ksword.passage.KeyUtil
 import org.crosswire.ksword.passage.Verse
 import org.crosswire.ksword.versification.Testament
 import org.crosswire.ksword.versification.Versification
-import org.crosswire.ksword.versification.system.Versifications
 
 /**
  * A backend to read compressed data verse based files. While the text file
@@ -189,7 +188,7 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
             val blockStart: Int = SwordUtil.decodeLittleEndian32(temp, 0)
             val blockSize: Int = SwordUtil.decodeLittleEndian32(temp, 4)
             val uncompressedSize: Int = SwordUtil.decodeLittleEndian32(temp, 8)
-            println("blockStart: $blockStart blockSize: $blockSize uncompressedSize: $uncompressedSize")
+            Log.v("block decode: blockStart=$blockStart blockSize=$blockSize uncompressedSize=$uncompressedSize")
 
             // Read from the data file.
             uncompressed = SwordUtil.readAndInflateFile(textFile, blockStart, blockSize, uncompressedSize)

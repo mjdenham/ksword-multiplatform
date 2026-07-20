@@ -573,10 +573,7 @@ class Verse : VerseKey<Verse> {
             try {
                 return text.toInt() //shaper.unshape(text));
             } catch (ex: NumberFormatException) {
-                // TRANSLATOR: The chapter or verse number is actually not a number, but something else.
-                // {0} is a placeholder for what the user supplied.
-                ex.printStackTrace()
-                throw NoSuchVerseException("Cannot understand {0} as a chapter or verse.")
+                throw NoSuchVerseException("Cannot understand '$text' as a chapter or verse.", ex)
             }
         }
 
