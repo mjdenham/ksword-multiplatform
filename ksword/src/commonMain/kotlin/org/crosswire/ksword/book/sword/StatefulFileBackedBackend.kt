@@ -31,7 +31,7 @@ import org.crosswire.ksword.passage.Key
  *
  * @author DM Smith
 </T> */
-interface StatefulFileBackedBackend<T : OpenFileState> {
+internal interface StatefulFileBackedBackend<T : OpenFileState> {
     /**
      * Initialises the state required to read from files, specific to each
      * different backend

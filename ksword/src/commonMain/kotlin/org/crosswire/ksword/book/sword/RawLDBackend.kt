@@ -21,6 +21,7 @@ package org.crosswire.ksword.book.sword
 
 import okio.IOException
 import okio.use
+import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.sword.state.OpenFileStateManager
 import org.crosswire.ksword.book.sword.state.RawLDBackendState
 import org.crosswire.ksword.passage.DefaultLeafKeyList
@@ -41,7 +42,7 @@ import org.crosswire.ksword.passage.Key
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-open class RawLDBackend(
+internal open class RawLDBackend(
     bookMetaData: SwordBookMetaData,
     private val dataSize: Int
 ) : AbstractBackend<RawLDBackendState>(bookMetaData) {
@@ -97,11 +98,7 @@ open class RawLDBackend(
      */
     protected fun getCipherKey(): ByteArray? {
         val cipherKeyString = bmd.getProperty(SwordBookMetaData.KEY_CIPHER_KEY) ?: return null
-        return try {
-            cipherKeyString.encodeToByteArray()
-        } catch (e: Exception) {
-            cipherKeyString.encodeToByteArray()
-        }
+        return cipherKeyString.encodeToByteArray()
     }
 
     /**
@@ -493,7 +490,7 @@ open class RawLDBackend(
                     val entry = getEntry(state, "scan", dataIndex)
                     keys.add(entry.getKey())
                 } catch (e: Exception) {
-                    // Skip malformed entries
+                    Log.w("Skipping malformed dictionary entry $i in ${bmd.initials}", e)
                 }
             }
 

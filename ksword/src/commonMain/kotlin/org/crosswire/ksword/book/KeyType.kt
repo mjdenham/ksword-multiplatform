@@ -66,7 +66,7 @@ enum class KeyType {
                 }
             }
 
-            throw Exception("Unknown KeyType: $name")
+            throw IllegalArgumentException("Unknown KeyType: $name")
         }
     }
 }

@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Latvian localized Bible book names.
  * Generated from BibleNames_lv.properties
  */
-object LatvianBookNames : BookNameLocalization {
+internal object LatvianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "1 Mozus",
         BibleBook.EXOD to "2 Mozus",

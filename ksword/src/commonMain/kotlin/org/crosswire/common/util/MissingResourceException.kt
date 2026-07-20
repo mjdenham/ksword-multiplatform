@@ -1,4 +1,4 @@
 package org.crosswire.common.util
 
-class MissingResourceException: Exception() {
+internal class MissingResourceException: Exception() {
 }

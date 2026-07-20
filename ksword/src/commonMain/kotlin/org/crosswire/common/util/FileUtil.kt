@@ -4,7 +4,7 @@ import okio.FileSystem
 import okio.Path
 import okio.SYSTEM
 
-class FileUtil {
+internal class FileUtil {
     fun deleteDirectory(path: Path) {
         FileSystem.SYSTEM.deleteRecursively(path)
     }
@@ -16,6 +16,6 @@ class FileUtil {
     }
 }
 
-fun Path.delete() = FileUtil().deleteDirectory(this)
+internal fun Path.delete() = FileUtil().deleteDirectory(this)
 
-fun Path.createParentDirectories() = FileUtil().createParentDirectories(this)
+internal fun Path.createParentDirectories() = FileUtil().createParentDirectories(this)

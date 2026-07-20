@@ -5,7 +5,7 @@ import org.crosswire.ksword.versification.BibleBook
 /**
  * English localization for Bible book names
  */
-object EnglishBookNames : BookNameLocalization {
+internal object EnglishBookNames : BookNameLocalization {
 
     private val fullNames = mapOf(
         // Introductions

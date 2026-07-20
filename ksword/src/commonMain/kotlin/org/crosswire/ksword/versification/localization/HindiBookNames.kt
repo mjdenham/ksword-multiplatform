@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Hindi localized Bible book names.
  * Generated from BibleNames_hi.properties
  */
-object HindiBookNames : BookNameLocalization {
+internal object HindiBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "उत्पत्ति",
         BibleBook.EXOD to "निर्गमन",

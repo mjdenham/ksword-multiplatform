@@ -2,7 +2,7 @@ package org.crosswire.ksword.versification.localization
 
 import org.crosswire.ksword.versification.BibleBook
 
-object KoreanBookNames : BookNameLocalization {
+internal object KoreanBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "창세기",
         BibleBook.EXOD to "출애굽기",

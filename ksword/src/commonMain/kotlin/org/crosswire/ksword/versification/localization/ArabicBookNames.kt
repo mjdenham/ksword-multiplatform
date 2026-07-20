@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Arabic localized Bible book names.
  * Generated from BibleNames_ar.properties
  */
-object ArabicBookNames : BookNameLocalization {
+internal object ArabicBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "تكوين",
         BibleBook.EXOD to "خروج",

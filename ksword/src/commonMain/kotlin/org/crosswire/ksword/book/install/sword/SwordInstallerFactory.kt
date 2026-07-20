@@ -1,5 +1,7 @@
 package org.crosswire.ksword.book.install.sword
 
+import org.crosswire.ksword.book.BookException
+
 class SwordInstallerFactory {
     companion object {
         private const val DAY_MS = 24L * 60 * 60 * 1000
@@ -34,6 +36,6 @@ class SwordInstallerFactory {
                 return installer
             }
         }
-        throw Exception("No installer found for initials: $initials")
+        throw BookException("No installer found for initials: $initials")
     }
 }

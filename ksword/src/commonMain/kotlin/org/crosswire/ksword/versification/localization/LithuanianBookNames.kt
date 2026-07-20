@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Lithuanian localized Bible book names.
  * Generated from BibleNames_lt.properties
  */
-object LithuanianBookNames : BookNameLocalization {
+internal object LithuanianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Pradžios",
         BibleBook.EXOD to "Išėjimo",

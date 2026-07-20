@@ -22,7 +22,7 @@ package org.crosswire.ksword.book.sword
 /**
  * A Constants to help the SwordBookDriver to read Sword format data.
  */
-object SwordConstants {
+internal object SwordConstants {
     /**
      * New testament data files
      */

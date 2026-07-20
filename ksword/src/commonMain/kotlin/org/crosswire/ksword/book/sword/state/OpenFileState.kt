@@ -25,7 +25,7 @@ import org.crosswire.ksword.book.BookMetaData
 /**
  * Marker interface for objects holding open files that should be freed up upon finishing
  */
-interface OpenFileState : Closeable {
+internal interface OpenFileState : Closeable {
     val bookMetaData: BookMetaData?
 
     fun releaseResources()

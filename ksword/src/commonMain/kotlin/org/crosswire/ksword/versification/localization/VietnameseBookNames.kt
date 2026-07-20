@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Vietnamese localized Bible book names.
  * Generated from BibleNames_vi.properties
  */
-object VietnameseBookNames : BookNameLocalization {
+internal object VietnameseBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Sáng Thế Ký",
         BibleBook.EXOD to "Xuất Êdíptô Ký",

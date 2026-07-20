@@ -126,7 +126,7 @@ import org.crosswire.ksword.versification.system.Versifications
  * @author Joe Walker
  * @author DM Smith
  */
-class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockType, val dataSize: Int) : AbstractBackend<ZVerseBackendState>(bookMetaData) {
+internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType: BlockType, val dataSize: Int) : AbstractBackend<ZVerseBackendState>(bookMetaData) {
 
     override fun initState(): ZVerseBackendState {
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType)

@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Turkish localized Bible book names.
  * Generated from BibleNames_tr.properties
  */
-object TurkishBookNames : BookNameLocalization {
+internal object TurkishBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Yaratılış",
         BibleBook.EXOD to "Mısır’dan Çıkış",

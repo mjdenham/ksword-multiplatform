@@ -14,7 +14,7 @@ import okio.SYSTEM
 import okio.buffer
 import okio.use
 
-class WebResource() {
+internal class WebResource() {
     private val client = HttpClient {
         install(HttpTimeout) {
             connectTimeoutMillis = 30_000L  // 30s to establish connection

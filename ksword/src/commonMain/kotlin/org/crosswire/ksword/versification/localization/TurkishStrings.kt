@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object TurkishStrings : StringLocalization {
+internal object TurkishStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "Tüm İncil",

@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Czech localized Bible book names.
  * Generated from BibleNames_cs.properties
  */
-object CzechBookNames : BookNameLocalization {
+internal object CzechBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Genesis",
         BibleBook.EXOD to "Exodus",

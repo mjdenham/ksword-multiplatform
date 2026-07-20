@@ -34,9 +34,9 @@ import org.crosswire.ksword.passage.NoSuchKeyException
  * @param backend the backend for reading dictionary entries
  * @author Joe Walker (JSword original)
  */
-class SwordDictionary(
+class SwordDictionary internal constructor(
     override var bookMetaData: BookMetaData,
-    val backend: RawLDBackend
+    internal val backend: RawLDBackend
 ) : Book {
 
     override val name: String = bookMetaData.name

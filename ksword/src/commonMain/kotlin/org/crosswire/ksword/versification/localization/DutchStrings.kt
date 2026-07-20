@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object DutchStrings : StringLocalization {
+internal object DutchStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "De Hele Bijbel",

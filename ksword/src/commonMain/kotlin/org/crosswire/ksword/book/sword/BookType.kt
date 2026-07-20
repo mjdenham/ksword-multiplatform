@@ -27,7 +27,7 @@ import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 /**
  * Data about book types.
  */
-enum class BookType(
+internal enum class BookType(
     val nameInConfig: String, val category: BookCategory, type: KeyType
 ) {
     /**

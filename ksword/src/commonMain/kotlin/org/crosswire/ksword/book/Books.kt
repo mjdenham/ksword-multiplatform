@@ -44,7 +44,7 @@ object Books : BookList {
      *
      * @param book the book to add to this book list
      */
-    fun addBook(book: Book) = synchronized(lock) { addBookLocked(book) }
+    internal fun addBook(book: Book) = synchronized(lock) { addBookLocked(book) }
 
     private fun addBookLocked(book: Book) {
         if (books.add(book)) {
@@ -66,7 +66,7 @@ object Books : BookList {
             bookByInitials.remove(book.initials)
             bookByName.remove(book.name)
         } else {
-            throw Exception("Could not remove unregistered Book: ${book.name}")
+            throw BookException("Could not remove unregistered Book: ${book.name}")
         }
     }
 

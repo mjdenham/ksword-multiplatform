@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Thai localized Bible book names.
  * Generated from BibleNames_th.properties
  */
-object ThaiBookNames : BookNameLocalization {
+internal object ThaiBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "ปฐมกาล",
         BibleBook.EXOD to "อพยพ",

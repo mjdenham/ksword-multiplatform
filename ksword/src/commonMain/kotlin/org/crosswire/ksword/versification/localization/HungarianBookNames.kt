@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Hungarian localized Bible book names.
  * Generated from BibleNames_hu.properties
  */
-object HungarianBookNames : BookNameLocalization {
+internal object HungarianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Mózes I. könyve",
         BibleBook.EXOD to "Mózes II. könyve",

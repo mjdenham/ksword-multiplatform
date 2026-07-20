@@ -10,6 +10,8 @@ plugins {
 group = "io.github.mjdenham"
 
 kotlin {
+    explicitApiWarning()
+
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)

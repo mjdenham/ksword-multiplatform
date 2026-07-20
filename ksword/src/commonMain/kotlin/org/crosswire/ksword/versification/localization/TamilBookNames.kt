@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Tamil localized Bible book names.
  * Generated from BibleNames_ta.properties
  */
-object TamilBookNames : BookNameLocalization {
+internal object TamilBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "தொடக்க நூல்",
         BibleBook.EXOD to "விடுதலைப் பயணம்",

@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Farsi localized Bible book names.
  * Generated from BibleNames_fa.properties
  */
-object FarsiBookNames : BookNameLocalization {
+internal object FarsiBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "پیدایش",
         BibleBook.EXOD to "خروج",

@@ -4,6 +4,7 @@ import okio.FileHandle
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import okio.SYSTEM
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.SwordUtil
 
@@ -18,7 +19,7 @@ import org.crosswire.ksword.book.sword.SwordUtil
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-class ZLDBackendState(
+internal class ZLDBackendState(
     bookMetaData: BookMetaData
 ) : RawLDBackendState(bookMetaData, dataSize = 4) {
 
@@ -40,7 +41,7 @@ class ZLDBackendState(
                 zdxFile = FileSystem.SYSTEM.openReadOnly(zdxPath)
                 zdtFile = FileSystem.SYSTEM.openReadOnly(zdtPath)
             } else {
-                throw Exception("zLD compressed files not found: $zdxPath or $zdtPath")
+                throw BookException("zLD compressed files not found: $zdxPath or $zdtPath")
             }
         } catch (t: Throwable) {
             releaseResources()

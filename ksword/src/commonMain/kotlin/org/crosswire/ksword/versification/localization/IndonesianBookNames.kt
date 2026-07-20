@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Indonesian localized Bible book names.
  * Generated from BibleNames_id.properties
  */
-object IndonesianBookNames : BookNameLocalization {
+internal object IndonesianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Kejadian",
         BibleBook.EXOD to "Keluaran",

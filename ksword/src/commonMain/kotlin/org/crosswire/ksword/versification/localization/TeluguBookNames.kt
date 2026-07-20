@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Telugu localized Bible book names.
  * Generated from BibleNames_te.properties
  */
-object TeluguBookNames : BookNameLocalization {
+internal object TeluguBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "ఆదికాండము",
         BibleBook.EXOD to "నిర్గమకాండం",

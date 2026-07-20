@@ -31,7 +31,7 @@ import org.crosswire.ksword.versification.Versification
  *
  * @author DM Smith
  */
-class SystemMT : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT) {
+internal class SystemMT : Versification(V11N_NAME, BOOKS_OT, BOOKS_NT, LAST_VERSE_OT, LAST_VERSE_NT) {
 
     companion object {
         const val V11N_NAME: String = "MT"

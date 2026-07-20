@@ -28,7 +28,7 @@ package org.crosswire.common.util
  *
  * @author DM Smith
 </T> */
-class ItemIterator<T>(private val item: T) : MutableIterator<T> {
+internal class ItemIterator<T>(private val item: T) : MutableIterator<T> {
     /* (non-Javadoc)
      * @see java.util.Iterator#hasNext()
      */

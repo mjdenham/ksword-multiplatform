@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object ChineseSimplifiedStrings : StringLocalization {
+internal object ChineseSimplifiedStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "新旧约圣经",

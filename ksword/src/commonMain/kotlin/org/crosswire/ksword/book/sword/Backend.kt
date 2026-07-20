@@ -29,7 +29,7 @@ import org.crosswire.ksword.passage.KeyText
  *
  * @param <T> The type of the OpenFileState that this class extends.
  */
-interface Backend<T : OpenFileState> {
+internal interface Backend<T : OpenFileState> {
 
     fun findNextKey(key: Key): Key?
     fun findPreviousKey(key: Key): Key?

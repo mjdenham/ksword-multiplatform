@@ -9,7 +9,7 @@ import org.crosswire.ksword.passage.KeyText
 /**
  * A NullBackend is not attached to resources.
  */
-class NullBackend : Backend<OpenFileState> {
+internal class NullBackend : Backend<OpenFileState> {
     override fun findNextKey(key: Key): Key? {
         throw BookException("NullBackend does not support findNextKey")
     }

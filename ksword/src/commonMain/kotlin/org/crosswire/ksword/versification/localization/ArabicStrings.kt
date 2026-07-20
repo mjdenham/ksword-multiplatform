@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object ArabicStrings : StringLocalization {
+internal object ArabicStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "الكتاب المقدس بأكمله",

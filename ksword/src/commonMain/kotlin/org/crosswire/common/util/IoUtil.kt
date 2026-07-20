@@ -8,7 +8,7 @@ import okio.buffer
 import okio.openZip
 import okio.use
 
-class IoUtil {
+internal class IoUtil {
     fun unpackZip(zipFile: Path, destDir: Path, include: Boolean, vararg includeExclude: String) {
         val zipFileSystem = FileSystem.SYSTEM.openZip(zipFile)
         val fileSystem = FileSystem.SYSTEM

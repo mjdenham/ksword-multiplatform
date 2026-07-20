@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Cantonese localized Bible book names.
  * Generated from BibleNames_yue.properties
  */
-object CantoneseBookNames : BookNameLocalization {
+internal object CantoneseBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "創世記",
         BibleBook.EXOD to "出埃及記",

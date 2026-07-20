@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Norwegian localized Bible book names.
  * Generated from BibleNames_nb.properties
  */
-object NorwegianBookNames : BookNameLocalization {
+internal object NorwegianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "1 Mosebok",
         BibleBook.EXOD to "2 Mosebok",

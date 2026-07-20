@@ -23,7 +23,7 @@ import kotlin.time.Clock
 import org.crosswire.ksword.book.BookMetaData
 import kotlin.time.ExperimentalTime
 
-abstract class AbstractOpenFileState(override val bookMetaData: BookMetaData) : OpenFileState {
+internal abstract class AbstractOpenFileState(override val bookMetaData: BookMetaData) : OpenFileState {
     /**
      * Allows us to decide whether to release the resources or continue using them
      */

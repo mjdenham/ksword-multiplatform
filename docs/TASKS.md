@@ -18,13 +18,28 @@ Check items off as they land; prefer closing via a commit that references the it
 
 ## P1 — API hardening (breaking; do before any external release)
 
-- [ ] Enable `explicitApi()` and mark implementation types `internal` (backends, `state/`,
-      `common/util/*`, localization classes, `SwordBook.backend`, `Books.addBook`/`refresh`).
-- [ ] Replace bare `throw Exception(...)` with `BookException` / `NoSuchKeyException`; add a
-      cause-chaining constructor to `BookException`.
-- [ ] Stop swallowing exceptions in the backend read paths — handle or propagate, and log.
-- [ ] Make the threading contract consistent — drop `suspend` where there's no IO
-      (`Books.getBooks()`), make `install(zipFile)` match its `suspend` siblings.
+- [x] Mark implementation types `internal` — done: the whole backend layer (`Backend`,
+      `AbstractBackend`, `*Backend`, `SwordBook`, `DataEntry`/`DataIndex`, `BlockType`/`BookType`,
+      `SwordUtil`, `SwordConstants`) + the `state/` package, the 19 `System*` v11n tables +
+      `SwordDefault`, the ~70 per-language localization objects, unused `common/util/*`
+      (`FileUtil`/`IoUtil`/`IniSection`/`ItemIterator`/`WebResource`/`MissingResourceException`)
+      + `JSMsg`, `Books.addBook`, `SwordBookMetaData.bookType`, and `SwordDictionary`'s
+      constructor+`backend`. Kept public (consumer-used): `SwordBookPath`, `SwordDictionary`,
+      `SwordBookMetaData`(+`.driver`→`SwordBookDriver`), `OsisXmlConstants`, `Log`/`Version`/`Locale`,
+      `SwordInstallerFactory`+installers, `Books.refresh`/`getBook`/`getBooks`, `LocalizedBookNames`.
+      Validated: both sibling apps compile against the working tree (bible app common+iOS; commentary
+      generator jvm).
+- [~] `explicitApi()` — enabled in **warning** mode (`explicitApiWarning()`). Strict mode needs
+      627 `public` keywords + 17 explicit return types added mechanically; deferred — tighten to
+      strict + add the keywords incrementally before 0.2.0.
+- [x] Replace bare `throw Exception(...)` with `BookException` / typed exceptions; added a
+      cause-chaining constructor to `BookException`. (Enum-parse failures → `IllegalArgumentException`.)
+- [x] Stop swallowing exceptions in the backend read paths — the empty catches in
+      `AbstractBackend` read loops, `RawLDBackend.getAllKeys`, and `SwordUtil.decode` now log;
+      removed the no-op `getCipherKey` catch; `getRawText` now wraps failures in `BookException`.
+- [~] Make the threading contract consistent — `install(zipFile)` is now `suspend`
+      (`withContext(IO)`), matching its siblings. `Books.getBooks()` can NOT drop `suspend`:
+      `Installer : BookList` shares `getBooks()` and its installer impl does real network IO.
 
 ## P2 — Maintainability & tooling
 

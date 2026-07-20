@@ -15,6 +15,7 @@ import org.crosswire.common.util.IoUtil
 import org.crosswire.common.util.Log
 import org.crosswire.common.util.WebResource
 import org.crosswire.ksword.book.Book
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.Books
 import org.crosswire.ksword.book.install.Installer
@@ -66,7 +67,7 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         }
     }
 
-    fun install(zipFile: Path) {
+    suspend fun install(zipFile: Path) = withContext(Dispatchers.IO) {
         IoUtil().unpackZip(
             zipFile,
             SwordBookPath.swordBookPath,
@@ -120,7 +121,7 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         val tempFile = getCatalogDirectory().resolve("$FILE_LIST_GZ.tmp")
         try {
             val downloaded = WebResource().download(tarGzdownloadUrl, tempFile)
-            if (!downloaded) throw Exception("Empty response from $tarGzdownloadUrl")
+            if (!downloaded) throw BookException("Empty response from $tarGzdownloadUrl")
             FileSystem.SYSTEM.atomicMove(tempFile, catalogFile)
             entries.clear()
             loaded = false

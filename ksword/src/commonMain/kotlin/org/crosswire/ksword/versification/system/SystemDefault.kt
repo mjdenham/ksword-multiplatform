@@ -27,7 +27,7 @@ import org.crosswire.ksword.versification.BibleBook
  *
  * @author DM Smith
  */
-object SystemDefault {
+internal object SystemDefault {
     const val V11N_NAME: String = ""
 
     // Default Books for other Testament in single Testament Bibles

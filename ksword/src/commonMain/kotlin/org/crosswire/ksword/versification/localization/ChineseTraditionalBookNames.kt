@@ -23,4 +23,4 @@ package org.crosswire.ksword.versification.localization
  * Traditional Chinese (Mandarin) localized Bible book names. The standard written book
  * names are identical to the Cantonese set, so this delegates to [CantoneseBookNames].
  */
-object ChineseTraditionalBookNames : BookNameLocalization by CantoneseBookNames
+internal object ChineseTraditionalBookNames : BookNameLocalization by CantoneseBookNames

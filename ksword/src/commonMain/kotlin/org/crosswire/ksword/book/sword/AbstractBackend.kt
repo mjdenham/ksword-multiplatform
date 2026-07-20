@@ -2,6 +2,8 @@ package org.crosswire.ksword.book.sword
 
 import okio.Path
 import okio.use
+import org.crosswire.common.util.Log
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.KeyType
 import org.crosswire.ksword.book.sword.state.OpenFileState
@@ -13,7 +15,7 @@ import org.crosswire.ksword.passage.RestrictionType
 import org.crosswire.ksword.passage.Verse
 import org.crosswire.ksword.passage.VerseRange
 
-abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : StatefulFileBackedBackend<T>, Backend<T> {
+internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : StatefulFileBackedBackend<T>, Backend<T> {
 
     override fun contains(key: Key): Boolean {
         val text = getRawText(key)
@@ -58,10 +60,12 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
     }
 
     override fun getRawText(key: Key): String {
-        initState().use { openFileState ->
-            return readRawContent(openFileState, key)
-//        } catch (e: Exception) {
-//            throw Exception("Unable to obtain raw content from backend for key='$key'", e)
+        try {
+            initState().use { openFileState ->
+                return readRawContent(openFileState, key)
+            }
+        } catch (e: Exception) {
+            throw BookException("Unable to obtain raw content from backend for key='$key'", e)
         }
     }
 
@@ -72,7 +76,7 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
                 KeyType.LIST -> readNormalOsis(key, openFileState)
 //                TREE -> readNormalOsisSingleKey(key, processor, content, openFileState)
                 KeyType.VERSE -> readPassageOsis(key, openFileState)
-                else -> throw /*Book*/Exception("Book has unsupported type of key")
+                else -> throw BookException("Book has unsupported type of key")
             }
             return content
         }
@@ -96,8 +100,7 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
                 contentList.add(KeyText(next, rawText))
 //                processor.postVerse(next, content, rawText)
             } catch (e: Exception) {
-                // failed to process key 'next'
-//                throwFailedKeyException(key, next, e)
+                Log.w("Failed to read key '$next' from ${bmd.initials}", e)
             }
         }
         return contentList
@@ -134,9 +137,9 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
                     contentList.add(KeyText(currentVerse, rawText))
 //                    processor.postVerse(verseInRange, content, rawText)
                 } catch (e: Exception) {
-                    //some versifications have more verses than modules contain - so can't throw
-                    //an error here...
-//                    AbstractBackend.LOGGER.debug(e.message, e)
+                    // Some versifications have more verses than the module contains, so a missing
+                    // verse here is expected — log at debug rather than failing the whole passage.
+                    Log.d("No content for $currentVerse in ${bmd.initials}: ${e.message}")
                 }
             }
         }
@@ -152,7 +155,7 @@ abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMetaData) : S
 //            ?: throw BookException(Msg.MISSING_FILE)
 //
 //        return loc
-        val dataPath = bmd.getProperty(SwordBookMetaData.KEY_DATA_PATH) ?: throw Exception("Missing data path")
+        val dataPath = bmd.getProperty(SwordBookMetaData.KEY_DATA_PATH) ?: throw BookException("Missing data path")
         return SwordBookPath.swordBookPath.resolve(dataPath)
     }
 

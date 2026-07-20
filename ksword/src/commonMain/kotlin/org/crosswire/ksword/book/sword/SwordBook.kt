@@ -9,7 +9,7 @@ import org.crosswire.ksword.passage.KeyText
 /**
  * SwordBook is for all verse based Sword books.
  */
-class SwordBook(override var bookMetaData: BookMetaData, val backend: Backend<*>): Book {
+internal class SwordBook(override var bookMetaData: BookMetaData, val backend: Backend<*>): Book {
 
     override val name: String = bookMetaData.name
 

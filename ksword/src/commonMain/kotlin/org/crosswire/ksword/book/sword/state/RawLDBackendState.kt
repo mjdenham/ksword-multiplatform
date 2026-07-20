@@ -23,6 +23,7 @@ import okio.FileHandle
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import okio.SYSTEM
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.SwordConstants
 import org.crosswire.ksword.book.sword.SwordUtil
@@ -40,7 +41,7 @@ import org.crosswire.ksword.book.sword.SwordUtil
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-open class RawLDBackendState(
+internal open class RawLDBackendState(
     bookMetaData: BookMetaData,
     val dataSize: Int  // Made public for backend access
 ) : AbstractOpenFileState(bookMetaData) {
@@ -65,7 +66,7 @@ open class RawLDBackendState(
             idxFile = FileSystem.SYSTEM.openReadOnly(idxPath)
             datFile = FileSystem.SYSTEM.openReadOnly(datPath)
         } else {
-            throw Exception("Dictionary files not found: $idxPath or $datPath")
+            throw BookException("Dictionary files not found: $idxPath or $datPath")
         }
     }
 

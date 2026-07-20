@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object FinnishStrings : StringLocalization {
+internal object FinnishStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "Koko Raamattu",

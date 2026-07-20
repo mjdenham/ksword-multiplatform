@@ -27,6 +27,8 @@ import okio.Path
 import okio.Path.Companion.toPath
 import okio.buffer
 import okio.use
+import org.crosswire.common.util.Log
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 
 /**
@@ -34,7 +36,7 @@ import org.crosswire.ksword.book.BookMetaData
  *
  * @author Joe Walker
  */
-object SwordUtil {
+internal object SwordUtil {
 
     /**
      * Read a RandomAccessFile
@@ -311,10 +313,7 @@ object SwordUtil {
                 txt = data.decodeToString(offset, offset + length) //String(data, offset, length, charset(charset))
             }
         } catch (ex: Exception) {
-            // It is impossible! In case, use system default...
-//            log.error("{}: Encoding {} not supported.", key, charset, ex);
-//            txt = String(data, offset, length)
-            ex.printStackTrace()
+            Log.w("Failed to decode entry '$key' as $charset", ex)
         }
 
         return txt
@@ -359,7 +358,7 @@ object SwordUtil {
 //            throw BookException(JSOtherMsg.lookupText("Missing data files for old and new testaments in {0}."))
         bookMetaData.getProperty(SwordBookMetaData.KEY_DATA_PATH)?.let { modulePath ->
             return bookMetaData.library.resolve(modulePath)
-        } ?: throw Exception("Missing data files for old and new testaments in {0}.")
+        } ?: throw BookException("Missing data path for ${bookMetaData.initials}")
     }
     /**
      * The log stream

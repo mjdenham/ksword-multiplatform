@@ -4,7 +4,7 @@ import org.crosswire.common.util.Locale
 import org.crosswire.ksword.JSMsg.format
 import org.crosswire.ksword.versification.localization.LocalizedStrings
 
-object JSMsg {
+internal object JSMsg {
     /**
      * Get the internationalized text, but return key if key is unknown.
      * The text requires one or more parameters to be passed.

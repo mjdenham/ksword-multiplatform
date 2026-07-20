@@ -31,7 +31,7 @@ package org.crosswire.ksword.book.sword
  * @see org.crosswire.jsword.book.sword.DataEntry
  * @author Joe Walker (JSword original)
  */
-class DataEntry(
+internal class DataEntry(
     val name: String,
     private val data: ByteArray,
     val charset: String,

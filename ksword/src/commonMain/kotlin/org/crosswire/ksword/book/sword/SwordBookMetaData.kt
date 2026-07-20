@@ -111,7 +111,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     }
 
-    val bookType: BookType by lazy {
+    internal val bookType: BookType by lazy {
         BookType.fromString(getProperty(KEY_MOD_DRV))
     }
 

@@ -27,7 +27,7 @@ package org.crosswire.ksword.book.sword
  * @author Joe Walker
  * @author DM Smith
  */
-enum class BlockType
+internal enum class BlockType
 /**
  * Simple ctor
  */(
@@ -83,11 +83,7 @@ enum class BlockType
                 }
             }
 
-            throw Exception(
-//                JSOtherMsg.lookupText(
-                    "BlockType $typeName is not defined!",
-//                )
-            )
+            throw IllegalArgumentException("BlockType $typeName is not defined!")
         }
     }
 }

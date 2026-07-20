@@ -20,7 +20,7 @@
 package org.crosswire.ksword.versification.localization
 
 /** Traditional Chinese (Mandarin) division/section names — the traditional-script form of [ChineseSimplifiedStrings]. */
-object ChineseTraditionalStrings : StringLocalization {
+internal object ChineseTraditionalStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "新舊約聖經",

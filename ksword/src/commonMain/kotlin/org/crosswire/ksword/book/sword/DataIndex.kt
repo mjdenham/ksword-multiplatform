@@ -28,7 +28,7 @@ package org.crosswire.ksword.book.sword
  * @see org.crosswire.jsword.book.sword.DataIndex
  * @author DM Smith (JSword original)
  */
-data class DataIndex(
+internal data class DataIndex(
     val offset: Int,
     val size: Int
 )

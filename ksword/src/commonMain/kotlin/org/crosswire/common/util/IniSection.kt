@@ -31,7 +31,7 @@ import kotlin.contracts.contract
  * A utility class for a section of an INI style configuration file.
  * Keys and values are maintained in insertion order. A key may have more than one value.
  */
-class IniSection {
+internal class IniSection {
 
     /**
      * Start over.

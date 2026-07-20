@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Hebrew localized Bible book names.
  * Generated from BibleNames_he.properties
  */
-object HebrewBookNames : BookNameLocalization {
+internal object HebrewBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "בראשית",
         BibleBook.EXOD to "שמות",

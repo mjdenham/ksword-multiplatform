@@ -22,7 +22,7 @@ import org.crosswire.ksword.book.sword.state.ZLDBackendState
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
  */
-class ZLDBackend(
+internal class ZLDBackend(
     bookMetaData: SwordBookMetaData
 ) : RawLDBackend(bookMetaData, ZLD_DATA_SIZE) {
 

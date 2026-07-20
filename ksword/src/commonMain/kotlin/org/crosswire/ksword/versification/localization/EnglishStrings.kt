@@ -19,7 +19,7 @@
  */
 package org.crosswire.ksword.versification.localization
 
-object EnglishStrings : StringLocalization {
+internal object EnglishStrings : StringLocalization {
     private val strings = mapOf(
         // Division names
         "The Whole Bible" to "The Whole Bible",

@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Croatian localized Bible book names.
  * Generated from BibleNames_hr.properties
  */
-object CroatianBookNames : BookNameLocalization {
+internal object CroatianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Postanak",
         BibleBook.EXOD to "Izlazak",

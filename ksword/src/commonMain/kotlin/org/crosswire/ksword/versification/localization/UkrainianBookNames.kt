@@ -25,7 +25,7 @@ import org.crosswire.ksword.versification.BibleBook
  * Ukrainian localized Bible book names.
  * Generated from BibleNames_uk.properties
  */
-object UkrainianBookNames : BookNameLocalization {
+internal object UkrainianBookNames : BookNameLocalization {
     private val fullNames = mapOf(
         BibleBook.GEN to "Буття",
         BibleBook.EXOD to "Вихід",
