@@ -5,10 +5,10 @@ Check items off as they land; prefer closing via a commit that references the it
 
 ## P0 — Safety & consumability
 
-- [ ] Fix the `OpenFileStateManager` data race — guard the cache + release job with a `Mutex`
-      (or reference-count states) so a `FileHandle` can't be closed mid-read.
-- [ ] Synchronize `Books` — protect the book collections + `driver` against concurrent
-      read/mutate (restores the behaviour of the removed `@Synchronized`).
+- [x] Fix the `OpenFileStateManager` data race — reference-counted + lock-guarded (atomicfu
+      `SynchronizedObject`); a `FileHandle` is never closed while a reader still holds the state.
+- [x] Synchronize `Books` — book collections + `driver` guarded by an atomicfu lock, restoring
+      the behaviour of the removed `@Synchronized`.
 - [x] Sort out the `ktar` dependency — published `io.github.mjdenham:ktar:0.1.0` to Maven Central;
       ksword now depends on the published coordinate (the local `includeBuild` still substitutes
       it during development).

@@ -9,6 +9,8 @@
  */
 package org.crosswire.ksword.book
 
+import kotlinx.atomicfu.locks.SynchronizedObject
+import kotlinx.atomicfu.locks.synchronized
 import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.sword.SwordBookDriver
 
@@ -18,17 +20,9 @@ import org.crosswire.ksword.book.sword.SwordBookDriver
  */
 object Books : BookList {
 
-    override suspend fun getBooks(): List<Book> {
-        return books.toList()
-    }
+    private val lock = SynchronizedObject()
 
-//    /* (non-Javadoc)
-//     * @see org.crosswire.jsword.book.BookList#getBooks(org.crosswire.jsword.book.BookFilter)
-//     */
-//    @Synchronized
-//    override fun getBooks(filter: BookFilter?): List<Book> {
-//        return CollectionUtil.createList(BookFilterIterator(books, filter))
-//    }
+    override suspend fun getBooks(): List<Book> = synchronized(lock) { books.toList() }
 
     /**
      * Search for the book by initials and name.
@@ -38,23 +32,10 @@ object Books : BookList {
      * @param name The initials or name of the book to find
      * @return the book or null
      */
-    fun getBook(name: String): Book? {
-        bookByInitials[name]?.let {
-            return it
-        }
-
-        bookByName[name]?.let {
-            return it
-        }
-
-        // Check for case-insensitive initial and name matches
-        for (b in books) {
-            if (name.equals(b.initials, ignoreCase = true) || name.equals(b.name, ignoreCase = true)) {
-                return b
-            }
-        }
-
-        return null
+    fun getBook(name: String): Book? = synchronized(lock) {
+        bookByInitials[name]
+            ?: bookByName[name]
+            ?: books.firstOrNull { name.equals(it.initials, ignoreCase = true) || name.equals(it.name, ignoreCase = true) }
     }
 
     /**
@@ -63,11 +44,12 @@ object Books : BookList {
      *
      * @param book the book to add to this book list
      */
-    fun addBook(book: Book) {
+    fun addBook(book: Book) = synchronized(lock) { addBookLocked(book) }
+
+    private fun addBookLocked(book: Book) {
         if (books.add(book)) {
             bookByInitials[book.initials] = book
             bookByName[book.name] = book
-//            fireBooksChanged(instance, book, true)
         }
     }
 
@@ -78,7 +60,7 @@ object Books : BookList {
      *
      * @param book the book to be removed from this book list
      */
-    internal fun removeBook(book: Book) {
+    internal fun removeBook(book: Book) = synchronized(lock) {
         val removed = books.remove(book)
         if (removed) {
             bookByInitials.remove(book.initials)
@@ -89,10 +71,9 @@ object Books : BookList {
     }
 
     fun refresh() {
-        val bookArray: List<Book> = driver.books
-        bookArray.forEach { book ->
-            addBook(book)
-        }
+        // Discover books (filesystem I/O) outside the lock, then register them atomically.
+        val discovered = synchronized(lock) { driver }.books
+        synchronized(lock) { discovered.forEach { addBookLocked(it) } }
     }
 
     /**
@@ -106,7 +87,7 @@ object Books : BookList {
      */
     private fun registerDriver(driver: SwordBookDriver) {
         Log.d("begin registering driver: $driver")
-        this.driver = driver
+        synchronized(lock) { this.driver = driver }
 
         refresh()
 
