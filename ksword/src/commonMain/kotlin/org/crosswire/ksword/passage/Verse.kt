@@ -608,7 +608,7 @@ class Verse : VerseKey<Verse> {
          * The default verse
          */
         val DEFAULT: Verse =
-            Verse(Versifications.defaultVersification, BibleBook.GEN, 1, 1)
+            Verse(Versifications.defaultVersification, BibleBook.JOHN, 1, 1)
 
         //    private static final Logger log = LoggerFactory.getLogger(Verse.class);
         /**
