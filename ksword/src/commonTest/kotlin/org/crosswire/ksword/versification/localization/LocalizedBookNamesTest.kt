@@ -6,6 +6,7 @@ import org.crosswire.ksword.versification.DivisionName
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class LocalizedBookNamesTest {
 
@@ -97,7 +98,7 @@ class LocalizedBookNamesTest {
             LocalizedBookNames.forLanguage("yue").getFullName(BibleBook.GEN),
             LocalizedBookNames.forLanguage("zh_tw").getFullName(BibleBook.GEN),
         )
-        assert(
+        assertTrue(
             LocalizedBookNames.forLanguage("zh").getFullName(BibleBook.GEN) !=
                 LocalizedBookNames.forLanguage("zh_tw").getFullName(BibleBook.GEN)
         )

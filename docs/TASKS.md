@@ -44,8 +44,16 @@ Check items off as they land; prefer closing via a commit that references the it
 ## P2 — Maintainability & tooling
 
 - [ ] Separate integration tests from unit tests (own source set / Gradle task, or `@Ignore`
-      + manual run) so the default test run doesn't hit the network.
-- [ ] Move `junit` out of `commonTest` into `androidHostTest`.
+      + manual run) so the default test run doesn't hit the network. (The network/module-dependent
+      tests all live in `androidHostTest`; `commonTest` is pure unit tests.)
+- [x] Make `commonTest` run on iOS — the only blocker was `LocalizedBookNamesTest` using bare
+      `assert()` (`@ExperimentalNativeApi` on Native); switched to `kotlin.test.assertTrue`.
+      100 common tests now run on `iosSimulatorArm64`.
+- [x] Remove `junit` from `commonTest` — it was unused there (`commonTest` is 100% `kotlin.test`)
+      AND redundant everywhere: `kotlin("test")` already pulls JUnit4 transitively via
+      `kotlin-test-junit` on JVM/Android, which is how `androidHostTest` (JUnit4) still resolves
+      `org.junit.*`. So the line was simply deleted, not relocated. (It was never the iOS blocker.)
+      The `junit` entries in `libs.versions.toml` are now orphaned — remove if desired.
 - [ ] Add real local test fixtures so unit tests don't depend on live servers.
 - [ ] Replace the `println` `Log` shim with a real logging abstraction (levels + exception arg).
 - [ ] Add CI (build + test on each target), ktlint/detekt, and Dokka.

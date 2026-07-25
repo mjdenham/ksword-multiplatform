@@ -10,8 +10,6 @@ plugins {
 group = "io.github.mjdenham"
 
 kotlin {
-    explicitApiWarning()
-
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
@@ -62,7 +60,6 @@ kotlin {
             implementation("io.github.mjdenham:ktar:0.1.0")
         }
         commonTest.dependencies {
-            implementation(libs.junit)
             implementation(kotlin("test"))
             implementation(libs.kotlinx.coroutines.test)
         }
