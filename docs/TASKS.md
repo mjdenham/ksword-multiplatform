@@ -29,9 +29,12 @@ Check items off as they land; prefer closing via a commit that references the it
       `SwordInstallerFactory`+installers, `Books.refresh`/`getBook`/`getBooks`, `LocalizedBookNames`.
       Validated: both sibling apps compile against the working tree (bible app common+iOS; commentary
       generator jvm).
-- [~] `explicitApi()` — enabled in **warning** mode (`explicitApiWarning()`). Strict mode needs
-      627 `public` keywords + 17 explicit return types added mechanically; deferred — tighten to
-      strict + add the keywords incrementally before 0.2.0.
+- [ ] `explicitApi()` — currently OFF. Warning mode was tried and reverted: it emits ~644 warnings
+      (627 missing `public` keywords + 17 missing return types) without enforcing anything — pure
+      noise. Only strict mode is worth enabling, and that needs those ~644 mechanical edits first.
+      Deferred to before a 0.2.0 release. Do NOT re-enable `explicitApiWarning()` on its own; either
+      do the full strict sweep or leave it off. The `internal` marking above already achieves the
+      practical surface reduction.
 - [x] Replace bare `throw Exception(...)` with `BookException` / typed exceptions; added a
       cause-chaining constructor to `BookException`. (Enum-parse failures → `IllegalArgumentException`.)
 - [x] Stop swallowing exceptions in the backend read paths — the empty catches in
