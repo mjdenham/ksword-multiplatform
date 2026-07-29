@@ -57,7 +57,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.encoding)
             implementation(libs.okio)
-            implementation("io.github.mjdenham:ktar:0.1.0")
+            implementation("io.github.mjdenham:ktar:0.1.1")
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
