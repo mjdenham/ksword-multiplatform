@@ -70,7 +70,7 @@ mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("io.github.mjdenham", "ksword", "0.1.0")
+    coordinates("io.github.mjdenham", "ksword", "0.2.0")
 
     pom {
         name.set("KSword")

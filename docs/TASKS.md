@@ -14,7 +14,6 @@ Check items off as they land; prefer closing via a commit that references the it
       it during development).
 - [x] Add `maven-publish` + a `version` — done via the `com.vanniktech.maven.publish` plugin;
       `ksword` and `ktar` published to Maven Central as `io.github.mjdenham:*:0.1.0`.
-      (Documenting coordinates + usage in the README is still pending — see the README item in P3.)
 
 ## P1 — API hardening (breaking; do before any external release)
 
@@ -32,7 +31,7 @@ Check items off as they land; prefer closing via a commit that references the it
 - [ ] `explicitApi()` — currently OFF. Warning mode was tried and reverted: it emits ~644 warnings
       (627 missing `public` keywords + 17 missing return types) without enforcing anything — pure
       noise. Only strict mode is worth enabling, and that needs those ~644 mechanical edits first.
-      Deferred to before a 0.2.0 release. Do NOT re-enable `explicitApiWarning()` on its own; either
+      Deferred to before a 0.3.0 release. Do NOT re-enable `explicitApiWarning()` on its own; either
       do the full strict sweep or leave it off. The `internal` marking above already achieves the
       practical surface reduction.
 - [x] Replace bare `throw Exception(...)` with `BookException` / typed exceptions; added a
@@ -56,9 +55,10 @@ Check items off as they land; prefer closing via a commit that references the it
       AND redundant everywhere: `kotlin("test")` already pulls JUnit4 transitively via
       `kotlin-test-junit` on JVM/Android, which is how `androidHostTest` (JUnit4) still resolves
       `org.junit.*`. So the line was simply deleted, not relocated. (It was never the iOS blocker.)
-      The `junit` entries in `libs.versions.toml` are now orphaned — remove if desired.
 - [ ] Add real local test fixtures so unit tests don't depend on live servers.
-- [ ] Replace the `println` `Log` shim with a real logging abstraction (levels + exception arg).
+- [x] Replace the `println` `Log` shim with a real logging abstraction — `Log` is now a facade with
+      levels (`VERBOSE`..`ERROR`), an optional `Throwable` arg, a settable `minLevel`, and a
+      replaceable `writer` so a host app can route output to Logcat / os_log.
 - [ ] Add CI (build + test on each target), ktlint/detekt, and Dokka.
 - [ ] Delete dead commented-out Java blocks and stale JSword javadoc.
 - [ ] Resolve or ticket the `TODO("Not yet implemented")` stubs so they can't throw silently.
