@@ -131,10 +131,11 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         return OpenFileStateManager.getZVerseBackendState(getBookMetaData(), blockType)
     }
 
-    override fun readRawContent(state: ZVerseBackendState, key: Key): String {
-        val charset = bookMetaData.bookCharset
-        val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
-
+    /**
+     * Read this verse's tuple from the idx file. No block is fetched or inflated, so this is
+     * cheap enough to call for every verse of a passage.
+     */
+    override fun readIndexEntry(state: ZVerseBackendState, key: Key): VerseIndexEntry? {
         val v11n: Versification = bookMetaData.versification
         val verse: Verse = KeyUtil.getVerse(key)
 
@@ -142,17 +143,11 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         val testament: Testament = v11n.getTestament(index)
         index = v11n.getTestamentOrdinal(index)
 
-        val idxFile: FileHandle? = state.getIdxFile(testament)
-        val compFile: FileHandle? = state.getCompFile(testament)
-        val textFile: FileHandle? = state.getTextFile(testament)
-
         // If Bible does not contain the desired testament, return nothing.
-        if (idxFile == null || compFile == null || textFile == null) {
-            return ""
-        }
+        val idxFile: FileHandle = state.getIdxFile(testament) ?: return null
 
         // indexEntrySize, because the index is indexEntrySize bytes long for each verse
-        var temp: ByteArray = SwordUtil.readFile(
+        val temp: ByteArray = SwordUtil.readFile(
             idxFile,
             index * indexEntrySize,
             indexEntrySize,
@@ -161,7 +156,7 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         // Some Bibles have different versification, so the requested verse
         // may not exist.
         if (temp.isEmpty()) {
-            return ""
+            return null
         }
 
         // The data is little endian - extract the blockNum, verseStart and verseSize
@@ -173,6 +168,22 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
             SwordUtil.decodeLittleEndian32(temp, 8)
         }
 
+        return VerseIndexEntry(testament, blockNum, verseStart, verseSize)
+    }
+
+    override fun readRawContent(state: ZVerseBackendState, key: Key): String {
+        val charset = bookMetaData.bookCharset
+        val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
+
+        val indexEntry = readIndexEntry(state, key) ?: return ""
+        val testament = indexEntry.testament
+        val blockNum = indexEntry.blockNum
+        val verseStart = indexEntry.verseStart
+        val verseSize = indexEntry.verseSize
+
+        val compFile: FileHandle = state.getCompFile(testament) ?: return ""
+        val textFile: FileHandle = state.getTextFile(testament) ?: return ""
+
         // Can we get the data from the cache
         val uncompressed: ByteArray?
         val lastLoadedBlock = state.lastLoadedBlock
@@ -180,7 +191,7 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
             uncompressed = lastLoadedBlock.uncompressed
         } else {
             // Then seek using this index into the idx file
-            temp = SwordUtil.readFile(compFile, blockNum * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE)
+            val temp = SwordUtil.readFile(compFile, blockNum * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE)
             if (temp.isEmpty()) {
                 return ""
             }

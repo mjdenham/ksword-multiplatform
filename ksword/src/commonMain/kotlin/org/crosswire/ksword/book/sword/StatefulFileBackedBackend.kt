@@ -52,4 +52,10 @@ internal interface StatefulFileBackedBackend<T : OpenFileState> {
      * something went wrong when reading the verse
      */
     fun readRawContent(state: T, key: Key): String
+
+    /**
+     * The index entry for [key], read without decompressing any text, or null when this
+     * backend has no verse index. Equal entries mean the verses share one stored block.
+     */
+    fun readIndexEntry(state: T, key: Key): VerseIndexEntry? = null
 }

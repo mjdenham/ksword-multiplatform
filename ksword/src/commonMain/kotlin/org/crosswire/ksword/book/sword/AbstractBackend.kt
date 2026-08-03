@@ -38,7 +38,60 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
         verse: Verse,
         adjacentVerse: (Verse) -> Verse?
     ): Key? {
-        val startContent = getRawText(verse)
+        initState().use { state ->
+            val startEntry = indexEntryOrNull(state, verse)
+            return if (startEntry == null) findByContent(state, verse, adjacentVerse)
+            else findByIndexEntry(state, verse, startEntry, adjacentVerse)
+        }
+    }
+
+    /**
+     * Walk the index for the next verse stored separately from [startEntry]. Index reads need no
+     * decompression, so this scans to the end of the book rather than capping the distance —
+     * a long run of empty verses no longer hides the entry beyond it.
+     */
+    private fun findByIndexEntry(
+        state: T,
+        verse: Verse,
+        startEntry: VerseIndexEntry,
+        adjacentVerse: (Verse) -> Verse?
+    ): Key? {
+        val v11n = verse.getVersification()
+        var currentVerse = adjacentVerse(verse) ?: return null
+
+        while (currentVerse.book == verse.book) {
+            if (currentVerse.ordinal == 0 || currentVerse.ordinal == v11n.maximumOrdinal()) return null
+
+            val entry = indexEntryOrNull(state, currentVerse)
+            if (entry != null && !entry.isEmpty && entry != startEntry && currentVerse.verse >= 0) {
+                return runStart(state, currentVerse, entry)
+            }
+
+            currentVerse = adjacentVerse(currentVerse) ?: break
+        }
+
+        return null
+    }
+
+    /** Linked verses share one entry — report the run's first verse so callers land on a whole entry. */
+    private fun runStart(state: T, verse: Verse, entry: VerseIndexEntry): Verse {
+        val v11n = verse.getVersification()
+        var first = verse
+        while (first.ordinal > 1) {
+            val previous = v11n.subtract(first, 1)
+            if (previous.book != verse.book || indexEntryOrNull(state, previous) != entry) return first
+            first = previous
+        }
+        return first
+    }
+
+    /** Fallback for backends with no verse index: compare decoded text, capped for cost. */
+    private fun findByContent(
+        state: T,
+        verse: Verse,
+        adjacentVerse: (Verse) -> Verse?
+    ): Key? {
+        val startContent = rawContentOrEmpty(state, verse)
         val v11n = verse.getVersification()
         var currentVerse = adjacentVerse(verse) ?: return null
         var versesChecked = 0
@@ -46,10 +99,9 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
         while (versesChecked < 40 && currentVerse.book == verse.book) {
             if (currentVerse.ordinal == 0 || currentVerse.ordinal == v11n.maximumOrdinal()) return null
 
-            getRawText(currentVerse).let { currentContent ->
-                if (currentContent.isNotBlank() && currentContent != startContent && currentVerse.verse >= 0) {
-                    return currentVerse
-                }
+            val currentContent = rawContentOrEmpty(state, currentVerse)
+            if (currentContent.isNotBlank() && currentContent != startContent && currentVerse.verse >= 0) {
+                return currentVerse
             }
 
             currentVerse = adjacentVerse(currentVerse) ?: break
@@ -58,6 +110,22 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
 
         return null
     }
+
+    private fun indexEntryOrNull(state: T, verse: Verse): VerseIndexEntry? =
+        try {
+            readIndexEntry(state, verse)
+        } catch (e: Exception) {
+            Log.d("No index entry for $verse in ${bmd.initials}: ${e.message}")
+            null
+        }
+
+    private fun rawContentOrEmpty(state: T, verse: Verse): String =
+        try {
+            readRawContent(state, verse)
+        } catch (e: Exception) {
+            Log.d("No content for $verse in ${bmd.initials}: ${e.message}")
+            ""
+        }
 
     override fun getRawText(key: Key): String {
         try {
@@ -118,31 +186,59 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
         openFileState: T
     ): List<KeyText> {
         val contentList = mutableListOf<KeyText>()
-        var currentVerse: Verse? = null
         val rit = when (key) {
             is VerseRange -> key.iterator()
             else -> getPassage(key).rangeIterator(RestrictionType.CHAPTER)
         }
+
+        // A multi-verse comment is stored once, with every verse it covers pointing at it.
+        // Accumulate such a run and emit it as one range-keyed entry.
+        var runFirst: Verse? = null
+        var runLast: Verse? = null
+        var runEntry: VerseIndexEntry? = null
+        var runText = ""
+
+        fun flushRun() {
+            val first = runFirst ?: return
+            val last = runLast ?: first
+            val runKey: Key = if (first == last) first else VerseRange(first.getVersification(), first, last)
+            contentList.add(KeyText(runKey, runText))
+            runFirst = null
+            runLast = null
+            runEntry = null
+            runText = ""
+        }
+
         while (rit.hasNext()) {
             val range = rit.next()
 //            processor.preRange(range, content)
 
-            // FIXME(CJB): can this now be optimized since we can calculate
-            // the buffer size of what to read?
             // now iterate through all verses in range
             for (verseInRange in range) {
-                currentVerse = getVerse(verseInRange)
+                val currentVerse = getVerse(verseInRange)
+                val entry = indexEntryOrNull(openFileState, currentVerse)
+
+                if (entry != null && !entry.isEmpty && entry == runEntry) {
+                    runLast = currentVerse
+                    continue
+                }
+
+                flushRun()
                 try {
-                    val rawText = readRawContent(openFileState, currentVerse)
-                    contentList.add(KeyText(currentVerse, rawText))
+                    runText = readRawContent(openFileState, currentVerse)
 //                    processor.postVerse(verseInRange, content, rawText)
                 } catch (e: Exception) {
                     // Some versifications have more verses than the module contains, so a missing
                     // verse here is expected — log at debug rather than failing the whole passage.
                     Log.d("No content for $currentVerse in ${bmd.initials}: ${e.message}")
+                    continue
                 }
+                runFirst = currentVerse
+                runLast = currentVerse
+                runEntry = entry
             }
         }
+        flushRun()
 
         return contentList
     }

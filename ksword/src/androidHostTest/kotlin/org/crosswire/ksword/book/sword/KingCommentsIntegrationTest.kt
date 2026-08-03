@@ -17,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.time.measureTime
 
@@ -97,14 +98,52 @@ class KingCommentsIntegrationTest {
             result = backend.readToOsis(VerseRange(v11n, start, end))
         }
         println("Time taken: ${time.inWholeMilliseconds} ms")
+        // Gen 1:1-2 is one linked comment, so it reads as a single entry.
         assertContains(
-            result[1].text,
+            result[0].text,
             "Then we see that God continues to work. His Spirit"
         )
         assertContains(
             result.last().text,
             "The sixth day is a unique day."
         )
+    }
+
+    /**
+     * The merged keys must agree with the annotateRef the module states in its own text —
+     * an independent check that the index tuple recovers the true range.
+     */
+    @Test
+    fun readToOsis_mergedKeysMatchTheModulesOwnAnnotateRef() {
+        testDownloaded()
+        val v11n = Versifications.getVersification("KJV")
+        val start = Verse(v11n, BibleBook.GEN, 1, 1)
+        val end = Verse(v11n, BibleBook.GEN, 1, 31)
+
+        val result = backend.readToOsis(VerseRange(v11n, start, end))
+
+        val annotateRef = Regex("annotateRef=\"([^\"]+)\"")
+        assertEquals(10, result.size)
+        result.forEach { keyText ->
+            val key = keyText.key
+            val recovered = if (key is VerseRange) "${key.start.getOsisID()}-${key.end.getOsisID()}"
+            else key.getOsisID()
+            val declared = annotateRef.find(keyText.text)?.groupValues?.get(1)
+            assertNotNull(declared, "no annotateRef in entry $recovered")
+            assertEquals(declared, recovered)
+        }
+    }
+
+    @Test
+    fun readToOsis_coveredVersesDoNotRepeatTheirText() {
+        testDownloaded()
+        val v11n = Versifications.getVersification("KJV")
+        val start = Verse(v11n, BibleBook.GEN, 1, 1)
+        val end = Verse(v11n, BibleBook.GEN, 1, 31)
+
+        val result = backend.readToOsis(VerseRange(v11n, start, end))
+
+        assertEquals(result.map { it.text }.distinct().size, result.size)
     }
 
     fun testDownloaded() = runTest {
