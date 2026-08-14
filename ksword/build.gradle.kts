@@ -57,7 +57,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.encoding)
             implementation(libs.okio)
-            implementation("io.github.mjdenham:ktar:0.1.1")
+            implementation("io.github.mjdenham:ktar:0.2.0")
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -70,7 +70,7 @@ mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates("io.github.mjdenham", "ksword", "0.2.0")
+    coordinates("io.github.mjdenham", "ksword", "0.2.1")
 
     pom {
         name.set("KSword")

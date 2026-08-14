@@ -4,6 +4,26 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.2.1] — 2026-08-14
+
+### Fixed
+
+- **Linked commentary verses are merged correctly.** zCom modules store a multi-verse comment once
+  and point every covered verse at the same block, so linked verses share an identical
+  `(blockNum, verseStart, verseSize)` tuple in the `.bzv` index. That tuple is now read directly
+  rather than inferred by comparing decoded text: consecutive verses sharing one are merged into a
+  single `KeyText(VerseRange, text)`, and empty verses never merge, so per-verse entries for gaps
+  are preserved. `findNextKey`/`findPreviousKey` walk the index with no 40-verse cap and land on
+  the first verse of a linked run. Text comparison remains as a fallback for backends with no
+  verse index. Verified against KingComments Genesis 1, where the merged keys match the module's
+  own `annotateRef` declarations exactly.
+
+### Changed
+
+- Updated ktar to 0.2.0, which fixes a hang when reading a truncated archive and rejects entry
+  names that would escape the destination folder when extracting. ktar is an `implementation`
+  dependency, so this is not visible on your compile classpath.
+
 ## [0.2.0] — 2026-07-30
 
 ### Breaking
@@ -49,5 +69,6 @@ All notable changes to KSword are documented here. The format follows
 
 Initial release.
 
+[0.2.1]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.2.1
 [0.2.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.2.0
 [0.1.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.1.0
