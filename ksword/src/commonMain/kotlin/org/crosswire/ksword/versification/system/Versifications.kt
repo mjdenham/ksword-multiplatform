@@ -61,8 +61,8 @@ object Versifications {
      * @param name the name of the Versification
      * @return true when the Versification is available for use
      */
-    fun isDefined(name: String?): Boolean {
-        return name == null || known.contains(name)
+    fun isDefined(name: String?): Boolean = synchronized(lock) {
+        name == null || known.contains(name)
     }
 
     private fun fluff(name: String): Versification {
@@ -103,18 +103,19 @@ object Versifications {
 
     /**
      * Get an iterator over all known versifications.
+     * Iterates a snapshot, so a concurrent [register] cannot invalidate it.
      *
      * @return an iterator of versification names.
      */
-    fun iterator(): Iterator<String?> {
-        return known.iterator()
+    fun iterator(): Iterator<String?> = synchronized(lock) {
+        known.toList().iterator()
     }
 
     /**
      * @return number of versifications
      */
-    fun size(): Int {
-        return known.size
+    fun size(): Int = synchronized(lock) {
+        known.size
     }
 
     private val lock = SynchronizedObject()

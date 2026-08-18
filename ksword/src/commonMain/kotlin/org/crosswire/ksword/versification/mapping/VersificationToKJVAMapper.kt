@@ -148,7 +148,7 @@ internal class VersificationToKJVAMapper(
                 val right = MappingParser.parseSide(kjva, entry.right, isSourceSide = false)
                 when {
                     left is ParsedSide.AbsentInLeft -> {                                // :196-197
-                        if (right is ParsedSide.Verses) absent.addAll((right.startOrdinal..right.endOrdinal).toList())
+                        if (right is ParsedSide.Verses) absent.addAll(right.startOrdinal..right.endOrdinal)
                     }
                     left is ParsedSide.Verses && left.cardinality == 1 -> add1ToMany(left.startOrdinal, right)
                     left is ParsedSide.Verses -> addManyToMany(left, right)

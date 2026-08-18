@@ -41,6 +41,13 @@ internal object MappingData {
         "Segond" to setOf("Mark.10.53=Mark.10.52!b"),
     )
 
+    /**
+     * Versifications with no upstream mapping file: they map identically to the KJVA.
+     * Every versification known to Versifications must be either here or in [sourceFor] —
+     * MappingDataIntegrityTest enforces this so a new v11n cannot silently degrade to guessing.
+     */
+    val IDENTITY_V11NS = setOf("KJV", "KJVA", "Calvin", "DarbyFr", "LXX", "Orthodox")
+
     /** The parsed, corrected mapping entries for [v11nName], or null when it maps identically to KJVA. */
     fun entriesFor(v11nName: String): List<MappingEntry>? =
         sourceFor(v11nName)?.let { source ->

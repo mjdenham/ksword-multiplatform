@@ -254,4 +254,29 @@ class VersificationToKJVAMapperTest {
         // the valid entry after the bad one still loaded
         assertEquals("Gen.2.2", map("Gen.2.1"))
     }
+
+    @Test
+    fun testNonNumericLineIsRecordedNotThrown() {
+        addProperty("Gen.1.x", "Gen.1.2")
+        addProperty("Gen.1.3", "Gen.1.4 ")   // trailing space in the number
+        addProperty("Gen.2.1", "Gen.2.2")
+        mapper = VersificationToKJVAMapper(nonKjv, entries)
+
+        assertEquals(2, mapper.errors.size, "expected two recorded errors: ${mapper.errors}")
+        assertEquals("Gen.2.2", map("Gen.2.1"))
+    }
+
+    /**
+     * An entry erroring mid-walk (diff==1 but no verse 0 where expected) is recorded, and may
+     * leave a partial prefix of its pairs applied. Acceptable because MappingDataIntegrityTest
+     * guarantees shipped data never has unexpected errors, so this path is unreachable in
+     * production; this test just pins that such an entry is at least reported.
+     */
+    @Test
+    fun testMidWalkCardinalityErrorIsRecorded() {
+        addProperty("Gen.1.1-Gen.1.4", "Gen.1.1-Gen.1.3")
+        mapper = VersificationToKJVAMapper(nonKjv, entries)
+
+        assertEquals(1, mapper.errors.size, "expected one cardinality error: ${mapper.errors}")
+    }
 }

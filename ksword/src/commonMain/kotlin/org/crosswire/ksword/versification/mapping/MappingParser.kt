@@ -70,8 +70,11 @@ internal object MappingParser {
             '+', '-' -> throw MappingSyntaxException("Offset syntax is not supported: $text")
         }
 
-        val range = OsisParser().parseOsisRef(v11n, text)
-            ?: throw MappingSyntaxException("Unparseable reference: $text")
+        val range = try {
+            OsisParser().parseOsisRef(v11n, text)
+        } catch (e: NumberFormatException) {
+            throw MappingSyntaxException("Non-numeric chapter or verse in: $text")
+        } ?: throw MappingSyntaxException("Unparseable reference: $text")
         val start = range.start
         val end = range.end
         if (!v11n.validate(start.book, start.chapter, start.verse, silent = true) ||

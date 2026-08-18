@@ -111,8 +111,20 @@ class MappingDataIntegrityTest {
 
     @Test
     fun identityVersificationsHaveNoSource() {
-        for (name in listOf("KJV", "KJVA", "Calvin", "DarbyFr", "LXX", "Orthodox")) {
+        for (name in MappingData.IDENTITY_V11NS) {
             assertEquals(null, MappingData.sourceFor(name), "$name should map identically to KJVA")
+        }
+    }
+
+    @Test
+    fun everyKnownVersificationIsMappedOrDeclaredIdentity() {
+        // A new v11n must be given mapping data or added to IDENTITY_V11NS explicitly;
+        // falling through to null would silently degrade it to same-number guessing.
+        for (name in allV11nNames()) {
+            assertTrue(
+                (MappingData.sourceFor(name) != null) != (name in MappingData.IDENTITY_V11NS),
+                "$name must have mapping data or be declared identity (exactly one of the two)"
+            )
         }
     }
 }
