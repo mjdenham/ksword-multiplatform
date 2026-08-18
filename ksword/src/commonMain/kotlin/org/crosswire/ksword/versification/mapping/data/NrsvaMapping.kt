@@ -1,0 +1,42 @@
+/**
+ * Distribution License:
+ * KSword is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License, version 2.1 or later
+ * as published by the Free Software Foundation. This program is distributed
+ * in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+ * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ */
+package org.crosswire.ksword.versification.mapping.data
+
+/**
+ * Verbatim copy of jsword src/main/resources/org/crosswire/jsword/versification/NRSVA.properties
+ * Upstream commit: 901dbac716a0b5bd897dc7377b26ac2d412a7341
+ * DO NOT REFORMAT - re-sync by byte-diff, see docs/MAPPING_DATA.md.
+ */
+internal object NrsvaMapping {
+    const val TEXT: String = """
+# Distribution License:
+# JSword is free software; you can redistribute it and/or modify it under
+# the terms of the GNU Lesser General Public License, version 2.1 or later
+# as published by the Free Software Foundation. This program is distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even
+# the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Lesser General Public License for more details.
+#
+# The License is available on the internet at:
+#      http://www.gnu.org/copyleft/lgpl.html
+# or by writing to:
+#      Free Software Foundation, Inc.
+#      59 Temple Place - Suite 330
+#      Boston, MA 02111-1307, USA
+#
+# Copyright CrossWire Bible Society, 2013 - 2016
+
+# NRSV = KJV
+3John.1.14=3John.1.14!a
+3John.1.15=3John.1.14!b
+Rev.12.18=Rev.13.1!a
+Rev.13.1=Rev.13.1!b
+"""
+}

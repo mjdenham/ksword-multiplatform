@@ -111,6 +111,30 @@ changing the module directory outside of an installer.
 > internally. The read functions (`readToOsis`, `getRawText`) are **blocking** — call them off the
 > main/UI thread.
 
+### 4. Convert verses between versifications
+
+Different Bibles number verses differently — the Psalm KJV calls 51:1 is 50:3 in the Russian
+Synodal numbering. `VersificationConverter` performs the real conversion using CrossWire's
+mapping tables (`Verse.reversify` only reinterprets the same numbers and is not a conversion):
+
+```kotlin
+import org.crosswire.ksword.versification.VersificationConverter
+import org.crosswire.ksword.versification.system.Versifications
+
+val kjv = Versifications.getVersification("KJV")
+val synodal = Versifications.getVersification("Synodal")
+
+// Strict: null when the verse genuinely has no counterpart in the target
+val converted = VersificationConverter.convertOrNull(Verse(kjv, BibleBook.PS, 51, 1), synodal)
+println(converted?.getOsisID())   // Ps.50.3
+
+// Ranges are converted by their endpoints
+VersificationConverter.convertOrNull(genesis1, synodal)
+
+// Optional: parse a versification's mapping table off the UI thread ahead of first use
+VersificationConverter.preload(synodal)
+```
+
 ## Building
 
 Standard Kotlin Multiplatform / Gradle project with a single `:ksword` module:

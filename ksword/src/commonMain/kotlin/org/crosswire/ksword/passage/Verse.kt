@@ -281,6 +281,13 @@ class Verse : VerseKey<Verse> {
         return v11n
     }
 
+    /**
+     * Reinterprets the same book/chapter/verse numbers under another versification — NOT a
+     * conversion: where numbering differs (e.g. Synodal Psalms) the result is a different verse.
+     * Also drops any sub identifier. Null when the numbers are invalid in [newVersification].
+     * For real cross-versification conversion use
+     * [org.crosswire.ksword.versification.VersificationConverter].
+     */
     fun reversify(newVersification: Versification): Verse? {
         if (v11n == newVersification) {
             return this
