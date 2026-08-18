@@ -19,6 +19,8 @@
  */
 package org.crosswire.ksword.versification.system
 
+import kotlinx.atomicfu.locks.SynchronizedObject
+import kotlinx.atomicfu.locks.synchronized
 import org.crosswire.ksword.versification.Versification
 
 /**
@@ -40,18 +42,17 @@ object Versifications {
      * @param name the name of the Versification
      * @return the Versification or throw exception if it is not known.
      */
-    fun getVersification(name: String = DEFAULT_V11N): Versification {
-        var actual = name
-
+    fun getVersification(name: String = DEFAULT_V11N): Versification = synchronized(lock) {
         // This class delays the building of a Versification to when it is
-        // actually needed.
-        var rs = fluffed[actual]
+        // actually needed. The lock keeps one instance per name: Verse.equals
+        // compares versifications by identity, so duplicates would break it.
+        var rs = fluffed[name]
         if (rs == null) {
-            rs = fluff(actual)
-            fluffed[actual] = rs
+            rs = fluff(name)
+            fluffed[name] = rs
         }
 
-        return rs
+        rs
     }
 
     /**
@@ -95,7 +96,7 @@ object Versifications {
      *
      * @param rs the Versification to register
      */
-    fun register(rs: Versification) {
+    fun register(rs: Versification) = synchronized(lock) {
         fluffed[rs.name] = rs
         known.add(rs.name)
     }
@@ -115,6 +116,8 @@ object Versifications {
     fun size(): Int {
         return known.size
     }
+
+    private val lock = SynchronizedObject()
 
     /**
      * The set of v11n names.

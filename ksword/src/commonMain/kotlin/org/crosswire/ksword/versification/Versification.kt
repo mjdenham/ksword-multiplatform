@@ -1027,6 +1027,14 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
             throw NoSuchVerseException("Book must not be null")
         }
 
+        if (!containsBook(book)) {
+            if (silent) {
+                return false
+            }
+            // TRANSLATOR: The user supplied a book which does not exist in this versification.
+            throw NoSuchVerseException("Book must be present in the versification")
+        }
+
         // Check the chapter
         val maxChapter = getLastChapter(book)
         if (chapter < 0 || chapter > maxChapter) {
