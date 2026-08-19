@@ -41,6 +41,14 @@ object VersificationConverter {
     }
 
     /**
+     * All counterparts of [verse] in [target], ascending by ordinal; empty when unmappable.
+     * Usually 0, 1 or 2 entries — a split verse (e.g. a Psalm-title merge) yields several,
+     * letting callers choose a landing policy such as "first non-zero verse".
+     */
+    fun convertAll(verse: Verse, target: Versification): List<Verse> =
+        VersificationsMapper.mapVerse(verse, target).map { Verse(target, it) }
+
+    /**
      * Strict, endpoint-only range conversion: null if either endpoint is unmappable.
      * Interior verses are not converted individually, so a range crossing a splice point
      * may be approximate — an accepted inaccuracy for range-level uses such as bookmarks.

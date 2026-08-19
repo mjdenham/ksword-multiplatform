@@ -41,6 +41,19 @@ class VersificationConverterTest {
     }
 
     @Test
+    fun convertAllExposesSplitVerses() {
+        // Synodal Ps.49.1 = KJVA Ps.50.0-Ps.50.1 (title merged into verse 1)
+        val verse = Verse(synodal, BibleBook.PS, 49, 1)
+        val all = VersificationConverter.convertAll(verse, kjv)
+        assertEquals(listOf("Ps.50.0", "Ps.50.1"), all.map { it.getOsisID() })
+        // convertOrNull collapses to the lowest ordinal
+        assertEquals("Ps.50.0", VersificationConverter.convertOrNull(verse, kjv)?.getOsisID())
+        // unmappable -> empty
+        val mt = Versifications.getVersification("MT")
+        assertEquals(emptyList(), VersificationConverter.convertAll(Verse(kjv, BibleBook.JOHN, 3, 16), mt))
+    }
+
+    @Test
     fun kjvPsalm51ConvertsToSynodalPsalm50() {
         val verse = Verse(kjv, BibleBook.PS, 51, 1)
         val converted = VersificationConverter.convertOrNull(verse, synodal)
