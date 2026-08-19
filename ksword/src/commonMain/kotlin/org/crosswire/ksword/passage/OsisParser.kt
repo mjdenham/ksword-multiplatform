@@ -102,7 +102,7 @@ class OsisParser {
                 chapter = v11n.getLastChapter(book)
                 endOsisIDParts.add(chapter.toString())
             } else {
-                chapter = endOsisIDParts[1].toInt()
+                chapter = endOsisIDParts[1].toIntOrNull() ?: return null
             }
 
             // can asssume last verse if unspecified because this is the trailing osis Id
@@ -151,7 +151,9 @@ class OsisParser {
         if (endParts.size == 2 && endParts[1].length > 0) {
             subIdentifier = endParts[1]
         }
-        return Verse(v11n, b, osisIDParts[1].toInt(), endParts[0].toInt(), subIdentifier)
+        val chapter = osisIDParts[1].toIntOrNull() ?: return null
+        val verse = endParts[0].toIntOrNull() ?: return null
+        return Verse(v11n, b, chapter, verse, subIdentifier)
     }
 
     /**

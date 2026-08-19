@@ -73,4 +73,13 @@ class OsisParserTest {
     fun testVerseWithPart() {
         assertEquals("3John.1.14!a", osisParser.parseOsisID(testV11n, "3John.1.14!a")!!.getOsisID())
     }
+
+    @Test
+    fun testNonNumericPartsYieldNullNotException() {
+        assertEquals(null, osisParser.parseOsisID(testV11n, "Gen.x.1"))
+        assertEquals(null, osisParser.parseOsisID(testV11n, "Gen.1.x"))
+        assertEquals(null, osisParser.parseOsisID(testV11n, "Gen.1.1 "))
+        assertEquals(null, osisParser.parseOsisRef(testV11n, "Gen.x.1-Gen.2.1"))
+        assertEquals(null, osisParser.parseOsisRef(testV11n, "Gen.1-Gen.x"))
+    }
 }
