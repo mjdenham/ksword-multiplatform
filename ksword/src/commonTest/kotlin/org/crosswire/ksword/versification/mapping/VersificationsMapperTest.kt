@@ -85,6 +85,17 @@ class VersificationsMapperTest {
         }
     }
 
+    /** Chapter intros: untitled round-trip exactly, titled converge to verse 1, splices shift one chapter. */
+    @Test
+    fun testChapterIntroMapping() {
+        val kjv = Versifications.getVersification("KJV")
+        doTest(synodal, "Ps.103.0", kjv, "Ps.104.0")
+        doTest(kjv, "Ps.104.0", synodal, "Ps.103.0")
+        doTest(synodal, "Ps.3.0", kjv, "Ps.3.0")
+        doTest(kjv, "Ps.3.0", synodal, "Ps.3.1")
+        doTest(synodal, "Num.13.0", kjv, "Num.12.0")
+    }
+
     /** The corrected Hosea line (upstream typo, see MappingData.KNOWN_UPSTREAM_FIXES) maps as intended. */
     @Test
     fun testCatholicHoseaFix() {

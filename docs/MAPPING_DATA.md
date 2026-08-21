@@ -77,9 +77,18 @@ Verse 0 is an ordinary, fully mappable verse.
   KJVA `Ps.50.0` → Synodal `Ps.49.1`, and Synodal `Ps.49.1` → KJVA `Ps.50.0-Ps.50.1`.
 - The upstream `!zerosUnmapped` flag lines are parsed and skipped, which is also what current
   JSword does (And Bible's historical build-time patch for this is obsolete).
-- A caution for tests: chapter intros the data leaves unmapped are *asymmetric* — Synodal
-  `Ps.21.0` → KJVA `Ps.21.0` (implicit identity) but KJVA `Ps.21.0` → Synodal `Ps.20.1`
-  (explicit). JSword behaves identically; round-trip invariants only hold for real verses.
+- **Unlisted chapter intros are chapter-aware (deviation from JSword).** The data never lists the
+  structural chapter-0 slots, and JSword's same-number identity fallback names the wrong chapter
+  wherever numbering shifts (Synodal `Ps.103.0` → `Ps.103.0` instead of `Ps.104.0`, observed as
+  anchor drift in the consuming app). The fallback in `map`/`unmap` (Single refs only) therefore
+  resolves the counterpart chapter via verse 1 — always the next ordinal — and returns that
+  chapter's 0-slot. Explicit verse-0 entries (the ~959 Psalm-title endpoints and range side
+  effects) take precedence and are unchanged. Round-trip invariant: **book stability with at most
+  one chapter of drift** — untitled counterparts round-trip exactly, titled chapters converge to
+  the chapter's first verse (the 0-slot doubles as the explicitly-mapped title), and splice
+  chapters (verse 1 starts in the previous counterpart chapter, e.g. Synodal Num 13) drift by
+  exactly one. Versifications with no mapping file (LXX, Orthodox) keep the naive identity guess,
+  as in JSword.
 
 ## Bugs found and fixed during the port
 

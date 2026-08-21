@@ -15,6 +15,9 @@ All notable changes to KSword are documented here. The format follows
   `Verse.reversify`, which only reinterprets the same numbers and is now documented as such.
   `convertAll` exposes split verses (a verse whose counterpart is several verses, e.g.
   Psalm-title merges) so callers can choose a landing policy.
+  Unlisted chapter intros (verse 0) convert chapter-aware — Synodal `Ps.103.0` converts to
+  KJV `Ps.104.0`, not the same-numbered wrong chapter JSword answers (see
+  `docs/MAPPING_DATA.md` for the invariant).
   Range conversion maps endpoints only. `preload(v11n)` parses a versification's table off the
   caller's thread; first unpreloaded use parses inline (a few ms). Ported from JSword's
   `VersificationsMapper`/`VersificationToKJVMapper` and verified against it with a differential

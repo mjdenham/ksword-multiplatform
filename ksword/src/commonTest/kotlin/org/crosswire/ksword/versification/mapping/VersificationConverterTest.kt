@@ -5,6 +5,7 @@ import org.crosswire.ksword.passage.VerseRange
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.VersificationConverter
 import org.crosswire.ksword.versification.system.Versifications
+import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -117,14 +118,21 @@ class VersificationConverterTest {
             }
             for (ordinal in samples) {
                 val verse = source.decodeOrdinal(ordinal)
-                // Chapter intros (verse 0) that the data leaves unmapped are asymmetric by design:
-                // e.g. Synodal Ps.21.0 -> KJVA Ps.21.0 (implicit identity), but KJVA Ps.21.0 -> Synodal
-                // Ps.20.1 (explicit, the shifted Psalm). JSword behaves identically. Skip them.
-                if (verse.verse == 0) continue
                 val kjvaOrdinals = VersificationsMapper.mapVerse(verse, kjva)
                 if (kjvaOrdinals.isEmpty()) continue
                 val back = kjvaOrdinals.flatMap { o ->
                     VersificationsMapper.mapVerse(Verse(kjva, o), source).asList()
+                }
+                if (verse.verse == 0) {
+                    // Intros land on the counterpart chapter; titled and splice chapters may shift by one.
+                    if (verse.chapter < 1 || back.isEmpty()) continue
+                    val landed = source.decodeOrdinal(back.min())
+                    assertTrue(
+                        landed.book == verse.book && abs(landed.chapter - verse.chapter) <= 1,
+                        "$name ${verse.getOsisID()} intro round-trip left its chapter: went to " +
+                            osisRef(kjva, kjvaOrdinals) + ", came back to " + osisRef(source, back.toIntArray())
+                    )
+                    continue
                 }
                 assertTrue(
                     verse.ordinal in back,

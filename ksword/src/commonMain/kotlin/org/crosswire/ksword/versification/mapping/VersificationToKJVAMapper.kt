@@ -168,10 +168,23 @@ internal class VersificationToKJVAMapper(
     /**
      * Maps a whole source-v11n ordinal to its KJVA refs, a port of jsword map() :532-552.
      * Three-way outcome: explicit mapping / implicit identity (if valid in KJVA) / empty.
+     * Unlisted chapter intros resolve via verse 1 to the counterpart chapter (docs/MAPPING_DATA.md).
      */
     fun map(sourceOrdinal: Int, part: String? = null): List<QualifiedRef> {
         forward[sourceOrdinal]?.let { if (it.isNotEmpty()) return it }                  // :535-539
         val v = sourceV11n.decodeOrdinal(sourceOrdinal)
+        if (v.verse == 0 && v.chapter >= 1) {
+            val verse1Start = map(sourceOrdinal + 1).minOfOrNull { ref ->
+                when (ref) {
+                    is QualifiedRef.Single -> ref.ordinal
+                    is QualifiedRef.Range -> ref.startOrdinal
+                    is QualifiedRef.Section -> Int.MAX_VALUE
+                }
+            }
+            if (verse1Start == null || verse1Start == Int.MAX_VALUE) return emptyList()
+            val kjvaVerse1 = kjva.decodeOrdinal(verse1Start)
+            return listOf(QualifiedRef.Single(Verse(kjva, kjvaVerse1.book, kjvaVerse1.chapter, 0).ordinal, part))
+        }
         if (kjva.validate(v.book, v.chapter, v.verse, silent = true)) {                 // :540-545
             return listOf(QualifiedRef.Single(Verse(kjva, v.book, v.chapter, v.verse).ordinal, part))
         }
@@ -186,6 +199,16 @@ internal class VersificationToKJVAMapper(
         reverse[ref]?.let { return it }                                                 // :562
         if (ref is QualifiedRef.Single && ref.part != null) {
             reverse[QualifiedRef.Single(ref.ordinal)]?.let { return it }                // :564-567
+        }
+        // Single only: a Range starting at verse 0 is a split verse and keeps the expansion below.
+        if (ref is QualifiedRef.Single && ref.ordinal !in absentKjva) {
+            val v = kjva.decodeOrdinal(ref.ordinal)
+            if (v.verse == 0 && v.chapter >= 1) {
+                val verse1Source = unmap(QualifiedRef.Single(ref.ordinal + 1))
+                if (verse1Source.isEmpty()) return EMPTY
+                val sv = sourceV11n.decodeOrdinal(verse1Source[0])   // sorted ascending: lowest
+                return intArrayOf(Verse(sourceV11n, sv.book, sv.chapter, 0).ordinal)
+            }
         }
         val kjvaOrdinals: IntArray = when (ref) {
             is QualifiedRef.Section -> return EMPTY                                     // :571 (section has no verse key)

@@ -244,6 +244,18 @@ class VersificationToKJVAMapperTest {
         )
     }
 
+    /** Unlisted chapter intros anchor to the chapter's counterpart via verse 1, not same-number identity. */
+    @Test
+    fun testChapterIntroAnchorsToCounterpartChapter() {
+        addProperty("Ps.103.1-Ps.103.35", "Ps.104.1-Ps.104.35")
+        init(Versifications.getVersification("Synodal"))
+
+        assertEquals("Ps.104.0", mapToQualifiedKey("Ps.103.0"))
+        assertEquals("Ps.103.0", unmap("Ps.104.0"))
+        // unmapped chapters still map their intros by identity
+        assertEquals("Gen.1.0", mapToQualifiedKey("Gen.1.0"))
+    }
+
     @Test
     fun testCardinalityMismatchIsRecordedNotThrown() {
         addProperty("Gen.1.1-Gen.1.3", "Gen.1.5-Gen.1.9")
