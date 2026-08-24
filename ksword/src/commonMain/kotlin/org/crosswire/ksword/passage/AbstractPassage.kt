@@ -92,7 +92,7 @@ abstract class AbstractPassage protected constructor(
         val that: Passage = other
         // The real test
         // FIXME: this is not really true since the versification any longer.
-        return that.getOsisRef().equals(getOsisRef())
+        return that.getOsisRef() == getOsisRef()
     }
 
     override fun hashCode(): Int {
@@ -131,7 +131,7 @@ abstract class AbstractPassage protected constructor(
         return getName()
     }
 
-    override fun getRootName(): String? {
+    override fun getRootName(): String {
         val it = rangeIterator(RestrictionType.NONE)
         while (it.hasNext()) {
             val range = it.next()

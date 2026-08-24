@@ -150,14 +150,14 @@ class VerseRange : VerseKey<VerseRange?> {
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#getRootName()
      */
-    override fun getRootName(): String? {
+    override fun getRootName(): String {
         return start.getRootName()
     }
 
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#getOsisRef()
      */
-    override fun getOsisRef(): String? {
+    override fun getOsisRef(): String {
         val startBook = start.book
         val endBook = end.book
         val startChapter = start.chapter
@@ -251,7 +251,7 @@ class VerseRange : VerseKey<VerseRange?> {
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#getOsisID()
      */
-    override fun getOsisID(): String? {
+    override fun getOsisID(): String {
         // This range is exactly a whole book
 
         if (isWholeBook) {

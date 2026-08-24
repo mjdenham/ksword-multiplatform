@@ -298,13 +298,10 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * setBookCase() and isFullBookName())
      *
      * @param book the desired book
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
     fun getPreferredName(book: BibleBook): String {
-        if (containsBook(book)) {
-            return BibleNames.instance().getPreferredName(book)
-        }
-        return ""
+        return BibleNames.instance().getPreferredName(book)
     }
 
     /**
@@ -312,13 +309,10 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The full name of the book or null if not in this versification
+     * @return The full name of the book
      */
-    fun getLongName(book: BibleBook?): String? {
-        if (containsBook(book)) {
-            return BibleNames.instance().getLongName(book)
-        }
-        return null
+    fun getLongName(book: BibleBook): String {
+        return BibleNames.instance().getLongName(book)
     }
 
     /**
@@ -326,13 +320,10 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * (see setBookCase())
      *
      * @param book the book of the Bible
-     * @return The short name of the book or null if not in this versification
+     * @return The short name of the book
      */
-    fun getShortName(book: BibleBook?): String? {
-        if (containsBook(book)) {
-            return BibleNames.instance().getShortName(book)
-        }
-        return null
+    fun getShortName(book: BibleBook): String {
+        return BibleNames.instance().getShortName(book)
     }
 
     /**

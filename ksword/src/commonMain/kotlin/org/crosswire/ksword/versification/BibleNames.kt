@@ -27,7 +27,7 @@ class BibleNames private constructor() {
      * setBookCase() and isFullBookName())
      *
      * @param book the desired book
-     * @return The full name of the book or blank if not in this versification
+     * @return The full name of the book
      */
     fun getPreferredName(book: BibleBook): String {
         return getLocalizedBibleNames().getPreferredName(book)
@@ -39,7 +39,7 @@ class BibleNames private constructor() {
      *
      * @param locale the desired locale
      * @param book the desired book
-     * @return The full name of the book or blank if not in this versification
+     * @return The full name of the book
      */
     fun getPreferredNameInLocale(book: BibleBook, locale: Locale): String {
         return getBibleNamesForLocale(locale).getPreferredName(book)
@@ -50,10 +50,9 @@ class BibleNames private constructor() {
      * (see setBookCase())
      *
      * @param book the book
-     * @return The full name of the book or blank if not in this versification
+     * @return The full name of the book
      */
-    fun getLongName(book: BibleBook?): String? {
-        book ?: return null
+    fun getLongName(book: BibleBook): String {
         return getLocalizedBibleNames().getLongName(book)
     }
 
@@ -62,10 +61,9 @@ class BibleNames private constructor() {
      * (see setBookCase())
      *
      * @param book the book
-     * @return The short name of the book or blank if not in this versification
+     * @return The short name of the book
      */
-    fun getShortName(book: BibleBook?): String? {
-        book ?: return null
+    fun getShortName(book: BibleBook): String {
         return getLocalizedBibleNames().getShortName(book)
     }
 

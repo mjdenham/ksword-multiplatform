@@ -196,11 +196,11 @@ class Verse : VerseKey<Verse> {
         return verseName
     }
 
-    override fun getRootName(): String? {
+    override fun getRootName(): String {
         return BibleNames.instance().getShortName(book)
     }
 
-    override fun getOsisRef(): String? {
+    override fun getOsisRef(): String {
         return getOsisID()
     }
 

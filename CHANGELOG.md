@@ -6,6 +6,16 @@ All notable changes to KSword are documented here. The format follows
 
 ## [Unreleased]
 
+### Breaking
+
+- **`Key.getOsisRef()`, `getOsisID()`, `getName(base)` and `getRootName()` now return non-null `String`.**
+  No implementation ever returned null; drop any `?.`/`?:`/`!!` guards on these results. Nullability on
+  `OsisParser.parse*` and `VersificationConverter.convertOrNull` is unchanged.
+- **Book-name lookups are non-null**: `Versification` and `BibleNames` `getShortName`/`getLongName`/
+  `getPreferredName` take a non-null `BibleBook` and return `String`, matching JSword. The previous
+  `containsBook`-guard-then-null (or `""`) shape was a port deviation; call `containsBook` to test
+  membership.
+
 ### Added
 
 - **Cross-versification mapping.** New `VersificationConverter` converts verses and ranges between
