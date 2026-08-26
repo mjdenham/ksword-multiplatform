@@ -56,6 +56,9 @@ object VersificationConverter {
     fun convertOrNull(range: VerseRange, target: Versification): VerseRange? {
         val start = convertOrNull(range.start, target) ?: return null
         val end = convertOrNull(range.end, target) ?: return null
+        // Crossed endpoints mean the mapping relocated one of them (e.g. Synodal moves
+        // Rom 16:25-27 to Rom 14): the range is not representable in the target.
+        if (start.ordinal > end.ordinal) return null
         return VerseRange(target, start, end)
     }
 

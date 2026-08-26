@@ -61,6 +61,13 @@ object Versifications {
      * @param name the name of the Versification
      * @return true when the Versification is available for use
      */
+    /**
+     * The versification with this name, or null when the name is unknown. For names
+     * arriving from untrusted sources (URLs, database rows); [getVersification] throws.
+     */
+    fun getVersificationOrNull(name: String?): Versification? =
+        if (name != null && isDefined(name)) getVersification(name) else null
+
     fun isDefined(name: String?): Boolean = synchronized(lock) {
         name == null || known.contains(name)
     }

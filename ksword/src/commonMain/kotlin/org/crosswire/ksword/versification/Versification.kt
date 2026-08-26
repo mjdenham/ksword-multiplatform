@@ -186,6 +186,15 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
     }
 
     /**
+     * True when this versification defines the verse's slot — including chapter-top verse 0
+     * headings, excluding the Bible/Testament intro pseudo-books (whose OSIS ids never
+     * re-parse). Useful because [org.crosswire.ksword.passage.OsisParser] accepts
+     * out-of-range refs: they parse to ordinal 0 or spill into the next chapter.
+     */
+    fun containsVerse(verse: Verse): Boolean =
+        verse.book !in INTRO_BOOKS && validate(verse.book, verse.chapter, verse.verse, silent = true)
+
+    /**
      * Get the BibleBook by its position in this Versification.
      * If the position is negative, return the first book.
      * If the position is greater than the last, return the last book.
@@ -1196,3 +1205,5 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
     var nTChapterCount: Int = 0
         private set
 }
+
+private val INTRO_BOOKS = setOf(BibleBook.INTRO_BIBLE, BibleBook.INTRO_OT, BibleBook.INTRO_NT)

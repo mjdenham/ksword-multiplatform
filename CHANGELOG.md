@@ -6,6 +6,14 @@ All notable changes to KSword are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `Versification.containsVerse(verse)` — true when the versification defines the verse's slot
+  (verse-0 chapter headings included, Bible/Testament intro pseudo-books excluded); the sibling
+  of `containsBook` for refs from untrusted sources.
+- `Versifications.getVersificationOrNull(name)` — null for unknown names, for names from
+  untrusted sources (URLs, database rows) where `getVersification`'s throw is unwanted.
+
 ### Breaking
 
 - **`Key.getOsisRef()`, `getOsisID()`, `getName(base)` and `getRootName()` now return non-null `String`.**

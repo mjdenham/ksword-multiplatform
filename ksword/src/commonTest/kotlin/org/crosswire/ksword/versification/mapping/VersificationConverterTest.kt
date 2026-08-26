@@ -142,4 +142,14 @@ class VersificationConverterTest {
             }
         }
     }
+
+    @Test
+    fun crossedEndpointsAfterConversionAreRejected() {
+        // Synodal relocates Rom 16:25-27 into Rom 14, so converting this KJV range
+        // endpoint-by-endpoint would produce a swapped, ~two-chapter range.
+        val kjv = Versifications.getVersification("KJV")
+        val synodal = Versifications.getVersification("Synodal")
+        val range = VerseRange(kjv, Verse(kjv, BibleBook.ROM, 16, 24), Verse(kjv, BibleBook.ROM, 16, 27))
+        assertNull(VersificationConverter.convertOrNull(range, synodal))
+    }
 }
