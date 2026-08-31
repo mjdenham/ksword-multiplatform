@@ -4,15 +4,7 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
-## [Unreleased]
-
-### Added
-
-- `Versification.containsVerse(verse)` — true when the versification defines the verse's slot
-  (verse-0 chapter headings included, Bible/Testament intro pseudo-books excluded); the sibling
-  of `containsBook` for refs from untrusted sources.
-- `Versifications.getVersificationOrNull(name)` — null for unknown names, for names from
-  untrusted sources (URLs, database rows) where `getVersification`'s throw is unwanted.
+## [0.3.0] — 2026-08-31
 
 ### Breaking
 
@@ -42,6 +34,11 @@ All notable changes to KSword are documented here. The format follows
   sweep of every ordinal of every versification in both directions (1,233,538 conversions);
   the data files are embedded verbatim — see `docs/MAPPING_DATA.md` for provenance, the
   re-sync procedure, and the deliberate deviations (all of them fixes to upstream defects).
+- `Versification.containsVerse(verse)` — true when the versification defines the verse's slot
+  (verse-0 chapter headings included, Bible/Testament intro pseudo-books excluded); the sibling
+  of `containsBook` for refs from untrusted sources.
+- `Versifications.getVersificationOrNull(name)` — null for unknown names, for names from
+  untrusted sources (URLs, database rows) where `getVersification`'s throw is unwanted.
 
 ### Fixed
 
