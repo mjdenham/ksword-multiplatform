@@ -9,6 +9,7 @@ import org.crosswire.ksword.book.BookCategory
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_CATEGORY
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_LANG
+import org.crosswire.ksword.book.BookMetaData.Companion.KEY_SOURCE_TYPE
 import org.crosswire.ksword.book.BookMetaData.Companion.KEY_VERSIFICATION
 import org.crosswire.ksword.book.KeyType
 import org.crosswire.ksword.book.basic.AbstractBookMetaData
@@ -76,7 +77,6 @@ class SwordBookMetaData: AbstractBookMetaData() {
         const val KEY_SEARCH_OPTION: String = "SearchOption"
         const val KEY_SHORT_COPYRIGHT: String = "ShortCopyright"
         const val KEY_SHORT_PROMO: String = "ShortPromo"
-        const val KEY_SOURCE_TYPE: String = "SourceType"
         const val KEY_STRONGS_PADDING: String = "StrongsPadding"
         const val KEY_SWORD_VERSION_DATE: String = "SwordVersionDate"
         const val KEY_TEXT_SOURCE: String = "TextSource"

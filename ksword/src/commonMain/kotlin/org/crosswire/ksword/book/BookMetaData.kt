@@ -213,6 +213,12 @@ interface BookMetaData : Comparable<BookMetaData?> {
     val version: Version
 
     /**
+     * The markup of the module's text, from its `SourceType` conf field.
+     */
+    val sourceType: SourceType
+        get() = SourceType.parse(getProperty(KEY_SOURCE_TYPE))
+
+    /**
      * If this BookMetaData is partially loaded, reload it fully.
      * If it is fully loaded, don't do it again.
      *
@@ -340,6 +346,11 @@ interface BookMetaData : Comparable<BookMetaData?> {
          * The key for the Versification property.
          */
         const val KEY_VERSIFICATION: String = "Versification"
+
+        /**
+         * The key for the markup of the module's text in the properties map
+         */
+        const val KEY_SOURCE_TYPE: String = "SourceType"
 
         const val KEY_BOOKLIST: String = "BookList"
 
