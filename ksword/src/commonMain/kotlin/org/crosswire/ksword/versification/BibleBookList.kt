@@ -26,7 +26,7 @@ package org.crosswire.ksword.versification
  * @author DM Smith
  */
 /* pkg protected */
-internal class BibleBookList(val books: Array<BibleBook>) : Iterable<BibleBook?> /*, java.io.Serializable */ {
+internal class BibleBookList(val books: Array<BibleBook>) : Iterable<BibleBook> /*, java.io.Serializable */ {
     /**
      * Does this Versification contain the BibleBook.
      *
@@ -82,28 +82,7 @@ internal class BibleBookList(val books: Array<BibleBook>) : Iterable<BibleBook?>
      *
      * @return an Iterator over the books
      */
-    override fun iterator(): Iterator<BibleBook> {
-        return object : MutableIterator<BibleBook> {
-            private var nextBook: BibleBook? = books[0]
-
-            override fun hasNext(): Boolean {
-                return nextBook != null
-            }
-
-            override fun next(): BibleBook {
-                nextBook?.let {
-                    val current: BibleBook = it
-                    nextBook = getNextBook(it)
-                    return current
-
-                } ?: throw NoSuchElementException()
-            }
-
-            override fun remove() {
-                throw UnsupportedOperationException()
-            }
-        }
-    }
+    override fun iterator(): Iterator<BibleBook> = books.iterator()
 
     val firstBook: BibleBook
         /**

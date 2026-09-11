@@ -289,6 +289,10 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
          */
         get() = bookList.iterator()
 
+    /** The books in this versification's order, including INTRO_BIBLE/OT/NT. */
+    val books: List<BibleBook>
+        get() = bookList.books.asList()
+
     /**
      * Get the BookName.
      *
