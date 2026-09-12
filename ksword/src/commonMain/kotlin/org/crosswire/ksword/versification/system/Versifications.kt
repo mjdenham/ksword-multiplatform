@@ -118,6 +118,10 @@ object Versifications {
         known.toList().iterator()
     }
 
+    /** The names of all known versifications, in registration order. */
+    val names: List<String>
+        get() = synchronized(lock) { known.filterNotNull() }
+
     /**
      * @return number of versifications
      */

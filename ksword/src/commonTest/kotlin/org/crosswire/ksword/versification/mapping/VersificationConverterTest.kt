@@ -81,7 +81,7 @@ class VersificationConverterTest {
     @Test
     fun strictResultsAlwaysValidateInTarget() {
         val targets = listOf(kjv, synodal, Versifications.getVersification("Catholic"))
-        for (name in Versifications.iterator().asSequence().filterNotNull()) {
+        for (name in Versifications.names) {
             val source = Versifications.getVersification(name)
             var checked = 0
             var ordinal = 0

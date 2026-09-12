@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 class MappingDataIntegrityTest {
 
     private fun allV11nNames(): List<String> =
-        Versifications.iterator().asSequence().filterNotNull().toList()
+        Versifications.names.toList()
 
     private fun allSources(): Map<String, String> =
         allV11nNames().mapNotNull { name -> MappingData.sourceFor(name)?.let { name to it } }.toMap()

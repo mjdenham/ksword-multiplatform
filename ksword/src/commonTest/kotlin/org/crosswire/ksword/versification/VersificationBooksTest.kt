@@ -8,7 +8,7 @@ class VersificationBooksTest {
 
     @Test
     fun booksMatchTheVersificationOrder() {
-        Versifications.iterator().asSequence().filterNotNull().forEach { name ->
+        Versifications.names.forEach { name ->
             val v = Versifications.getVersification(name)
             val books = v.books
             assertEquals(v.bookIterator.asSequence().toList(), books, name)

@@ -645,50 +645,6 @@ class VerseRange : VerseKey<VerseRange?> {
 //        // We are ignoring the originalName and parent.
 //    }
 
-    /**
-     * Iterate over the Verses in the VerseRange
-     */
-    private class VerseIterator(range: VerseRange) : MutableIterator<Key> {
-        /* (non-Javadoc)
-         * @see java.util.Iterator#hasNext()
-         */
-        override fun hasNext(): Boolean {
-            return nextVerse != null
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#next()
-         */
-        override fun next(): Key {
-            if (nextVerse == null) {
-                throw NoSuchElementException()
-            }
-            val currentVerse: Verse = nextVerse!!
-            nextVerse = if (++count < total) v11n.next(nextVerse!!) else null
-            return currentVerse
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        override fun remove() {
-            throw UnsupportedOperationException()
-        }
-
-        private val v11n: Versification = range.getVersification()
-        private var nextVerse: Verse?
-        private var count = 0
-        private val total: Int
-
-        /**
-         * Ctor
-         */
-        init {
-            nextVerse = range.start
-            total = range.getCardinality()
-        }
-    }
-
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#canHaveChildren()
      */
@@ -722,8 +678,13 @@ class VerseRange : VerseKey<VerseRange?> {
      * 
      * @see org.crosswire.ksword.passage.Key#iterator()
      */
-    override fun iterator(): Iterator<Key> {
-        return VerseIterator(this)
+    override fun iterator(): Iterator<Key> = iterator {
+        val v11n = getVersification()
+        var verse: Verse = start
+        repeat(verseCount) {
+            yield(verse)
+            verse = v11n.next(verse) ?: return@iterator
+        }
     }
 
     /* (non-Javadoc)

@@ -44,7 +44,7 @@ class MappingDataDigestTest {
             Digest("SynodalProt", 8554, -9096488358592117167L, 2767, 2830),
             Digest("Vulg", 7868, -5275747690668707727L, 2514, 2575),
         )
-        val actual = Versifications.iterator().asSequence().filterNotNull().sorted().mapNotNull { name ->
+        val actual = Versifications.names.sorted().mapNotNull { name ->
             val source = MappingData.sourceFor(name) ?: return@mapNotNull null
             val mapper = VersificationToKJVAMapper(
                 Versifications.getVersification(name),

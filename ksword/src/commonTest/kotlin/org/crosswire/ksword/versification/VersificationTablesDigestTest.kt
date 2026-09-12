@@ -37,7 +37,7 @@ class VersificationTablesDigestTest {
             Digest("SynodalProt", 69, 32420, 4030485718284391749L),
             Digest("Vulg", 81, 38697, -4756810592991422087L),
         )
-        val actual = Versifications.iterator().asSequence().filterNotNull().sorted().map { name ->
+        val actual = Versifications.names.sorted().map { name ->
             val v = Versifications.getVersification(name)
             var h = -3750763034362895579L // FNV-1a 64-bit offset basis
             fun mix(x: Int) {

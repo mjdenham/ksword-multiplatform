@@ -19,7 +19,6 @@
  */
 package org.crosswire.ksword.passage
 
-import org.crosswire.common.util.ItemIterator
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.BibleNames
 import org.crosswire.ksword.versification.Versification
@@ -436,9 +435,7 @@ class Verse : VerseKey<Verse> {
     /* (non-Javadoc)
      * @see Iterable#iterator()
      */
-    override fun iterator(): Iterator<Key> {
-        return ItemIterator<Key>(this)
-    }
+    override fun iterator(): Iterator<Key> = listOf<Key>(this).iterator()
 
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#addAll(org.crosswire.ksword.passage.Key)
