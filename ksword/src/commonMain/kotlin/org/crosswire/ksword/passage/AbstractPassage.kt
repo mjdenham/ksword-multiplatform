@@ -926,7 +926,7 @@ abstract class AbstractPassage protected constructor(
          * The Iterator that we are proxying to
          */
         private val it: Iterator<Key>, restrict: RestrictionType
-    ) : MutableIterator<VerseRange?> {
+    ) : Iterator<VerseRange> {
         /* (non-Javadoc)
          * @see java.util.Iterator#hasNext()
          */
@@ -942,13 +942,6 @@ abstract class AbstractPassage protected constructor(
 
             calculateNext()
             return retcode
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        override fun remove() {
-            throw UnsupportedOperationException()
         }
 
         /**

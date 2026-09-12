@@ -129,7 +129,7 @@ class RangedPassage(
         }
 
         // For other restriction types, we need to split ranges at boundaries
-        return VerseRangeIterator(v11n, iterator(), restrict)
+        return AbstractPassage.VerseRangeIterator(v11n, iterator(), restrict)
     }
 
     /* (non-Javadoc)
@@ -262,8 +262,12 @@ class RangedPassage(
     /* (non-Javadoc)
      * @see org.crosswire.ksword.passage.Key#iterator()
      */
-    override fun iterator(): Iterator<Key> {
-        return VerseIterator()
+    override fun iterator(): Iterator<Key> = iterator {
+        store.forEach { range ->
+            repeat(range.getCardinality()) { offset ->
+                yield(v11n.decodeOrdinal(range.start.ordinal + offset))
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -343,115 +347,4 @@ class RangedPassage(
         store.addAll(merged)
     }
 
-    /**
-     * Iterator that expands VerseRanges into individual Verses
-     */
-    private inner class VerseIterator : Iterator<Key> {
-        private var rangeIndex = 0
-        private var verseOffset = 0
-        private var currentRange: VerseRange? = if (store.isNotEmpty()) store[0] else null
-
-        override fun hasNext(): Boolean {
-            if (currentRange == null) {
-                return false
-            }
-
-            if (verseOffset < currentRange!!.getCardinality()) {
-                return true
-            }
-
-            // Check if there are more ranges
-            return rangeIndex + 1 < store.size
-        }
-
-        override fun next(): Key {
-            if (!hasNext()) {
-                throw NoSuchElementException()
-            }
-
-            // Get the current verse
-            val verse = v11n.decodeOrdinal(currentRange!!.start.ordinal + verseOffset)
-            verseOffset++
-
-            // Move to next range if needed
-            if (verseOffset >= currentRange!!.getCardinality()) {
-                rangeIndex++
-                if (rangeIndex < store.size) {
-                    currentRange = store[rangeIndex]
-                    verseOffset = 0
-                } else {
-                    currentRange = null
-                }
-            }
-
-            return verse
-        }
-    }
-
-    /**
-     * Iterator that splits VerseRanges at restriction boundaries
-     */
-    private class VerseRangeIterator(
-        private val v11n: Versification,
-        private val verseIterator: Iterator<Key>,
-        private val restrict: RestrictionType
-    ) : Iterator<VerseRange> {
-        private var nextRange: VerseRange? = null
-        private var hasCalculatedNext = false
-
-        init {
-            calculateNext()
-        }
-
-        override fun hasNext(): Boolean {
-            if (!hasCalculatedNext) {
-                calculateNext()
-            }
-            return nextRange != null
-        }
-
-        override fun next(): VerseRange {
-            if (!hasNext()) {
-                throw NoSuchElementException()
-            }
-
-            val result = nextRange!!
-            hasCalculatedNext = false
-            return result
-        }
-
-        private fun calculateNext() {
-            if (!verseIterator.hasNext()) {
-                nextRange = null
-                hasCalculatedNext = true
-                return
-            }
-
-            val start = verseIterator.next() as Verse
-            var end = start
-
-            // Keep adding verses while they're in the same restriction boundary
-            while (verseIterator.hasNext()) {
-                val peek = verseIterator.next() as Verse
-
-                // Check if we should break here based on restriction type
-                if (restrict == RestrictionType.CHAPTER && start.book != peek.book) {
-                    // Different book, break
-                    nextRange = VerseRange(v11n, start, end)
-                    hasCalculatedNext = true
-                    return
-                } else if (restrict == RestrictionType.CHAPTER && start.chapter != peek.chapter) {
-                    // Different chapter, break
-                    nextRange = VerseRange(v11n, start, end)
-                    hasCalculatedNext = true
-                    return
-                }
-
-                end = peek
-            }
-
-            nextRange = VerseRange(v11n, start, end)
-            hasCalculatedNext = true
-        }
-    }
 }
