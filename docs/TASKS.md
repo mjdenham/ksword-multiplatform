@@ -63,6 +63,9 @@ Check items off as they land; prefer closing via a commit that references the it
 - [ ] Delete dead commented-out Java blocks and stale JSword javadoc.
 - [ ] Resolve or ticket the `TODO("Not yet implemented")` stubs so they can't throw silently.
 - [ ] Audit the `!!` not-null assertions.
+- [x] Fix `rangeIterator(CHAPTER)` dropping the first verse of each chapter — `RangedPassage`
+      had a re-implementation of `AbstractPassage.VerseRangeIterator` instead of JSword's
+      range-splitting version; ported it and `VerseRange.rangeIterator` (see IMPROVEMENTS §7).
 
 ## P3 — Reach
 

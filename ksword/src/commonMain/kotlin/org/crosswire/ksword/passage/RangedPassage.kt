@@ -128,8 +128,8 @@ class RangedPassage(
             return store.iterator()
         }
 
-        // For other restriction types, we need to split ranges at boundaries
-        return AbstractPassage.VerseRangeIterator(v11n, iterator(), restrict)
+        // For other restriction types, split the stored ranges, expanding only one that crosses a boundary
+        return VerseRangeIterator(store.iterator(), restrict)
     }
 
     /* (non-Javadoc)
@@ -347,4 +347,31 @@ class RangedPassage(
         store.addAll(merged)
     }
 
+    /**
+     * Passes stored ranges through, chopping any that crosses a [RestrictionType] boundary.
+     */
+    private class VerseRangeIterator(
+        private val real: Iterator<VerseRange>,
+        private val restrict: RestrictionType,
+    ) : Iterator<VerseRange> {
+        private var next: VerseRange? = null
+
+        override fun hasNext(): Boolean = next != null || real.hasNext()
+
+        override fun next(): VerseRange {
+            val current = next ?: real.next()
+            if (restrict.isSameScope(current.getVersification(), current.start, current.end)) {
+                next = null
+                return current
+            }
+            return splitNext(current)
+        }
+
+        /** Return the first in-scope chunk of [current] and keep the remainder for next time. */
+        private fun splitNext(current: VerseRange): VerseRange {
+            val first = current.rangeIterator(restrict).next()
+            next = VerseRange.remainder(current, first).single()
+            return first
+        }
+    }
 }

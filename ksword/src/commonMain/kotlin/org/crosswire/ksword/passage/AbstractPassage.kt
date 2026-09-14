@@ -918,9 +918,13 @@ abstract class AbstractPassage protected constructor(
     }
 
     /**
-     * Skip over verses that are part of a range
+     * Amalgamates a stream of verses into ranges, breaking at [RestrictionType] boundaries.
+     *
+     * Used by [VerseRange.rangeIterator] to chop one range. It has no Passage caller here because
+     * only [RangedPassage] was ported from JSword — the implementations that store verses rather
+     * than ranges (RocketPassage, BitwisePassage, DistinctPassage, PassageTally) would use it.
      */
-    protected class VerseRangeIterator(
+    internal class VerseRangeIterator(
         val v11n: Versification,
         /**
          * The Iterator that we are proxying to

@@ -499,9 +499,8 @@ class VerseRange : VerseKey<VerseRange?> {
      * @param restrict
      * @return a range iterator
      */
-//    fun rangeIterator(restrict: RestrictionType?): Iterator<VerseRange> {
-//        return VerseRangeIterator(v11n, iterator(), restrict)
-//    }
+    fun rangeIterator(restrict: RestrictionType): Iterator<VerseRange> =
+        AbstractPassage.VerseRangeIterator(getVersification(), iterator(), restrict)
 
     private fun doGetName(base: Key?): String {
         // Cache these we're going to be using them a lot.

@@ -159,7 +159,7 @@ enum class RestrictionType {
         range: VerseRange,
         blurDown: Int,
         blurUp: Int
-    ): VerseRange?
+    ): VerseRange
 
     /**
      * Blur a verse the specified amount. Since verse are immutable and refer to
@@ -172,7 +172,7 @@ enum class RestrictionType {
      * @param blurUp
      * @return a verse range after blurring
      */
-    abstract fun blur(v11n: Versification, verse: Verse, blurDown: Int, blurUp: Int): VerseRange?
+    abstract fun blur(v11n: Versification, verse: Verse, blurDown: Int, blurUp: Int): VerseRange
 
     /**
      * Create a range from the verse having the specified number of verses.
@@ -183,7 +183,7 @@ enum class RestrictionType {
      * @param count
      * @return a verse range created by extending a verse forward.
      */
-    abstract fun toRange(v11n: Versification, verse: Verse, count: Int): VerseRange?
+    abstract fun toRange(v11n: Versification, verse: Verse, count: Int): VerseRange
 
     /**
      * Get an integer representation for this RestrictionType

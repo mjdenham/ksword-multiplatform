@@ -87,6 +87,28 @@ entire internal machine is public API.
 
 ---
 
+## 7. A partial port hides which code is really unused
+
+Only one of JSword's five `Passage` implementations was ported. JSword defaults to
+`PassageType.SPEED` (`RocketPassage`, bitwise-backed), but And Bible overrides it with
+`PassageKeyFactory.setDefaultType(PassageType.MIX)` — `RangedPassage` — commented "Optimize for
+less memory", so that is the only one ksword needs. `RocketPassage`, `BitwisePassage`,
+`DistinctPassage` and `PassageTally` are absent, and so are `SynchronizedPassage`,
+`ReadOnlyPassage`, the `KeyList` family and the passage event classes.
+
+The trap: `AbstractPassage.VerseRangeIterator` then has no caller inside ksword, so it reads as
+dead code — but it is JSword's verse-to-range amalgamator, needed by the implementations that
+store verses, and by `VerseRange.rangeIterator`. It was deleted as unused in September 2026 and
+restored the same day, because `RangedPassage` had a re-implementation of it that dropped the
+first verse of every chapter after the first in `rangeIterator(CHAPTER)` — the path
+`AbstractBackend` reads passages through. In JSword the two classes share a name but not a
+signature (`(Versification, Iterator<Key>, restrict)` amalgamates verses; `(Iterator<VerseRange>,
+restrict)` splits stored ranges), and that difference is what stops them being confused; the port
+had lost it.
+
+Before deleting anything here as unused, check the Java original: it may be load-bearing for a
+part of JSword that simply hasn't been ported yet.
+
 ## Guiding order
 
 1. Make it **safe** (concurrency fixes) — these are latent crashes.
