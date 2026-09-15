@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKmpLibrary)
-    id("com.vanniktech.maven.publish") version "0.30.0"
+    alias(libs.plugins.vanniktechPublish)
 }
 
 group = "io.github.mjdenham"
@@ -16,7 +16,7 @@ kotlin {
         }
     }
 
-    androidLibrary {
+    android {
         namespace = "org.crosswire.ksword"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -58,7 +58,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.encoding)
             implementation(libs.okio)
-            implementation("io.github.mjdenham:ktar:0.2.0")
+            implementation(libs.ktar)
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
@@ -68,7 +68,7 @@ kotlin {
 }
 
 mavenPublishing {
-    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
     signAllPublications()
 
     coordinates("io.github.mjdenham", "ksword", "0.3.0")
