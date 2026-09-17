@@ -4,6 +4,50 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.4.0] — 2026-09-17
+
+### Breaking
+
+- **`RestrictionType.blur` and `toRange` return non-null `VerseRange`.** Both implementations
+  always did; drop any `?.`/`!!` on the result. Only overriders of the enum's abstract members
+  need a signature change.
+- **`AbstractPassage.VerseRangeIterator` is `internal`** (was `protected`). Kotlin has no package
+  access and `VerseRange` needs it; no `Passage` in ksword uses it, because only `RangedPassage`
+  was ported. `docs/IMPROVEMENTS.md` §7 records why it exists.
+- The iterators returned by `Verse.iterator()`, `VerseRange.iterator()` and
+  `RangedPassage.iterator()` are plain `Iterator`s. Their `remove()` only ever threw
+  `UnsupportedOperationException`.
+
+### Added
+
+- **`Versification.books: List<BibleBook>`** — the books in versification order, including the
+  `INTRO_BIBLE`/`INTRO_OT`/`INTRO_NT` pseudo-books. `bookIterator` remains, but callers no longer
+  need `asSequence().toList()`.
+- **`Versifications.names: List<String>`** — the names of all known versifications, replacing
+  `iterator().asSequence().filterNotNull()`.
+- **`BookMetaData.sourceType: SourceType`** — the module's `SourceType` conf field parsed once
+  into an enum (`OSIS`, `GBF`, `ThML`, `TEI`, `Plaintext`), defaulting to `Plaintext` the way SWORD
+  does, instead of each caller comparing the raw string. It has a default body, so implementers
+  need no change. The conf key is now `BookMetaData.KEY_SOURCE_TYPE`.
+- **`VerseRange.rangeIterator(restrict)`** — the ranges of this range under a restriction.
+
+### Fixed
+
+- **`rangeIterator(CHAPTER)` dropped the first verse of each chapter after the first.**
+  `RangedPassage` had its own copy of `VerseRangeIterator` that consumed the verse triggering a
+  boundary and then discarded it, so Gen 1:30–2:3 came back as five verses instead of six, losing
+  Gen 2:0. `AbstractBackend` reads a passage through that path, so ranged reads spanning a chapter
+  boundary lost a verse. It now uses `AbstractPassage`'s iterator, which keeps that verse as the
+  next range's start.
+- **`RangedPassage.rangeIterator` no longer expands the whole passage.** JSword passes stored
+  ranges through and chops only one that crosses a boundary; that splitter is now ported, so a
+  ranged passage is no longer taken apart verse by verse and gathered back up.
+
+### Changed
+
+- Dependencies: Kotlin 2.4.20, AGP 9.4.0, ktor 3.5.2, okio 3.18.2, Gradle 9.7.1. ktar stays at
+  0.2.0.
+
 ## [0.3.0] — 2026-08-31
 
 ### Breaking
@@ -120,6 +164,8 @@ All notable changes to KSword are documented here. The format follows
 
 Initial release.
 
+[0.4.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.4.0
+[0.3.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.3.0
 [0.2.1]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.2.1
 [0.2.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.2.0
 [0.1.0]: https://github.com/mjdenham/ksword-multiplatform/releases/tag/v0.1.0
