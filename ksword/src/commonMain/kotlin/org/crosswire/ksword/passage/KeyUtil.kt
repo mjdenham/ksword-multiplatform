@@ -71,7 +71,6 @@ object KeyUtil {
     /**
      * Cast a Key to a Passage. Only those keys that are a Passage or can
      * be held by a Passage (i.e. Verse and VerseRange) may be cast to one.
-     * If you pass a null key into this method, you get a null Passage out.
      *
      * @param key The key to cast
      * @return The key cast to a Passage
@@ -82,13 +81,37 @@ object KeyUtil {
             return key
         }
 
-//        if (key is VerseKey<*>) {
-//            val ref = PassageKeyFactory.instance().createEmptyKeyList(key.getVersification());
-//            ref.addAll(ref);
-//            return (Passage) ref;
-//        }
+        if (key is VerseKey<*>) {
+            val ref = PassageKeyFactory.createEmptyKeyList(key.getVersification())
+            ref.addAll(key)
+            return ref
+        }
 
         throw ClassCastException("Expected key to be a Verse, VerseRange or Passage");
+    }
+
+    /**
+     * Cast a Key to a VerseRange. A Verse becomes a range of one verse, and a
+     * Passage the range from its first verse to its last, including any gaps.
+     *
+     * @param key The key to cast
+     * @return The key cast to a VerseRange
+     * @throws ClassCastException
+     */
+    fun getVerseRange(key: Key?): VerseRange {
+        if (key is VerseRange) {
+            return key
+        }
+
+        if (key is Verse) {
+            return VerseRange(key.getVersification(), key)
+        }
+
+        if (key is Passage && !key.isEmpty()) {
+            return VerseRange(key.getVersification(), getVerse(key), key.getVerseAt(key.countVerses() - 1)!!)
+        }
+
+        throw ClassCastException("Expected key to be a Verse, VerseRange or non-empty Passage")
     }
 
     /**
