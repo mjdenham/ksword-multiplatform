@@ -4,6 +4,20 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.5.0] — 2026-09-25
+
+### Added
+
+- **`KeyUtil.getVerseRange(key)`** — the key as a `VerseRange`. A `Verse` widens to a range of one
+  verse, and a `Passage` spans its first verse to its last, gaps included. An empty passage or any
+  other key throws `ClassCastException`.
+
+### Fixed
+
+- **`KeyUtil.getPassage` threw for a `Verse` or a `VerseRange`.** The branch that holds a verse key
+  in a passage was commented out during the port, so the method rejected the very keys its
+  documentation accepts; only a `Passage` got through. It now returns a passage containing the key.
+
 ## [0.4.0] — 2026-09-17
 
 ### Breaking

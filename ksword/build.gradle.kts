@@ -71,7 +71,7 @@ mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
 
-    coordinates("io.github.mjdenham", "ksword", "0.4.0")
+    coordinates("io.github.mjdenham", "ksword", "0.5.0")
 
     pom {
         name.set("KSword")
