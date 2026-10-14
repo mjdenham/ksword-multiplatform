@@ -181,6 +181,10 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         val verseStart = indexEntry.verseStart
         val verseSize = indexEntry.verseSize
 
+        if (isForeignChapterIntro(state, KeyUtil.getVerse(key), blockNum)) {
+            return ""
+        }
+
         val compFile: FileHandle = state.getCompFile(testament) ?: return ""
         val textFile: FileHandle = state.getTextFile(testament) ?: return ""
 
@@ -218,6 +222,16 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         uncompressed.copyInto(chopped, 0, verseStart, verseStart + verseSize)
 
         return SwordUtil.decode(key.getName(), chopped, charset)
+    }
+
+    /** A chapter's notes share one block, so a verse 0 in another block is stray text (Barnes points each book's 1:0 into the previous book). */
+    private fun isForeignChapterIntro(state: ZVerseBackendState, verse: Verse, blockNum: Int): Boolean {
+        if (blockType != BlockType.BLOCK_CHAPTER || verse.verse != 0 || verse.chapter < 1) return false
+        val v11n = bookMetaData.versification
+        val firstNote = (1..v11n.getLastVerse(verse.book, verse.chapter)).firstNotNullOfOrNull { v ->
+            readIndexEntry(state, Verse(v11n, verse.book, verse.chapter, v))?.takeIf { it.verseSize > 0 }
+        }
+        return firstNote != null && firstNote.blockNum != blockNum
     }
 
     /**
