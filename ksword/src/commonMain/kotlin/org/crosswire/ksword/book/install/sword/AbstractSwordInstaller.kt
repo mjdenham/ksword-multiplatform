@@ -34,6 +34,9 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
          */
         val FILE_LIST_GZ: String = "mods.d.tar.gz"
 
+        // A struggling server can trickle bytes forever; give up so the cached copy is used.
+        private const val CATALOG_TIMEOUT_MS = 30_000L
+
         private const val moduleNameKey = "{NAME}"
         private val tempDownloadPath = FileSystem.SYSTEM_TEMPORARY_DIRECTORY
     }
@@ -120,7 +123,7 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
         val catalogFile = getCatalogDirectory().resolve(FILE_LIST_GZ)
         val tempFile = getCatalogDirectory().resolve("$FILE_LIST_GZ.tmp")
         try {
-            val downloaded = WebResource().download(tarGzdownloadUrl, tempFile)
+            val downloaded = WebResource().download(tarGzdownloadUrl, tempFile, CATALOG_TIMEOUT_MS)
             if (!downloaded) throw BookException("Empty response from $tarGzdownloadUrl")
             FileSystem.SYSTEM.atomicMove(tempFile, catalogFile)
             entries.clear()
