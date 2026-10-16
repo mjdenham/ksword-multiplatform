@@ -4,6 +4,18 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.5.1] — 2026-10-16
+
+### Fixed
+
+- **A chapter-blocked commentary could show another book's note as a chapter intro.** Barnes points
+  each book's 1:0 index entry into the previous book's block, so Col 1:0 returned Phil 3:21's note.
+  A verse 0 stored in a different block from the chapter's first note is now read as empty.
+- **A slow or failing server could hang the catalog refresh.** A server trickling bytes never hit
+  the connect or socket timeout. The catalog download now gives up after 30s and keeps the cached
+  copy, and an error response (e.g. 503) fails instead of overwriting the cached catalog. Connect
+  timeout is now 20s and socket timeout 30s.
+
 ## [0.5.0] — 2026-09-25
 
 ### Added
