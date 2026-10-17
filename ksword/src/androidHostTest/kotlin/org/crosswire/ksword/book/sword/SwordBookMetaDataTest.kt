@@ -59,4 +59,12 @@ class SwordBookMetaDataTest {
         assertFalse(sbmd.isLocked)
         assertEquals("abc123", sbmd.unlockKey)
     }
+
+    @Test
+    fun repeated_key_returns_every_value() {
+        val sbmd = fromConf("[ISV]\nModDrv=zText\nGlobalOptionFilter=ThMLFootnotes\nGlobalOptionFilter=ThMLScripref")
+        assertEquals("ThMLFootnotes", sbmd.getProperty(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER))
+        assertEquals(listOf("ThMLFootnotes", "ThMLScripref"), sbmd.getValues(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER))
+        assertEquals(emptyList(), sbmd.getValues("Feature"))
+    }
 }

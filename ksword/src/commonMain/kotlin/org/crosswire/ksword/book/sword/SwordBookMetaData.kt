@@ -210,6 +210,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
         return configAll.get(key, DEFAULTS[key])
     }
 
+    override fun getValues(key: String): List<String> = configAll.getValues(key)
+
     override fun setProperty(key: String, value: String) {
         configAll.replace(key, value)
     }

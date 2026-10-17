@@ -68,6 +68,9 @@ internal class IniSection {
         return values?.get(0) ?: defaultValue
     }
 
+    /** Every value of a key that a conf repeats, such as GlobalOptionFilter; empty when it is missing. */
+    fun getValues(key: String): List<String> = section[key].orEmpty().toList()
+
     /**
      * Load the INI from a file using the given encoding.
      *

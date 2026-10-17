@@ -244,6 +244,9 @@ interface BookMetaData : Comparable<BookMetaData?> {
      */
     fun getProperty(key: String): String?
 
+    /** Every value of a repeated property, such as GlobalOptionFilter; empty when it is missing. */
+    fun getValues(key: String): List<String> = listOfNotNull(getProperty(key))
+
     /**
      * Store a transient property.
      *
