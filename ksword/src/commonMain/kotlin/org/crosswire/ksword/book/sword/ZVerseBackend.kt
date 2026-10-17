@@ -19,6 +19,8 @@
  */
 package org.crosswire.ksword.book.sword
 
+import kotlinx.atomicfu.locks.SynchronizedObject
+import kotlinx.atomicfu.locks.synchronized
 import okio.FileHandle
 import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.sword.state.LastLoadedBlock
@@ -159,15 +161,36 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
             return null
         }
 
-        // The data is little endian - extract the blockNum, verseStart and verseSize
-        val blockNum: Int = SwordUtil.decodeLittleEndian32(temp, 0)
-        val verseStart: Int = SwordUtil.decodeLittleEndian32(temp, 4)
-        val verseSize: Int = if (dataSize == 2) {
-            SwordUtil.decodeLittleEndian16(temp, 8)
-        } else { // dataSize == 4:
-            SwordUtil.decodeLittleEndian32(temp, 8)
+        val entry = decodeEntry(testament, temp, 0)
+        if (verse.verse == 0 && verse.chapter > 0 && !entry.isEmpty && index in repeatedEntryOrdinals(state, testament)) {
+            return entry.copy(verseSize = 0)
         }
+        return entry
+    }
 
+    /** Testament ordinals whose entry repeats an earlier, non-adjacent one: Barnes, ISV, TSK and others copy an earlier note into each book's 1:0. */
+    private fun repeatedEntryOrdinals(state: ZVerseBackendState, testament: Testament): Set<Int> = synchronized(repeatedEntryOrdinalsLock) {
+        repeatedEntryOrdinalsByTestament.getOrPut(testament) {
+            val idxFile = state.getIdxFile(testament) ?: return@getOrPut emptySet()
+            val bytes = SwordUtil.readFile(idxFile, 0, idxFile.size().toInt())
+            val entries = (0 until bytes.size / indexEntrySize).map { decodeEntry(testament, bytes, it * indexEntrySize) }
+            val seen = HashSet<VerseIndexEntry>()
+            // Linked verses repeat the entry before them; a verse 0 inside such a run is real text.
+            entries.indices.filterTo(HashSet()) { i ->
+                !entries[i].isEmpty && !seen.add(entries[i]) && entries[i] != entries.getOrNull(i - 1)
+            }
+        }
+    }
+
+    /** The data is little endian: blockNum, verseStart and verseSize. */
+    private fun decodeEntry(testament: Testament, bytes: ByteArray, offset: Int): VerseIndexEntry {
+        val blockNum: Int = SwordUtil.decodeLittleEndian32(bytes, offset)
+        val verseStart: Int = SwordUtil.decodeLittleEndian32(bytes, offset + 4)
+        val verseSize: Int = if (dataSize == 2) {
+            SwordUtil.decodeLittleEndian16(bytes, offset + 8)
+        } else { // dataSize == 4:
+            SwordUtil.decodeLittleEndian32(bytes, offset + 8)
+        }
         return VerseIndexEntry(testament, blockNum, verseStart, verseSize)
     }
 
@@ -180,10 +203,6 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         val blockNum = indexEntry.blockNum
         val verseStart = indexEntry.verseStart
         val verseSize = indexEntry.verseSize
-
-        if (isForeignChapterIntro(state, KeyUtil.getVerse(key), blockNum)) {
-            return ""
-        }
 
         val compFile: FileHandle = state.getCompFile(testament) ?: return ""
         val textFile: FileHandle = state.getTextFile(testament) ?: return ""
@@ -224,20 +243,13 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         return SwordUtil.decode(key.getName(), chopped, charset)
     }
 
-    /** A chapter's notes share one block, so a verse 0 in another block is stray text (Barnes points each book's 1:0 into the previous book). */
-    private fun isForeignChapterIntro(state: ZVerseBackendState, verse: Verse, blockNum: Int): Boolean {
-        if (blockType != BlockType.BLOCK_CHAPTER || verse.verse != 0 || verse.chapter < 1) return false
-        val v11n = bookMetaData.versification
-        val firstNote = (1..v11n.getLastVerse(verse.book, verse.chapter)).firstNotNullOfOrNull { v ->
-            readIndexEntry(state, Verse(v11n, verse.book, verse.chapter, v))?.takeIf { it.verseSize > 0 }
-        }
-        return firstNote != null && firstNote.blockNum != blockNum
-    }
-
     /**
      * The number of bytes for each entry in the index file: either 10 or 12
      */
     private val indexEntrySize: Int = OFFSET_SIZE + dataSize
+
+    private val repeatedEntryOrdinalsLock = SynchronizedObject()
+    private val repeatedEntryOrdinalsByTestament = mutableMapOf<Testament, Set<Int>>()
 
     companion object {
         /**

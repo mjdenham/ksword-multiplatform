@@ -15,16 +15,17 @@ import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 /**
- * Barnes' NT Notes as distributed points each book's chapter-1 verse-0 index entry into the
- * previous book's block (e.g. Col 1:0 holds Phil 3:21's note). The reader must not show it,
- * while RWP's verse-0 entries, also chapter-blocked, must still read.
+ * Barnes, ISV and TSK copy an earlier note's index entry into each book's chapter-1 verse 0
+ * (e.g. Barnes' Col 1:0 holds Phil 3:21's note). The reader must not show these, while real
+ * verse-0 entries (RWP, Vulgate) and verse 0 inside a note linked across chapters must still read.
  */
-class ChapterBlockIntroTest {
+class CopiedVerseZeroTest {
 
     companion object {
-        private val dir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("ChapterBlockIntroTest".toPath())
+        private val dir = FileSystem.SYSTEM_TEMPORARY_DIRECTORY.resolve("CopiedVerseZeroTest".toPath())
 
         @JvmStatic
         @BeforeClass
@@ -69,5 +70,30 @@ class ChapterBlockIntroTest {
     fun realChapterIntrosStillRead() = runTest {
         val rwp = load("RWP")
         assertContains(rwp.getRawText(Verse(kjv, BibleBook.MATT, 27, 0)), "osisID=\"Matt.27\"")
+    }
+
+    @Test
+    fun copiesInBookBlockedModulesAreSkipped() = runTest {
+        val isv = load("ISV")
+        assertEquals("", isv.getRawText(Verse(kjv, BibleBook.JOHN, 1, 0)))
+        assertEquals("", isv.getRawText(Verse(kjv, BibleBook.REV, 1, 0)))
+        assertContains(isv.getRawText(Verse(kjv, BibleBook.JOHN, 1, 1)), "In the beginning")
+        assertContains(isv.getRawText(Verse(kjv, BibleBook.LUKE, 23, 56)), "prepared spices")
+        assertEquals("", load("TSK").getRawText(Verse(kjv, BibleBook.EXOD, 1, 0)))
+    }
+
+    @Test
+    fun bookBlockedRealIntrosStillRead() = runTest {
+        val vulgate = load("Vulgate")
+        val vulg = vulgate.bookMetaData.versification
+        assertTrue(vulgate.getRawText(Verse(vulg, BibleBook.PS, 2, 0)).isNotBlank())
+    }
+
+    @Test
+    fun verseZeroInsideLinkedNoteStillReads() = runTest {
+        val luther = load("Luther")
+        val genesisTwo = luther.getRawText(Verse(kjv, BibleBook.GEN, 2, 0))
+        assertTrue(genesisTwo.isNotBlank())
+        assertEquals(luther.getRawText(Verse(kjv, BibleBook.GEN, 1, 31)), genesisTwo)
     }
 }
