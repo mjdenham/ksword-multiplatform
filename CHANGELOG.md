@@ -4,6 +4,23 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.6.0] — 2026-10-20
+
+### Added
+
+- **`BookMetaData.getValues(key)`** — every value of a conf key that repeats, such as
+  `GlobalOptionFilter`. `getProperty` returns only one of them. Empty when the key is missing.
+- **`OsisXmlConstants.DIV_TYPE_MILESTONE` and `SUBTYPE_PREVERSE`** — the `x-milestone` div and
+  `x-preverse` subType osis2mod uses to mark content it moved from before a verse, usually headings.
+
+### Fixed
+
+- **Copied verse-0 entries showed another verse's note as a chapter intro.** Barnes, ISV, TSK and
+  other CrossWire modules copy an earlier entry into each book's 1:0, so John 1:0 showed Luke
+  23:56. A chapter's verse 0 whose entry repeats an earlier, non-adjacent entry now reads as empty.
+  A verse 0 inside a note linked across chapters (Luther) still reads. This replaces the 0.5.1
+  chapter-block guard, and navigation and verse merging now agree.
+
 ## [0.5.1] — 2026-10-16
 
 ### Fixed

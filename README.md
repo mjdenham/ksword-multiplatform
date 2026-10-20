@@ -33,7 +33,7 @@ repositories {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.mjdenham:ksword:0.5.1")
+            implementation("io.github.mjdenham:ksword:0.6.0")
         }
     }
 }
