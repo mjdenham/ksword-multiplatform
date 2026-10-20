@@ -145,6 +145,16 @@ object OsisXmlConstants {
     const val GENERATED_CONTENT: String = "x-gen"
 
     /**
+     * Constant for a milestone div, written by osis2mod as a start/end pair
+     */
+    const val DIV_TYPE_MILESTONE: String = "x-milestone"
+
+    /**
+     * Constant for the subType osis2mod gives content it moved from before a verse into it, usually headings
+     */
+    const val SUBTYPE_PREVERSE: String = "x-preverse"
+
+    /**
      * Constant for the pos (part of speech) type.
      */
     const val POS_TYPE: String = "x-pos"
