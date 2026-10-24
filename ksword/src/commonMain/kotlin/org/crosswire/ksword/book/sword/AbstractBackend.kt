@@ -197,6 +197,8 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
         var runLast: Verse? = null
         var runEntry: VerseIndexEntry? = null
         var runText = ""
+        var anyText = false
+        var firstFailure: Exception? = null
 
         fun flushRun() {
             val first = runFirst ?: return
@@ -228,11 +230,11 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
                     runText = readRawContent(openFileState, currentVerse)
 //                    processor.postVerse(verseInRange, content, rawText)
                 } catch (e: Exception) {
-                    // Some versifications have more verses than the module contains, so a missing
-                    // verse here is expected — log at debug rather than failing the whole passage.
-                    Log.d("No content for $currentVerse in ${bmd.initials}: ${e.message}")
+                    Log.w("Failed to read $currentVerse from ${bmd.initials}", e)
+                    firstFailure = firstFailure ?: e
                     continue
                 }
+                if (runText.isNotBlank()) anyText = true
                 runFirst = currentVerse
                 runLast = currentVerse
                 runEntry = entry
@@ -240,6 +242,8 @@ internal abstract class AbstractBackend<T: OpenFileState>(val bmd: SwordBookMeta
         }
         flushRun()
 
+        // A missing verse reads as "", so a failure with no text at all means the module itself is unreadable.
+        firstFailure?.let { if (!anyText) throw BookException("Unable to read $key from ${bmd.initials}", it) }
         return contentList
     }
 

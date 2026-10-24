@@ -1,6 +1,7 @@
 package org.crosswire.ksword.book.sword
 
 import okio.Buffer
+import org.crosswire.ksword.book.BookException
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.sword.state.OpenFileState
 import org.crosswire.ksword.passage.Key
@@ -12,6 +13,7 @@ import org.crosswire.ksword.versification.Versification
 import org.crosswire.ksword.versification.system.Versifications
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 /**
  * Linked commentary verses are recovered from the index, so these drive a fake module whose
@@ -108,6 +110,38 @@ class AbstractBackendVerseRangeTest {
     }
 
     @Test
+    fun unreadablePassageThrows() {
+        val backend = module {
+            unreadable(verse(BibleBook.MARK, 1, 1), verse(BibleBook.MARK, 1, 3))
+        }
+
+        assertFailsWith<BookException> { backend.readToOsis(range(1, 3)) }
+    }
+
+    @Test
+    fun unreadablePassageWithEmptyVersesThrows() {
+        val backend = module {
+            empty(verse(BibleBook.MARK, 1, 1))
+            unreadable(verse(BibleBook.MARK, 1, 2), verse(BibleBook.MARK, 1, 3))
+        }
+
+        assertFailsWith<BookException> { backend.readToOsis(range(1, 3)) }
+    }
+
+    @Test
+    fun oneUnreadableVerseIsSkipped() {
+        val backend = module {
+            comment(verse(BibleBook.MARK, 1, 1), text = "On verse one.")
+            unreadable(verse(BibleBook.MARK, 1, 2))
+        }
+
+        val result = backend.readToOsis(range(1, 2))
+
+        assertEquals(1, result.size)
+        assertEquals(verse(BibleBook.MARK, 1, 1), result[0].key)
+    }
+
+    @Test
     fun findNextKeyCrossesAGapLongerThanTheFormerCap() {
         val backend = module {
             comment(verse(BibleBook.PS, 119, 1), text = "On the first verse.")
@@ -150,7 +184,7 @@ class AbstractBackendVerseRangeTest {
 
     private fun module(build: FakeModule.() -> Unit): FakeBackend {
         val fakeModule = FakeModule(v11n).apply(build)
-        return FakeBackend(commentaryMetaData(), fakeModule.entries, fakeModule.texts)
+        return FakeBackend(commentaryMetaData(), fakeModule.entries, fakeModule.texts, fakeModule.unreadable)
     }
 
     private fun commentaryMetaData(): SwordBookMetaData =
@@ -170,6 +204,7 @@ class AbstractBackendVerseRangeTest {
 private class FakeModule(private val v11n: Versification) {
     val entries = mutableMapOf<Int, VerseIndexEntry>()
     val texts = mutableMapOf<VerseIndexEntry, String>()
+    val unreadable = mutableSetOf<VerseIndexEntry>()
     private var nextOffset = 0
 
     /** One stored comment covering [from]..[to] — every covered verse points at the same entry. */
@@ -185,6 +220,15 @@ private class FakeModule(private val v11n: Versification) {
             entries[ordinal] = VerseIndexEntry(v11n.getTestament(ordinal), 0, 0, 0)
         }
     }
+
+    /** Verses whose stored text fails to read, as in a corrupt block. */
+    fun unreadable(from: Verse, to: Verse = from) {
+        for (ordinal in from.ordinal..to.ordinal) {
+            val entry = VerseIndexEntry(v11n.getTestament(ordinal), 0, nextOffset++, 1)
+            entries[ordinal] = entry
+            unreadable += entry
+        }
+    }
 }
 
 private class FakeState : OpenFileState {
@@ -198,6 +242,7 @@ private class FakeBackend(
     bmd: SwordBookMetaData,
     private val entries: Map<Int, VerseIndexEntry>,
     private val texts: Map<VerseIndexEntry, String>,
+    private val unreadable: Set<VerseIndexEntry>,
 ) : AbstractBackend<FakeState>(bmd) {
 
     override fun initState() = FakeState()
@@ -207,6 +252,7 @@ private class FakeBackend(
 
     override fun readRawContent(state: FakeState, key: Key): String {
         val entry = readIndexEntry(state, key) ?: return ""
+        if (entry in unreadable) throw IllegalStateException("Corrupt block")
         return texts[entry].orEmpty()
     }
 }
