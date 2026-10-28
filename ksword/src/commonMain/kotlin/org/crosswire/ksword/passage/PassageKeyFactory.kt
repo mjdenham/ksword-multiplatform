@@ -64,7 +64,12 @@ object PassageKeyFactory {
         return try {
             RangedPassage(v11n, ref, basis)
         } catch (e: NoSuchVerseException) {
-            throw NoSuchKeyException("Cannot parse reference: $ref", e)
+            try {
+                // An osisRef separates refs with spaces, e.g. "John.3.16 John.3.36", but the parser expects ';'.
+                RangedPassage(v11n, ref.replace(' ', ';'), basis)
+            } catch (_: NoSuchVerseException) {
+                throw NoSuchKeyException("Cannot parse reference: $ref", e)
+            }
         }
     }
 

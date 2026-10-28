@@ -104,6 +104,39 @@ class PassageKeyFactoryTest {
     }
 
     @Test
+    fun testOsisRefListMergesConsecutiveVerses() {
+        val passage = PassageKeyFactory.getKey(v11n, "Matt.5.21 Matt.5.22 Matt.5.23 Matt.5.24 Matt.5.25 Matt.5.26 Matt.5.27 Matt.5.28")
+        assertEquals(1, passage.countRanges(RestrictionType.NONE))
+        assertEquals("Matt.5.21-Matt.5.28", passage.getOsisRef())
+    }
+
+    @Test
+    fun testOsisRefListKeepsGaps() {
+        val passage = PassageKeyFactory.getKey(v11n, "John.3.16 John.3.36")
+        assertEquals(listOf("John.3.16", "John.3.36"), passage.rangeIterator(RestrictionType.NONE).asSequence().map { it.getOsisRef() }.toList())
+    }
+
+    @Test
+    fun testOsisRefListWithRangeAndVerse() {
+        assertEquals("Gen.1.1-Gen.1.3 Gen.2.1", PassageKeyFactory.getKey(v11n, "Gen.1.1-Gen.1.3 Gen.2.1").getOsisRef())
+    }
+
+    /** Westminster writes non-standard OSIS book names. */
+    @Test
+    fun testOsisRefWithAbbreviatedBook() {
+        assertEquals("1Cor.2.13", PassageKeyFactory.getKey(v11n, "1Co.2.13").getOsisRef())
+    }
+
+    /** Unlike JSword, a bad ref after the first is skipped; only a bad first ref throws. */
+    @Test
+    fun testOsisRefListWithABadRef() {
+        assertEquals("Gen.1.1", PassageKeyFactory.getKey(v11n, "Gen.1.1 InvalidBook.1.1").getOsisRef())
+        assertFailsWith<NoSuchKeyException> {
+            PassageKeyFactory.getKey(v11n, "InvalidBook.1.1 Gen.1.1")
+        }
+    }
+
+    @Test
     fun testGetKeyThrowsOnInvalidReference() {
         assertFailsWith<NoSuchKeyException> {
             PassageKeyFactory.getKey(v11n, "InvalidBook 1:1")
