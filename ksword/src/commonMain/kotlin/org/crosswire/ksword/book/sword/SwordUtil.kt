@@ -71,12 +71,12 @@ internal object SwordUtil {
             return ByteArray(0)
         }
 
-        if (offset + size > fileSize) {
+        if (offset.toLong() + size > fileSize) {
 //            log.error("Need to reduce size to avoid EOFException. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             size = (fileSize - offset).toInt()
         }
 
-        val sink = ByteArray(theSize)
+        val sink = ByteArray(size)
         file.read(offset.toLong(), sink, 0, size)
 
         return sink
@@ -92,7 +92,7 @@ internal object SwordUtil {
 
         val fileSize = file.size()
         if (offset >= fileSize) return ByteArray(0)
-        if (offset + size > fileSize) size = (fileSize - offset).toInt()
+        if (offset.toLong() + size > fileSize) size = (fileSize - offset).toInt()
 
         val compressed = ByteArray(size)
         file.read(offset.toLong(), compressed, 0, size)
@@ -129,7 +129,7 @@ internal object SwordUtil {
             return ByteArray(0)
         }
 
-        if (offset + size > fileSize) {
+        if (offset.toLong() + size > fileSize) {
 //            log.error("Need to reduce size to avoid EOFException. offset={} size={} but raf.length={}", Long.toString(offset), Integer.toString(size), Long.toString(rafSize));
             size = (fileSize - offset).toInt()
         }

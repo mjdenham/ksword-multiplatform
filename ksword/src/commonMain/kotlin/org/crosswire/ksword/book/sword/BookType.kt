@@ -209,21 +209,20 @@ internal enum class BookType(
         override fun getBackend(sbmd: SwordBookMetaData): Backend<*> {
             return ZLDBackend(sbmd)
         }
+    },
+
+    /**
+     * Generic Books
+     */
+    RAW_GEN_BOOK("RawGenBook", BookCategory.GENERAL_BOOK, KeyType.TREE) {
+        override fun getBook(sbmd: SwordBookMetaData): Book {
+            return SwordGenBook(sbmd, getBackend(sbmd))
+        }
+
+        override fun getBackend(sbmd: SwordBookMetaData): GenBookBackend {
+            return GenBookBackend(sbmd)
+        }
     };
-//
-//    /**
-//     * Generic Books
-//     */
-//    RAW_GEN_BOOK("RawGenBook", BookCategory.GENERAL_BOOK, KeyType.TREE) {
-//        override fun getBook(sbmd: SwordBookMetaData?, backend: Backend?): Book {
-//            return SwordGenBook(sbmd, backend)
-//        }
-//
-//        @Throws(BookException::class)
-//        override fun getBackend(sbmd: SwordBookMetaData?): Backend {
-//            return GenBookBackend(sbmd)
-//        }
-//    };
 
     /**
      * Given a SwordBookMetaData determine whether this BookType will work for

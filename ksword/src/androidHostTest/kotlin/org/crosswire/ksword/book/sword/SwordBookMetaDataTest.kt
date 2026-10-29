@@ -3,6 +3,7 @@ package org.crosswire.ksword.book.sword
 import okio.Buffer
 import okio.Path.Companion.toPath
 import org.crosswire.TestConstants
+import org.crosswire.ksword.book.BookCategory
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -66,5 +67,18 @@ class SwordBookMetaDataTest {
         assertEquals("ThMLFootnotes", sbmd.getProperty(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER))
         assertEquals(listOf("ThMLFootnotes", "ThMLScripref"), sbmd.getValues(SwordBookMetaData.KEY_GLOBAL_OPTION_FILTER))
         assertEquals(emptyList(), sbmd.getValues("Feature"))
+    }
+
+    @Test
+    fun general_book_is_supported() {
+        val sbmd = fromConf("[Pilgrim]\nModDrv=RawGenBook\nSourceType=ThML")
+        assertTrue(sbmd.isSupported)
+        assertEquals(BookCategory.GENERAL_BOOK, sbmd.bookCategory)
+    }
+
+    @Test
+    fun and_bible_addon_is_unsupported() {
+        val sbmd = fromConf("[FontPack]\nModDrv=RawGenBook\nCategory=And Bible\nDataPath=./modules/texts/ztext/FontPack/")
+        assertFalse(sbmd.isSupported)
     }
 }

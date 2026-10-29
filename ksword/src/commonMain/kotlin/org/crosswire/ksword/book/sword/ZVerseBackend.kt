@@ -158,7 +158,7 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         // If the Bible does not contain the desired verse, return nothing.
         // Some Bibles have different versification, so the requested verse
         // may not exist.
-        if (temp.isEmpty()) {
+        if (temp.size < indexEntrySize) {
             return null
         }
 
@@ -215,7 +215,7 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
         } else {
             // Then seek using this index into the idx file
             val temp = SwordUtil.readFile(compFile, blockNum * COMP_ENTRY_SIZE, COMP_ENTRY_SIZE)
-            if (temp.isEmpty()) {
+            if (temp.size < COMP_ENTRY_SIZE) {
                 return ""
             }
 

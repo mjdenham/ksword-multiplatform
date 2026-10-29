@@ -158,6 +158,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) in SUPPORTED_SOURCE_TYPES &&
                 compressType != null &&
+                // And Bible ships fonts and scripts as pseudo-modules; they are not books.
+                getProperty(KEY_CATEGORY) != "And Bible" &&
                 !isQuestionable &&
                 !isLocked
     }

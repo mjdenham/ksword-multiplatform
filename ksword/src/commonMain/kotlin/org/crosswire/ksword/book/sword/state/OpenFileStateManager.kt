@@ -40,6 +40,10 @@ internal object OpenFileStateManager {
         return getOrCreateState(metadata) { ZLDBackendState(metadata) }
     }
 
+    fun getGenBookBackendState(metadata: BookMetaData): GenBookBackendState {
+        return getOrCreateState(metadata) { GenBookBackendState(metadata) }
+    }
+
     private inline fun <reified T : AbstractOpenFileState> getOrCreateState(
         metadata: BookMetaData,
         factory: () -> T
