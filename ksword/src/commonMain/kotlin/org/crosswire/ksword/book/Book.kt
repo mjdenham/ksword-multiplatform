@@ -35,8 +35,14 @@ interface Book /* : Activatable, Comparable<Book?> */ {
 
     val initials: String
 
+    /**
+     * The next key a reader can move to, or null at the end. In a verse book this is not simply the next verse: it skips
+     * verses with no text and the rest of a linked range, returning where the next different text starts. A general
+     * book skips headings with no text, and a dictionary skips repeats of the same key.
+     */
     fun getNextKey(key: Key): Key?
 
+    /** The previous key a reader can move to, skipping as [getNextKey] does; null at the start. */
     fun getPreviousKey(key: Key): Key?
 
     fun contains(key: Key): Boolean
