@@ -1,5 +1,6 @@
 package org.crosswire.ksword.book.sword
 
+import org.crosswire.common.compress.Lzss
 import org.crosswire.ksword.book.sword.state.OpenFileStateManager
 import org.crosswire.ksword.book.sword.state.RawLDBackendState
 import org.crosswire.ksword.book.sword.state.ZLDBackendState
@@ -16,8 +17,7 @@ import org.crosswire.ksword.book.sword.state.ZLDBackendState
  *     - then `entryCount` rows of `(entryStart LE32, entrySize LE32)` (8 bytes each)
  *     - then the entry payloads
  *
- * Currently only ZIP compression is supported (sufficient for ISBE and most
- * common zLD modules). LZSS / BZIP2 / GZIP / XZ throw an explicit error.
+ * ZIP and LZSS compression are supported. BZIP2 / GZIP / XZ throw an explicit error.
  *
  * @author Joe Walker (JSword original)
  * @author DM Smith (JSword original)
@@ -49,11 +49,11 @@ internal class ZLDBackend(
 
             // jsword applies Sapphire cipher here. Skip when no key is configured (ISBE has none).
             // TODO: implement Sapphire decipher and apply to the compressed block when KEY_CIPHER_KEY is set.
-            val ctype = bmd.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE) ?: "ZIP"
-            zState.lastUncompressed = when (ctype.uppercase()) {
-                "ZIP" -> SwordUtil.readAndInflateFileUnknownSize(zdt, blockStart, blockSize)
-                else -> throw UnsupportedOperationException(
-                    "zLD compression '$ctype' not yet supported (ksword currently supports ZIP)"
+            zState.lastUncompressed = when (bmd.compressType) {
+                CompressType.ZIP -> SwordUtil.readAndInflateFileUnknownSize(zdt, blockStart, blockSize)
+                CompressType.LZSS -> Lzss.uncompress(SwordUtil.readFile(zdt, blockStart, blockSize))
+                null -> throw UnsupportedOperationException(
+                    "zLD compression '${bmd.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)}' not supported"
                 )
             }
             zState.lastBlockNum = blockNum

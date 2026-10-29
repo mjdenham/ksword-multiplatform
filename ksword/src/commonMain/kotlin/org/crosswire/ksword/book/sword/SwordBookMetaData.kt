@@ -108,11 +108,14 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
         private val SUPPORTED_BOOK_TYPES = BookType.entries.map { type -> type.nameInConfig }
         private val SUPPORTED_SOURCE_TYPES = listOf("OSIS", "ThML", "Plaintext", "TEI")
-
     }
 
     internal val bookType: BookType by lazy {
         BookType.fromString(getProperty(KEY_MOD_DRV))
+    }
+
+    internal val compressType: CompressType? by lazy {
+        CompressType.fromString(getProperty(KEY_COMPRESS_TYPE))
     }
 
     override val keyType: KeyType by lazy {
@@ -154,6 +157,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
         SUPPORTED_BOOK_TYPES.contains(getProperty(KEY_MOD_DRV)) &&
                 Versifications.isDefined(getProperty(KEY_VERSIFICATION)) &&
                 getProperty(KEY_SOURCE_TYPE) in SUPPORTED_SOURCE_TYPES &&
+                compressType != null &&
                 !isQuestionable &&
                 !isLocked
     }

@@ -22,6 +22,7 @@ package org.crosswire.ksword.book.sword
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
 import okio.FileHandle
+import org.crosswire.common.compress.Lzss
 import org.crosswire.common.util.Log
 import org.crosswire.ksword.book.sword.state.LastLoadedBlock
 import org.crosswire.ksword.book.sword.state.OpenFileStateManager
@@ -196,7 +197,6 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
 
     override fun readRawContent(state: ZVerseBackendState, key: Key): String {
         val charset = bookMetaData.bookCharset
-        val compressType = bookMetaData.getProperty(SwordBookMetaData.KEY_COMPRESS_TYPE)
 
         val indexEntry = readIndexEntry(state, key) ?: return ""
         val testament = indexEntry.testament
@@ -225,12 +225,12 @@ internal class ZVerseBackend(val bookMetaData: SwordBookMetaData, val blockType:
             Log.v("block decode: blockStart=$blockStart blockSize=$blockSize uncompressedSize=$uncompressedSize")
 
             // Read from the data file.
-            uncompressed = SwordUtil.readAndInflateFile(textFile, blockStart, blockSize, uncompressedSize)
+            uncompressed = when (bookMetaData.compressType) {
+                CompressType.LZSS ->Lzss.uncompress(SwordUtil.readFile(textFile, blockStart, blockSize))
+                else -> SwordUtil.readAndInflateFile(textFile, blockStart, blockSize, uncompressedSize)
+            }
 
 //            decipher(data);
-//        uncompressed =
-//            CompressorType.fromString(compressType).getCompressor(data).uncompress(uncompressedSize)
-//                .toByteArray()
 
             // cache the uncompressed data for next time
             state.lastLoadedBlock = LastLoadedBlock(testament, blockNum, uncompressed)
