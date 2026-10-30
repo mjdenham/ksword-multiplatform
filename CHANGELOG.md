@@ -4,6 +4,26 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.7.0] — 2026-10-30
+
+### Added
+
+- **General books (`RawGenBook`).** Books such as the Westminster Confession, Pilgrim's Progress and
+  Calvin's Institutes now open as `SwordGenBook`, with their table of contents as a tree of keys
+  (`TreeKey`). `getKey` finds an entry by its path, such as `WCF/Chapter I`.
+- **LZSS-compressed modules** (`CompressType=LZSS`) can now be read, for both verse books and
+  dictionaries.
+
+### Changed
+
+- **`readToOsis` throws a `BookException` when no verse of a passage can be read.** It used to return
+  an empty passage, so a corrupt module showed a blank page. A single unreadable verse is still skipped.
+
+### Fixed
+
+- **OSIS reference lists separated by spaces**, such as `osisRef="John.3.16 John.3.36"`, now parse.
+  `PassageKeyFactory.getKey` used to reject them.
+
 ## [0.6.0] — 2026-10-20
 
 ### Added
