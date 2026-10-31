@@ -65,8 +65,12 @@ abstract class AbstractSwordInstaller(val installerUrls: InstallerUrls) : Instal
     suspend fun install(bookInitials: String) = withContext(Dispatchers.IO) {
         val url = getDownloadUrl(bookInitials)
         val zipFile = getZipFile(bookInitials)
-        if (WebResource().download(url, zipFile)) {
-            install(zipFile)
+        try {
+            if (WebResource().download(url, zipFile)) {
+                install(zipFile)
+            }
+        } finally {
+            FileSystem.SYSTEM.delete(zipFile)
         }
     }
 
