@@ -5,6 +5,7 @@ import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.BookCategory
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.install.sword.SwordInstallerFactory
 import org.crosswire.ksword.passage.DefaultLeafKeyList
 import org.crosswire.ksword.passage.NoSuchKeyException
@@ -41,8 +42,7 @@ class WestminsterGenBookTest {
         @JvmStatic
         @AfterClass
         fun tearDown() {
-            FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
-            SwordBookPath.swordBookPath = "../testFiles".toPath()
+            TestBooks.reset()
         }
     }
 

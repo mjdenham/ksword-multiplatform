@@ -4,6 +4,7 @@ import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.sword.SwordBookPath
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -26,7 +27,7 @@ class HttpsSwordInstallerTest {
 
     @AfterTest
     fun tearDown() {
-        FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
+        TestBooks.reset()
     }
 
     @Test

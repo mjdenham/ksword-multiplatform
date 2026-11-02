@@ -5,6 +5,7 @@ import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.Book
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.install.sword.SwordInstallerFactory
 import org.crosswire.ksword.passage.Verse
 import org.crosswire.ksword.versification.BibleBook
@@ -33,8 +34,7 @@ class LzssIntegrationTest {
         @JvmStatic
         @AfterClass
         fun tearDown() {
-            FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
-            SwordBookPath.swordBookPath = "../testFiles".toPath()
+            TestBooks.reset()
         }
     }
 

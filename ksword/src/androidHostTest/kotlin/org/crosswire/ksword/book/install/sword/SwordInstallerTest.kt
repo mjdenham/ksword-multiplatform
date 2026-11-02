@@ -2,8 +2,8 @@ package org.crosswire.ksword.book.install.sword
 
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
-import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.sword.SwordBookPath
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -23,11 +23,7 @@ class SwordInstallerTest {
 
     @AfterTest
     fun tearDown() {
-        // refresh() never drops books, so unregister it or later test classes still see it.
-        Books.getBook("Hitchcock")?.let { Books.removeBook(it) }
-        FileSystem.SYSTEM.deleteRecursively(dir)
-        SwordBookPath.swordBookPath = "../testFiles".toPath()
-        Books.refresh()
+        TestBooks.reset()
     }
 
     @Test

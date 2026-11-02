@@ -6,6 +6,7 @@ import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.BookMetaData
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.install.sword.SwordInstallerFactory
 import org.crosswire.ksword.book.sword.state.ZVerseBackendState
 import org.crosswire.ksword.passage.KeyText
@@ -49,8 +50,7 @@ class RusSynodalTest {
         @JvmStatic
         @AfterClass
         fun tearDown() {
-            FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
-            SwordBookPath.swordBookPath = "../testFiles".toPath()
+            TestBooks.reset()
         }
 
         /**

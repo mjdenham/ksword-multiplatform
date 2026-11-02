@@ -4,6 +4,7 @@ import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import org.crosswire.ksword.book.Books
+import org.crosswire.ksword.book.TestBooks
 import org.crosswire.ksword.book.install.sword.HttpsSwordInstaller
 import org.crosswire.ksword.book.install.sword.SwordInstallerFactory
 import org.junit.After
@@ -33,7 +34,7 @@ class SwordBookDriverTest {
 
     @After
     fun tearDown() {
-        FileSystem.SYSTEM.deleteRecursively(SwordBookPath.swordBookPath)
+        TestBooks.reset()
     }
 
     @Test
