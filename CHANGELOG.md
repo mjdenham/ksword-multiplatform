@@ -76,7 +76,7 @@ All notable changes to KSword are documented here. The format follows
   need a signature change.
 - **`AbstractPassage.VerseRangeIterator` is `internal`** (was `protected`). Kotlin has no package
   access and `VerseRange` needs it; no `Passage` in ksword uses it, because only `RangedPassage`
-  was ported. `docs/IMPROVEMENTS.md` §7 records why it exists.
+  was ported. `docs/TASKS.md` records why it exists.
 - The iterators returned by `Verse.iterator()`, `VerseRange.iterator()` and
   `RangedPassage.iterator()` are plain `Iterator`s. Their `remove()` only ever threw
   `UnsupportedOperationException`.

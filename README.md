@@ -149,8 +149,7 @@ Standard Kotlin Multiplatform / Gradle project with a single `:ksword` module:
 local `ktar` checkout beside this repo is substituted automatically during development while
 published builds resolve `io.github.mjdenham:ktar` from Maven Central.
 
-See [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md) and [docs/TASKS.md](docs/TASKS.md) for the current
-maintenance backlog.
+See [docs/TASKS.md](docs/TASKS.md) for the current maintenance backlog.
 
 ## License
 
