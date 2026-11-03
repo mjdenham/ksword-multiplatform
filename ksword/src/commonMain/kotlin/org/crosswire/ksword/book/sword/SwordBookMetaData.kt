@@ -200,12 +200,11 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     var configFile: Path? = null
 
-    override fun reload() {
-        TODO("Not yet implemented")
-    }
+    // The whole conf file is always loaded, so there is nothing more to load.
+    override fun reload() {}
 
-    override val propertyKeys: Set<String?>?
-        get() = TODO("Not yet implemented")
+    override val propertyKeys: Set<String?>
+        get() = configAll.keys
 
     private var configAll: IniSection = IniSection()
 
@@ -220,18 +219,6 @@ class SwordBookMetaData: AbstractBookMetaData() {
 
     override fun setProperty(key: String, value: String) {
         configAll.replace(key, value)
-    }
-
-    override fun putProperty(key: String?, value: String?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun putProperty(key: String?, value: String?, forFrontend: Boolean) {
-        TODO("Not yet implemented")
-    }
-
-    override fun compareTo(other: BookMetaData?): Int {
-        TODO("Not yet implemented")
     }
 
     override val bookCategory: BookCategory

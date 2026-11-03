@@ -194,23 +194,4 @@ interface Book /* : Activatable, Comparable<Book?> */ {
 //     */
 //    fun getProperty(key: String?): String?
 //
-//    /**
-//     * Set a property for this book.
-//     *
-//     * @param key
-//     * the key of the property.
-//     * @param value
-//     * the value of the property
-//     */
-//    fun putProperty(key: String?, value: String?)
-//
-//    /**
-//     * Saves an entry to a particular configuration file.
-//     *
-//     * @param key the entry that we are saving
-//     * @param value the value of the entry
-//     * @param forFrontend when `true` save to front end storage, else in shared storage
-//     */
-//    fun putProperty(key: String?, value: String?, forFrontend: Boolean)
-//
 }

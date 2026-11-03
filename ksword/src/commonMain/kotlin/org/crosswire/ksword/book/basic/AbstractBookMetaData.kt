@@ -37,10 +37,6 @@ import org.crosswire.ksword.book.sword.SwordBookMetaData.Companion.KEY_DATA_PATH
  */
 abstract class AbstractBookMetaData : BookMetaData {
 
-    override fun putProperty(key: String?, value: String?) {
-        putProperty(key, value, false)
-    }
-
     override val isStrongsDictionary: Boolean
         get() = false
 
@@ -64,10 +60,17 @@ abstract class AbstractBookMetaData : BookMetaData {
         return this.bookCategory == other.bookCategory && this.name == other.name && this.initials == other.initials
     }
 
+    // As JSword: by abbreviation rather than name, as names often begin with words like "The".
+    override fun compareTo(other: BookMetaData?): Int = if (other == null) 1 else ORDER.compare(this, other)
+
     override fun hashCode(): Int {
         var result = bookCategory.hashCode()
         result = 31 * result + name.hashCode()
         result = 31 * result + initials.hashCode()
         return result
+    }
+
+    private companion object {
+        val ORDER = compareBy<BookMetaData>({ it.bookCategory }, { it.abbreviation.lowercase() }, { it.initials }, { it.name })
     }
 }

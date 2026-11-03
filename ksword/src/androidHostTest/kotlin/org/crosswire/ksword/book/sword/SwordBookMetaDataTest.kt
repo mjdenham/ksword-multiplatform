@@ -81,4 +81,19 @@ class SwordBookMetaDataTest {
         val sbmd = fromConf("[FontPack]\nModDrv=RawGenBook\nCategory=And Bible\nDataPath=./modules/texts/ztext/FontPack/")
         assertFalse(sbmd.isSupported)
     }
+
+    @Test
+    fun sorts_by_category_then_abbreviation_ignoring_case() {
+        val dictionary = fromConf("[AAA]\nModDrv=RawLD")
+        val kjv = fromConf("[KJV]\nModDrv=zText\nAbbreviation=kjv")
+        val bsb = fromConf("[BSB]\nModDrv=zText")
+        val esv = fromConf("[ESV2011]\nModDrv=zText\nAbbreviation=ESV")
+        assertEquals(listOf(bsb, esv, kjv, dictionary), listOf(dictionary, kjv, esv, bsb).sorted())
+    }
+
+    @Test
+    fun property_keys_are_the_conf_keys() {
+        val sbmd = fromConf("[T]\nModDrv=zText\nSourceType=OSIS")
+        assertTrue(sbmd.propertyKeys.containsAll(listOf("ModDrv", "SourceType")))
+    }
 }

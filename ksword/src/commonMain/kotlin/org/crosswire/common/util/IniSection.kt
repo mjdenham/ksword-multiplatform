@@ -52,6 +52,9 @@ internal class IniSection {
         return section.size
     }
 
+    val keys: Set<String>
+        get() = section.keys
+
     /**
      * Get the first value for the key.
      *

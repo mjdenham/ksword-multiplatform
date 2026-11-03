@@ -258,25 +258,6 @@ interface BookMetaData : Comparable<BookMetaData?> {
     fun setProperty(key: String, value: String)
 
     /**
-     * Save to shared storage.
-     *
-     * @param key
-     * the key of the property to set
-     * @param value
-     * the value of the property
-     */
-    fun putProperty(key: String?, value: String?)
-
-    /**
-     * Saves an entry to a particular configuration file.
-     *
-     * @param key the entry that we are saving
-     * @param value the value of the entry
-     * @param forFrontend when `true` save to front end storage, else in shared storage
-     */
-    fun putProperty(key: String?, value: String?, forFrontend: Boolean)
-
-    /**
      * Has anyone generated a search index for this Book?
      *
      * @return the status for the index of this book.
