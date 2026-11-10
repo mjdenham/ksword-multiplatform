@@ -72,9 +72,12 @@ class BibleNames private constructor() {
      *
      * @param find
      * The string to identify
+     * @param fuzzy
+     * Whether to also accept a book whose name only partly matches, such as "Consol" for Colossians. Turn it
+     * off when the text may not be a book name at all.
      * @return The BibleBook, On error null
      */
-    fun getBook(find: String): BibleBook? {
+    fun getBook(find: String, fuzzy: Boolean = true): BibleBook? {
         var book: BibleBook? = null
         if (containsLetter(find)) {
             book = BibleBook.fromOSIS(find)
@@ -87,11 +90,11 @@ class BibleNames private constructor() {
                 book = englishBibleNames.getBook(find, false)
             }
 
-            if (book == null) {
+            if (book == null && fuzzy) {
                 book = getLocalizedBibleNames().getBook(find, true)
             }
 
-            if (book == null) {
+            if (book == null && fuzzy) {
                 book = englishBibleNames.getBook(find, true)
             }
         }

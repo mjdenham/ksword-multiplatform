@@ -129,4 +129,15 @@ class AlternateBookNamesTest {
         assertEquals(BibleBook.EP_JER, names.getBook("letterofjeremiah"))
         assertEquals(BibleBook.EP_JER, names.getBook("epjeremiah"))
     }
+
+    // Calvin abbreviates Augustine's Consolations "Consol."; only a fuzzy match takes it for Colossians.
+    @Test
+    fun anExactLookupFindsOnlyRealBookNames() {
+        val names = BibleNames.instance()
+
+        assertEquals(BibleBook.COL, names.getBook("Consol"))
+        assertEquals(null, names.getBook("Consol", fuzzy = false))
+        assertEquals(BibleBook.ROM, names.getBook("Rom", fuzzy = false))
+    }
 }
+
