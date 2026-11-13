@@ -4,7 +4,6 @@ import org.crosswire.ksword.passage.OsisParser
 import org.crosswire.ksword.versification.system.Versifications
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 class OsisParserTest {
     private val testV11n = Versifications.defaultVersification

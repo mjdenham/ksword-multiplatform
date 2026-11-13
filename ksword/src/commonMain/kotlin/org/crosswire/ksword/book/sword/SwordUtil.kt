@@ -24,7 +24,6 @@ import okio.FileHandle
 import okio.Inflater
 import okio.InflaterSource
 import okio.Path
-import okio.Path.Companion.toPath
 import okio.buffer
 import okio.use
 import org.crosswire.common.util.Log

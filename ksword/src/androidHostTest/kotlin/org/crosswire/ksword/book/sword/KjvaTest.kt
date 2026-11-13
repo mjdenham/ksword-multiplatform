@@ -1,6 +1,5 @@
 package org.crosswire.ksword.book.sword
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath

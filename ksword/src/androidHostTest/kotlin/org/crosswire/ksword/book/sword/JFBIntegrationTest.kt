@@ -1,6 +1,5 @@
 package org.crosswire.ksword.book.sword
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import okio.FileSystem
 import okio.Path.Companion.toPath
@@ -14,7 +13,6 @@ import org.crosswire.ksword.passage.VerseRange
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.system.Versifications
 import org.junit.AfterClass
-import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertContains
