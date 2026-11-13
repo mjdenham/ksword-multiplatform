@@ -4,6 +4,25 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.8.0] — 2026-11-13
+
+### Added
+
+- **`BibleNames.getBook(find, fuzzy = false)`** matches book names exactly. Use it when the text may
+  not be a book name at all; by default it still accepts a name that only partly matches.
+
+### Changed
+
+- **Installing a module deletes the downloaded zip.** It used to stay in the temp folder, where
+  neither Android nor iOS cleared it.
+- `BookMetaData.compareTo` now orders books as JSword does, `propertyKeys` returns the conf file's
+  keys and `reload` does nothing, since the whole conf file is always loaded.
+- Built with Kotlin 2.4.21, ktor 3.6.1 and kotlinx-serialization 1.12.0; compileSdk is now 37.
+
+### Removed
+
+- **`BookMetaData.putProperty`.** It never worked, and nothing saves conf files.
+
 ## [0.7.0] — 2026-10-30
 
 ### Added
