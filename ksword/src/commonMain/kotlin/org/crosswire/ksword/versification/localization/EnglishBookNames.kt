@@ -204,6 +204,8 @@ internal object EnglishBookNames : BookNameLocalization {
     private val alternateNames = mapOf(
         // Old Testament
         BibleBook.EXOD to "ex",
+        BibleBook.DEUT to "dt",
+        BibleBook.JUDG to "jdg,jud",
         BibleBook.RUTH to "rth",
         BibleBook.SAM1 to "isamuel,Samuel,isam,1 sam",
         BibleBook.SAM2 to "iisamuel,iisa,2 sam,Second Samuel",
@@ -212,6 +214,7 @@ internal object EnglishBookNames : BookNameLocalization {
         BibleBook.CHR1 to "ichronicles,1 Chron, 1. Chron,1.Chron,ich,1 chr",
         BibleBook.CHR2 to "iichronicles, 2. Chron, 2 chron, 2.Chron,iich, 2 chr, Second Chronicles",
         BibleBook.PS to "pss,psm,psalm",
+        BibleBook.ECCL to "qohelet,eccles,qoh",
         BibleBook.SONG to "ss,songofsongs,sos,canticleofcanticles,canticle,can,coc,sng",
         BibleBook.ISA to "is",
         BibleBook.EZEK to "Ezk",

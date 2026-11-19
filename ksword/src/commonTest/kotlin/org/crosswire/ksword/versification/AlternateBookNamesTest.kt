@@ -1,6 +1,8 @@
 package org.crosswire.ksword.versification
 
+import org.crosswire.ksword.passage.PassageKeyFactory
 import org.crosswire.ksword.versification.localization.EnglishBookNames
+import org.crosswire.ksword.versification.system.Versifications
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -139,5 +141,28 @@ class AlternateBookNamesTest {
         assertEquals(null, names.getBook("Consol", fuzzy = false))
         assertEquals(BibleBook.ROM, names.getBook("Rom", fuzzy = false))
     }
-}
 
+    /** These three were left out when the names were ported from JSword; TSK writes Judges as "Jud". */
+    @Test
+    fun testAlternatesOnceMissingFromThePort() {
+        val names = BibleNames.instance()
+
+        assertEquals(BibleBook.DEUT, names.getBook("dt"))
+        assertEquals(BibleBook.JUDG, names.getBook("jdg"))
+        assertEquals(BibleBook.JUDG, names.getBook("jud"))
+        assertEquals(BibleBook.JUDE, names.getBook("jude"))
+        assertEquals(BibleBook.ECCL, names.getBook("qohelet"))
+        assertEquals(BibleBook.ECCL, names.getBook("eccles"))
+        assertEquals(BibleBook.ECCL, names.getBook("qoh"))
+    }
+
+    /** Read as Jude, "Jud 2:3" was dropped and the 8:27 after it landed in Exodus. */
+    @Test
+    fun testJudInAListOfReferencesIsJudges() {
+        val v11n = Versifications.getVersification("KJV")
+
+        assertEquals("Judg.17.12", PassageKeyFactory.getKey(v11n, "Jud 17:12").getOsisRef())
+        assertEquals("Exod.1.1 Judg.2.3 Judg.8.27", PassageKeyFactory.getKey(v11n, "Ex 1:1; Jud 2:3; 8:27").getOsisRef())
+        assertEquals("Jude.1.3", PassageKeyFactory.getKey(v11n, "Jude 3").getOsisRef())
+    }
+}
