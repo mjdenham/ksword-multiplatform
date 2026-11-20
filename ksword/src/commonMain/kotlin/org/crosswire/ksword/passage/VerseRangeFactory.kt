@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Locale
 import org.crosswire.common.util.Log
 import org.crosswire.ksword.JSMsg
 import org.crosswire.ksword.versification.Versification
@@ -55,13 +56,13 @@ object VerseRangeFactory {
      * @exception NoSuchVerseException
      * If the reference is illegal or the text can not be understood
      */
-    fun fromString(v11n: Versification, original: String, basis: VerseRange? = null): VerseRange? {
+    fun fromString(v11n: Versification, original: String, basis: VerseRange? = null, language: Locale? = null): VerseRange? {
         try {
             val parts: List<String> = original.split(VerseRange.RANGE_OSIS_DELIM)
 
             return when (parts.size) {
-                1 -> fromText(v11n, original, parts[0], parts[0], basis)
-                2 -> fromText(v11n, original, parts[0], parts[1], basis)
+                1 -> fromText(v11n, original, parts[0], parts[0], basis, language)
+                2 -> fromText(v11n, original, parts[0], parts[1], basis, language)
                 else ->             // TRANSLATOR: The user specified a verse range with too many separators. {0} is a placeholder for the allowable separators.
                     throw NoSuchVerseException(
                         JSMsg.gettext(
@@ -99,11 +100,12 @@ object VerseRangeFactory {
         original: String,
         startVerseDesc: String,
         endVerseDesc: String?,
-        basis: VerseRange?
+        basis: VerseRange?,
+        language: Locale?
     ): VerseRange {
         val startParts = AccuracyType.tokenize(startVerseDesc)
-        val accuracyStart: AccuracyType = AccuracyType.fromText(v11n, original, startParts, null, basis)
-        val start = accuracyStart.createStartVerse(v11n, basis, startParts)
+        val accuracyStart: AccuracyType = AccuracyType.fromText(v11n, original, startParts, null, basis, language)
+        val start = accuracyStart.createStartVerse(v11n, basis, startParts, language)
         v11n.validate(start!!.book, start.chapter, start.verse)
 
         val endParts: Array<String> = if (startVerseDesc == endVerseDesc) {
@@ -112,8 +114,8 @@ object VerseRangeFactory {
             AccuracyType.tokenize(endVerseDesc!!)
         }
 
-        val accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis)
-        val end = accuracyEnd.createEndVerse(v11n, start, endParts)
+        val accuracyEnd = AccuracyType.fromText(v11n, original, endParts, accuracyStart, basis, language)
+        val end = accuracyEnd.createEndVerse(v11n, start, endParts, language)
         v11n.validate(end!!.book, end.chapter, end.verse)
 
         return VerseRange(v11n, start, end)

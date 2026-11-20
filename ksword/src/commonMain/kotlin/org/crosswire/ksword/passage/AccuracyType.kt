@@ -1,5 +1,6 @@
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.JSMsg
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.Versification
@@ -56,9 +57,10 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
-            val book: BibleBook = v11n.getBook(parts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
+            val book: BibleBook = v11n.getBook(parts[0], language) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
             var chapter = 1
             var verse = 1
             val subIdentifier = Companion.getSubIdentifier(parts)
@@ -81,11 +83,12 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
             // A fully specified verse is the same regardless of whether it is a
             // start or an end to a range.
-            return createStartVerse(v11n, null, endParts)
+            return createStartVerse(v11n, null, endParts, language)
         }
     },
 
@@ -99,9 +102,10 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
-            val book: BibleBook = v11n.getBook(parts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
+            val book: BibleBook = v11n.getBook(parts[0], language) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
             val chapter = getChapter(v11n, book, parts[1])
             val verse = 0 // chapter > 0 ? 1 : 0; // 0 ?
             return Verse(v11n, book, chapter, verse)
@@ -110,10 +114,11 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
             // Very similar to the start verse but we want the end of the chapter
-            val book: BibleBook = v11n.getBook(endParts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
+            val book: BibleBook = v11n.getBook(endParts[0], language) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
             val chapter = getChapter(v11n, book, endParts[1])
             val verse: Int = v11n.getLastVerse(book, chapter)
             return Verse(v11n, book, chapter, verse)
@@ -130,9 +135,10 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
-            val book: BibleBook = v11n.getBook(parts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
+            val book: BibleBook = v11n.getBook(parts[0], language) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
             val chapter = 0 // v11n.getLastChapter(book) > 0 ? 1 : 0; // 0 ?
             val verse = 0 // v11n.getLastVerse(book, chapter) > 0 ? 1 : 0; // 0 ?
             return Verse(v11n, book, chapter, verse)
@@ -141,9 +147,10 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
-            val book: BibleBook = v11n.getBook(endParts[0]) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
+            val book: BibleBook = v11n.getBook(endParts[0], language) ?: throw NoSuchVerseException(JSMsg.gettext("Book is missing"))
             val chapter: Int = v11n.getLastChapter(book)
             val verse: Int = v11n.getLastVerse(book, chapter)
             return Verse(v11n, book, chapter, verse)
@@ -160,7 +167,8 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
@@ -176,7 +184,8 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
             // Very similar to the start verse but use the verse as a basis
             val book: BibleBook = verseBasis.book
@@ -201,7 +210,8 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book of the Bible.
@@ -216,7 +226,8 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
@@ -235,7 +246,8 @@ enum class AccuracyType {
         override fun createStartVerse(
             v11n: Versification,
             verseRangeBasis: VerseRange?,
-            parts: Array<String>
+            parts: Array<String>,
+            language: Locale?
         ): Verse {
             if (verseRangeBasis == null) {
                 // TRANSLATOR: The user supplied a verse reference but did not give the book or chapter of the Bible.
@@ -250,7 +262,8 @@ enum class AccuracyType {
         override fun createEndVerse(
             v11n: Versification,
             verseBasis: Verse,
-            endParts: Array<String>
+            endParts: Array<String>,
+            language: Locale?
         ): Verse {
             // Very similar to the start verse but use the verse as a basis
             // and it gets the end of the chapter
@@ -280,7 +293,8 @@ enum class AccuracyType {
     abstract fun createStartVerse(
         v11n: Versification,
         verseRangeBasis: VerseRange?,
-        parts: Array<String>
+        parts: Array<String>,
+        language: Locale? = null
     ): Verse?
 
     /**
@@ -296,7 +310,8 @@ enum class AccuracyType {
     abstract fun createEndVerse(
         v11n: Versification,
         verseBasis: Verse,
-        endParts: Array<String>
+        endParts: Array<String>,
+        language: Locale? = null
     ): Verse?
 
     /**
@@ -395,7 +410,8 @@ enum class AccuracyType {
             original: String?,
             parts: Array<String>,
             verseAccuracy: AccuracyType? = null,
-            basis: VerseRange? = null
+            basis: VerseRange? = null,
+            language: Locale? = null
         ): AccuracyType {
             var partsLength = parts.size
             // Check if the last part is a sub-identifier (e.g., !a)
@@ -406,7 +422,7 @@ enum class AccuracyType {
 
             when (partsLength) {
                 1 -> {
-                    if (v11n.isBook(parts[0])) {
+                    if (v11n.isBook(parts[0], language)) {
                         return BOOK_ONLY
                     }
 
@@ -439,7 +455,7 @@ enum class AccuracyType {
 
                 2 -> {
                     // Does it start with a book?
-                    val pbook: BibleBook? = v11n.getBook(parts[0])
+                    val pbook: BibleBook? = v11n.getBook(parts[0], language)
                     return if (pbook == null) {
                         // Not a book, so must be chapter:verse like "1:1"
                         checkValidChapterOrVerse(parts[0])
@@ -460,7 +476,7 @@ enum class AccuracyType {
 
                 3 -> {
                     // Must be Book Chapter:Verse like "Gen 1:1"
-                    if (v11n.getBook(parts[0]) != null) {
+                    if (v11n.getBook(parts[0], language) != null) {
                         checkValidChapterOrVerse(parts[1])
                         checkValidChapterOrVerse(parts[2])
                         return BOOK_VERSE

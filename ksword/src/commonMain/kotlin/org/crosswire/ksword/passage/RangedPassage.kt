@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.versification.Versification
 
 /**
@@ -35,7 +36,8 @@ import org.crosswire.ksword.versification.Versification
 class RangedPassage(
     v11n: Versification,
     ref: String? = null,
-    basis: Key? = null
+    basis: Key? = null,
+    language: Locale? = null
 ) : AbstractPassage(v11n, ref) {
 
     /**
@@ -46,7 +48,7 @@ class RangedPassage(
     init {
         // Parse the reference string if provided
         if (!ref.isNullOrBlank()) {
-            addVerses(ref, basis)
+            addVerses(ref, basis, language)
             normalizeRanges()
         }
     }

@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.versification.Versification
 
 /**
@@ -57,16 +58,18 @@ object PassageKeyFactory {
      * @param v11n The versification to use
      * @param ref The reference string to parse (e.g., "Joh 1:1", "Ge 1:1; Pr 8:22-31")
      * @param basis Optional context for parsing verse-only references
+     * @param language The language the book names are written in, tried before English. Pass a module's own
+     * language for its references; leave out only for text the reader typed, which follows the reader's language.
      * @return A Passage containing the parsed references
      * @throws NoSuchKeyException If the reference cannot be parsed
      */
-    fun getKey(v11n: Versification, ref: String, basis: VerseRange? = null): Passage {
+    fun getKey(v11n: Versification, ref: String, basis: VerseRange? = null, language: Locale? = null): Passage {
         return try {
-            RangedPassage(v11n, ref, basis)
+            RangedPassage(v11n, ref, basis, language)
         } catch (e: NoSuchVerseException) {
             try {
                 // An osisRef separates refs with spaces, e.g. "John.3.16 John.3.36", but the parser expects ';'.
-                RangedPassage(v11n, ref.replace(' ', ';'), basis)
+                RangedPassage(v11n, ref.replace(' ', ';'), basis, language)
             } catch (_: NoSuchVerseException) {
                 throw NoSuchKeyException("Cannot parse reference: $ref", e)
             }
@@ -82,9 +85,9 @@ object PassageKeyFactory {
      * @param basis Optional context for parsing verse-only references
      * @return A Passage containing the parsed references, or an empty passage on error
      */
-    fun getValidKey(v11n: Versification, ref: String, basis: VerseRange? = null): Passage {
+    fun getValidKey(v11n: Versification, ref: String, basis: VerseRange? = null, language: Locale? = null): Passage {
         return try {
-            getKey(v11n, ref, basis)
+            getKey(v11n, ref, basis, language)
         } catch (e: NoSuchKeyException) {
             createEmptyKeyList(v11n)
         }

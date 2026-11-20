@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.versification
 
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.passage.NoSuchVerseException
 import org.crosswire.ksword.passage.Verse
 import kotlin.math.absoluteValue
@@ -213,11 +214,11 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * The string to identify
      * @return The BibleBook, On error null
      */
-    fun getBook(find: String?): BibleBook? {
+    fun getBook(find: String?, language: Locale? = null): BibleBook? {
         if (find == null) {
             return null
         }
-        val book: BibleBook? = BibleNames.instance().getBook(find)
+        val book: BibleBook? = BibleNames.instance().getBook(find, language = language)
         if (containsBook(book)) {
             return book
         }
@@ -347,8 +348,8 @@ open class Versification /*implements ReferenceSystem, Serializable */ {
      * The string to identify
      * @return true when the book name is recognized
      */
-    fun isBook(find: String?): Boolean {
-        return getBook(find) != null
+    fun isBook(find: String?, language: Locale? = null): Boolean {
+        return getBook(find, language) != null
     }
 
     /**

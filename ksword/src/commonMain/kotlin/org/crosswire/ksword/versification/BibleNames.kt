@@ -75,15 +75,19 @@ class BibleNames private constructor() {
      * @param fuzzy
      * Whether to also accept a book whose name only partly matches, such as "Consol" for Colossians. Turn it
      * off when the text may not be a book name at all.
+     * @param language
+     * The language the name is written in, tried before English. A module's references are in the module's
+     * language, not the reader's, so leave this out only for text the reader typed: it then follows [Locale.current].
      * @return The BibleBook, On error null
      */
-    fun getBook(find: String, fuzzy: Boolean = true): BibleBook? {
+    fun getBook(find: String, fuzzy: Boolean = true, language: Locale? = null): BibleBook? {
         var book: BibleBook? = null
         if (containsLetter(find)) {
+            val names = if (language == null) getLocalizedBibleNames() else getBibleNamesForLocale(language)
             book = BibleBook.fromOSIS(find)
 
             if (book == null) {
-                book = getLocalizedBibleNames().getBook(find, false)
+                book = names.getBook(find, false)
             }
 
             if (book == null) {
@@ -91,7 +95,7 @@ class BibleNames private constructor() {
             }
 
             if (book == null && fuzzy) {
-                book = getLocalizedBibleNames().getBook(find, true)
+                book = names.getBook(find, true)
             }
 
             if (book == null && fuzzy) {

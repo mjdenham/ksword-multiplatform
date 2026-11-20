@@ -19,6 +19,7 @@
  */
 package org.crosswire.ksword.passage
 
+import org.crosswire.common.util.Locale
 import org.crosswire.ksword.versification.BibleBook
 import org.crosswire.ksword.versification.Versification
 import kotlin.jvm.Transient
@@ -790,7 +791,7 @@ abstract class AbstractPassage protected constructor(
      * @throws NoSuchVerseException
      * if the string is invalid
      */
-    protected fun addVerses(refs: String, basis: Key?) {
+    protected fun addVerses(refs: String, basis: Key?, language: Locale? = null) {
         // Split on allowed delimiters (comma, semicolon, newline, carriage return, tab)
         val parts = refs.split(REF_ALLOWED_DELIMS_RE)
         if (parts.isEmpty()) {
@@ -812,7 +813,7 @@ abstract class AbstractPassage protected constructor(
             // nothing to sensibly base this reference on
             val firstPart = parts[0].trim()
             if (firstPart.isNotEmpty()) {
-                vrBasis = VerseRangeFactory.fromString(v11n, firstPart)
+                vrBasis = VerseRangeFactory.fromString(v11n, firstPart, language = language)
                     ?: throw NoSuchVerseException("Cannot parse reference: $firstPart")
                 // We add it because it was part of the given input
                 add(vrBasis)
@@ -826,7 +827,7 @@ abstract class AbstractPassage protected constructor(
         for (i in start until parts.size) {
             val trimmedPart = parts[i].trim()
             if (trimmedPart.isNotEmpty()) {
-                val next: VerseRange? = VerseRangeFactory.fromString(v11n, trimmedPart, vrBasis)
+                val next: VerseRange? = VerseRangeFactory.fromString(v11n, trimmedPart, vrBasis, language)
                 if (next != null) {
                     add(next)
                     vrBasis = next
