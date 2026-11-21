@@ -4,6 +4,22 @@ All notable changes to KSword are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 [Semantic Versioning](https://semver.org/) — while at `0.x`, breaking changes ship in minor releases.
 
+## [0.9.0] — 2026-11-21
+
+### Added
+
+- **`PassageKeyFactory.getKey(v11n, ref, basis, language)`** reads a reference in a given language.
+  Book names are looked up in that language and then English, and the current language is not used.
+  Use it for a reference written by a module, which is in the module's language, not the reader's.
+  `getValidKey`, `VerseRangeFactory.fromString`, `Versification.getBook` and `isBook`, and
+  `BibleNames.getBook` take the same optional `language`. Without it they behave as before.
+
+### Fixed
+
+- **`Jud` and `Jdg` are read as Judges, not Jude.** The English alternatives `dt` (Deuteronomy),
+  `jdg` and `jud` (Judges), and `qohelet`, `eccles` and `qoh` (Ecclesiastes) were lost in the port
+  from JSword.
+
 ## [0.8.0] — 2026-11-13
 
 ### Added
