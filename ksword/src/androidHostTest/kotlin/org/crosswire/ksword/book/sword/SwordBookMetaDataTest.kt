@@ -4,6 +4,7 @@ import okio.Buffer
 import okio.Path.Companion.toPath
 import org.crosswire.TestConstants
 import org.crosswire.ksword.book.BookCategory
+import org.crosswire.ksword.book.SourceType
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,6 +28,18 @@ class SwordBookMetaDataTest {
         assertEquals("Berean Standard Bible", sbmd.name)
         assertEquals("./modules/texts/ztext/bsb/", sbmd.getProperty(SwordBookMetaData.KEY_DATA_PATH))
         assertEquals("BOOK", sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
+    }
+
+    /** DRC's conf has no SourceType, but its text has OSIS chapter milestones. */
+    @Test
+    fun drc_is_read_as_osis() {
+        assertEquals(SourceType.OSIS, fromConf("[DRC]\nModDrv=zText").sourceType)
+        assertEquals(SourceType.PLAINTEXT, fromConf("[ACV]\nModDrv=zText").sourceType)
+    }
+
+    @Test
+    fun a_source_type_in_the_conf_wins_over_the_drc_correction() {
+        assertEquals(SourceType.THML, fromConf("[DRC]\nModDrv=zText\nSourceType=ThML").sourceType)
     }
 
     @Test

@@ -106,6 +106,11 @@ class SwordBookMetaData: AbstractBookMetaData() {
             KEY_STRONGS_PADDING to "true"
         )
 
+        // Entries a module's conf leaves out by mistake, used before the defaults. DRC's text is OSIS.
+        private val MISSING_ENTRIES = mapOf(
+            "DRC" to mapOf(KEY_SOURCE_TYPE to "OSIS"),
+        )
+
         private val SUPPORTED_BOOK_TYPES = BookType.entries.map { type -> type.nameInConfig }
         private val SUPPORTED_SOURCE_TYPES = listOf("OSIS", "ThML", "Plaintext", "TEI")
     }
@@ -212,7 +217,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
         if (BookMetaData.KEY_LANGUAGE == key) {
             return language.languageCode
         }
-        return configAll.get(key, DEFAULTS[key])
+        return configAll.get(key, MISSING_ENTRIES[initials]?.get(key) ?: DEFAULTS[key])
     }
 
     override fun getValues(key: String): List<String> = configAll.getValues(key)
