@@ -84,6 +84,8 @@ class SwordBookMetaData: AbstractBookMetaData() {
         const val KEY_VERSION: String = "Version"
 
         const val ENCODING_UTF8: String = "UTF-8"
+        /** SWORD's name for Windows-1252, and what it takes a conf with no Encoding to mean. */
+        const val ENCODING_LATIN1: String = "Latin-1"
 
         // Some keys have defaults
         val DEFAULTS = mapOf(
@@ -94,7 +96,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
             KEY_VERSIFICATION to "KJV",
             KEY_DIRECTION to "LtoR",
             KEY_SOURCE_TYPE to "Plaintext",
-            KEY_ENCODING to ENCODING_UTF8,
+            KEY_ENCODING to ENCODING_LATIN1,
             KEY_DISPLAY_LEVEL to "1",
             KEY_OSIS_Q_TO_TICK to "true",
             KEY_VERSION to "1.0",
@@ -136,7 +138,7 @@ class SwordBookMetaData: AbstractBookMetaData() {
     }
 
     override val bookCharset: String by lazy {
-        getProperty(KEY_ENCODING) ?: ENCODING_UTF8
+        getProperty(KEY_ENCODING) ?: ENCODING_LATIN1
     }
 
     override val abbreviation: String by lazy {

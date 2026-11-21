@@ -30,6 +30,12 @@ class SwordBookMetaDataTest {
         assertEquals("BOOK", sbmd.getProperty(SwordBookMetaData.KEY_BLOCK_TYPE))
     }
 
+    @Test
+    fun a_conf_with_no_encoding_is_latin_1_as_in_sword() {
+        assertEquals("Latin-1", fromConf("[Smith]\nModDrv=RawLD").bookCharset)
+        assertEquals("UTF-8", fromConf("[BSB]\nModDrv=zText\nEncoding=UTF-8").bookCharset)
+    }
+
     /** DRC's conf has no SourceType, but its text has OSIS chapter milestones. */
     @Test
     fun drc_is_read_as_osis() {

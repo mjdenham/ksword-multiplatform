@@ -255,7 +255,6 @@ internal object SwordUtil {
     /**
      * Transform a byte array into a string given the encoding. If the encoding
      * is bad then it just does it as a string.
-     * Note: this may modify data. Don't use it to examine data.
      *
      * @param key the key
      * @param data
@@ -271,7 +270,6 @@ internal object SwordUtil {
     /**
      * Transform a portion of a byte array into a string given the encoding. If
      * the encoding is bad then it just does it as a string.
-     * Note: this may modify data. Don't use it to examine data.
      *
      * @param key the key
      * @param data
@@ -288,8 +286,8 @@ internal object SwordUtil {
 
     /**
      * Transform a portion of a byte array starting at an offset into a string
-     * given the encoding. If the encoding is bad then it just does it as a
-     * string. Note: this may modify data. Don't use it to examine data.
+     * given the encoding. Text that is not UTF-8 is read as Windows-1252
+     * unless the module says it is UTF-8.
      *
      * @param key the key
      * @param data
@@ -303,43 +301,21 @@ internal object SwordUtil {
      * @return a string that is UTF-8 internally
      */
     fun decode(key: String?, data: ByteArray, offset: Int, length: Int, charset: String): String {
-        if ("WINDOWS-1252" == charset) {
-            clean1252(key, data, offset, length)
+        val end = offset + length
+        return when {
+            end > data.size -> ""
+            charset.equals(SwordBookMetaData.ENCODING_UTF8, ignoreCase = true) -> data.decodeToString(offset, end)
+            // Several modules with no Encoding hold UTF-8 text all the same.
+            else -> decodeUtf8OrNull(data, offset, end) ?: Windows1252.decode(data, offset, end)
         }
-        var txt = ""
+    }
+
+    private fun decodeUtf8OrNull(data: ByteArray, start: Int, end: Int): String? =
         try {
-            if (offset + length <= data.size) {
-                txt = data.decodeToString(offset, offset + length) //String(data, offset, length, charset(charset))
-            }
-        } catch (ex: Exception) {
-            Log.w("Failed to decode entry '$key' as $charset", ex)
+            data.decodeToString(start, end, throwOnInvalidSequence = true)
+        } catch (ex: CharacterCodingException) {
+            null
         }
-
-        return txt
-    }
-
-    /**
-     * Remove rogue characters in the source. These are characters that are not
-     * valid in cp1252 aka WINDOWS-1252 and in UTF-8 or are non-printing control
-     * characters in the range of 0-32.
-     */
-    private fun clean1252(key: String?, data: ByteArray, offset: Int, length: Int) {
-        var end = offset + length
-        // make sure it doesn't go off the end
-        if (end > data.size) {
-            end = data.size
-        }
-        for (i in offset until end) {
-            // between 0-32 only allow whitespace: \t, \n, \r, ' '
-            // characters 0x81, 0x8D, 0x8F, 0x90 and 0x9D are undefined in
-            // cp1252
-            val c = data[i].toInt() and 0xFF
-            if ((c >= 0x00 && c < 0x20 && c != 0x09 && c != 0x0A && c != 0x0D) || (c == 0x81 || c == 0x8D || c == 0x8F || c == 0x90 || c == 0x9D)) {
-                data[i] = 0x20
-                //                log.error("{} has bad character 0x{} at position {} in input.", key, Integer.toString(c, 16), Integer.toString(i));
-            }
-        }
-    }
 
 
     /**
