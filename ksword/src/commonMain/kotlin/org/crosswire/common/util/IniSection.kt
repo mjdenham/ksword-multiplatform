@@ -113,13 +113,14 @@ internal class IniSection {
                     continue
                 }
 
-            val split = line.split("=")
-            if (split.size != 2) {
+            // The key ends at the first '='; any later ones belong to the value.
+            val splitPos = line.indexOf('=')
+            if (splitPos < 0) {
                 warnings.appendLine("Skipping: Expected to see '=' in: $line")
                 continue
             }
-            val key = split[0].trim()
-            val value = split[1].trim()
+            val key = line.substring(0, splitPos).trim()
+            val value = line.substring(splitPos + 1).trim()
             add(key, value)
         }
     }
